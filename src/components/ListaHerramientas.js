@@ -10,6 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import DescriptionIcon from '@material-ui/icons/Description';
 import PersonIcon from '@material-ui/icons/Person';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import { Link, withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ListaHerramientas() {
+export default withRouter(props => {
     const classes = useStyles();
     const [openMenu1, setOpenMenu1] = React.useState(true);
     const [openMenu2, setOpenMenu2] = React.useState(true);
@@ -55,7 +56,8 @@ export default function ListaHerramientas() {
             {/*Lista secundaria perteneciente a listItem anterior*/}
             <Collapse in={openMenu1} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItem button className={classes.nested}>
+                    {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
+                    <ListItem button className={classes.nested} onClick={() => { props.history.push("/ders") }}>
                         <ListItemIcon>
                             {/* Icono */}
                         </ListItemIcon>
@@ -75,7 +77,8 @@ export default function ListaHerramientas() {
             {/*Lista secundaria perteneciente a listItem anterior*/}
             <Collapse in={openMenu2} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItem button className={classes.nested}>
+                    {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
+                    <ListItem button className={classes.nested} onClick={() => { props.history.push("/requisitos") }}>
                         <ListItemIcon>
                             {/* Icono */}
                         </ListItemIcon>
@@ -85,7 +88,7 @@ export default function ListaHerramientas() {
                 </List>
             </Collapse>
             {/* Elemento de lista principal */}
-            <ListItem button onClick={handleClickMenu3}>
+            <ListItem button onClick={handleClickMenu3} >
                 <ListItemIcon>
                     <AssessmentIcon />
                 </ListItemIcon>
@@ -94,7 +97,8 @@ export default function ListaHerramientas() {
             </ListItem>
             <Collapse in={openMenu3} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItem button className={classes.nested}>
+                    {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
+                    <ListItem button className={classes.nested} onClick={() => { props.history.push("/tablas") }}>
                         <ListItemIcon>
                             {/* Icono */}
                         </ListItemIcon>
@@ -105,4 +109,4 @@ export default function ListaHerramientas() {
             </Collapse>
             {/*Lista secundaria perteneciente a listItem anterior*/}
         </List>);
-}
+});
