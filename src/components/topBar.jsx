@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import './topBar.css';
 
@@ -37,7 +36,8 @@ export default function TopBar(props) {
             <MenuIcon />
           </IconButton>
           <TextField required id="standard-required" label="Obligatorio" defaultValue="Nuevo Proyecto" />
-          <Grid justify="right" container spacing={24}>
+          </Toolbar>
+          <Grid>
             <Grid item>
               <div className="Tools">
                 <Button onClick={handleMenu}>
@@ -64,8 +64,6 @@ export default function TopBar(props) {
               </div>
             </Grid>
           </Grid>
-        </Toolbar>
-
       </AppBar>
     </React.Fragment>
   );

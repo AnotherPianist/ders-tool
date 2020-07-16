@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { mergeClasses } from '@material-ui/styles';
-import { AppBar } from '@material-ui/core';
-import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -33,7 +28,7 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
-    backgroundColor: 'white !important',
+    backgroundColor: "white !important",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -88,6 +83,9 @@ const styles = theme => ({
     height: '100vh',
     overflow: 'auto',
   },
+  iconWhite: {
+    color: 'white'
+  }
 });
 
 class App extends React.Component {
@@ -119,22 +117,6 @@ class App extends React.Component {
           iconClass={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
         />
 
-        {/*<AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerOpen}
-              className={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              Barra Superior
-            </Typography>
-          </Toolbar>
-        </AppBar>*/}
         <Drawer
           variant="permanent"
           classes={{
@@ -144,7 +126,7 @@ class App extends React.Component {
         >
           <div className={classes.toolbarIcon}>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon/>
             </IconButton>
           </div>
           <Divider />
