@@ -33,6 +33,7 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
+    backgroundColor: 'white !important',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -111,7 +112,12 @@ class App extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <TopBar/>
+        <TopBar
+          appBarClass={clsx(classes.appBar, this.state.open && classes.appBarShift)}
+          toolBarClass={classes.toolbar}
+          handleDrawerOpen={this.handleDrawerOpen}
+          iconClass={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
+        />
 
         {/*<AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
           <Toolbar className={classes.toolbar}>
