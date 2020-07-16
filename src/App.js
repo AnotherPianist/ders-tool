@@ -13,6 +13,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
+import { Switch, Route } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -141,7 +142,25 @@ class App extends React.Component {
           <ListaHerramientas />
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.appBarSpacer}></div>
+          <div className={classes.appBarSpacer} />
+          <Switch>
+            {/* Ejemplos de uso de Route path: */}
+            <Route path="/ders">
+              {/* Acá iría el componente de DERS, aunque no sé si eso deba ser un componente */}
+              <div><p>Ders</p></div> {/* Reemplazable! */}
+              {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+            </Route>
+            <Route path="/requisitos" >
+              {/* Acá iría el componente de requisitos, aunque no sé si eso deba ser un componente */}
+              <div><p>Requisitos</p></div> {/* Reemplazable! */}
+              {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+            </Route>
+            <Route path="/tablas" >
+              {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
+              <div><p>Tablas</p></div> {/* Reemplazable! */}
+              {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+            </Route>
+          </Switch>
         </main>
 
       </div>);
