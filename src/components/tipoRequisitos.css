@@ -1,0 +1,17 @@
+  .root{
+    min-width: 275;
+  }
+  .heading {
+    font-size: 12px;
+    float: left;
+  }
+  .title {
+    float: left;
+  }
+  .textInput {
+    float: left;
+    margin-top: 2rem !important;
+  }
+  .space {
+      margin: 2rem !important;
+  }
