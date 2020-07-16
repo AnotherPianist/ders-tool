@@ -13,6 +13,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
+import TopBar from './components/topBar.jsx';
 
 const drawerWidth = 240;
 
@@ -109,7 +110,9 @@ class App extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
+        <TopBar/>
+
+        {/*<AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
           <Toolbar className={classes.toolbar}>
             <IconButton
               edge="start"
@@ -124,7 +127,7 @@ class App extends React.Component {
               Barra Superior
             </Typography>
           </Toolbar>
-        </AppBar>
+        </AppBar>*/}
         <Drawer
           variant="permanent"
           classes={{
