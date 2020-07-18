@@ -9,18 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import './tipoRequisitos.css';
 
-const requisitos = [
-    {
-        value: '1',
-        label: 'Funcional',
-    },
-    {
-        value: '2',
-        label: 'No Funcional',
-    },
-];
-
-export default function EliminarTipoReq() {
+export default function EliminarTipoReq(props) {
     const [requisito, setRequisitos] = React.useState('1');
 
     const handleChange = (event) => {
@@ -34,27 +23,27 @@ export default function EliminarTipoReq() {
                     <Grid container justify='flex-start'>
                         <Grid item xs={12}>
                             <Typography className='heading' color="textSecondary" gutterBottom>
-                            Tipos de Requisitos
+                                Tipos de Requisitos
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography className='title' variant="h5" component="h2">
-                            Eliminar Tipo de Requisito
+                                Eliminar Tipo de Requisito
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                        <TextField className='textInput' id="select-requisitos" label="Seleccionar" value={requisito} onChange={handleChange} error select>
-                            {requisitos.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                            <TextField className='textInput' id="select-requisitos" label="Seleccionar" value={requisito} onChange={handleChange} error select>
+                                {props.requisitos.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                     </Grid>
                 </CardContent>
                 <CardActions>
-                    <Button color='secondary' size="small">Eliminar</Button>
+                    <Button color='secondary' size="small" onClick={() => props.handleEliminar(requisito)}>Eliminar</Button>
                 </CardActions>
             </Card>
         </React.Fragment>

@@ -8,31 +8,36 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import './tipoRequisitos.css';
 
-export default function CrearTipoReq() {
-  return (
-    <React.Fragment>
-        <Card className='space' variant="outlined">
-            <CardContent>
-                <Grid container justify='flex-start'>
-                    <Grid item xs={12}>
-                        <Typography className='heading' color="textSecondary" gutterBottom>
-                        Tipos de Requisitos
+export default function CrearTipoReq(props) {
+    const [nombre, setNombre] = React.useState('');
+    const nameInput = React.useRef(null);
+
+    return (
+        <React.Fragment>
+            <Card className='space' variant="outlined">
+                <CardContent>
+                    <Grid container justify='flex-start'>
+                        <Grid item xs={12}>
+                            <Typography className='heading' color="textSecondary" gutterBottom>
+                                Tipos de Requisitos
                         </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography className='title' variant="h5" component="h2">
-                        Nuevo Tipo de Requisito
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography className='title' variant="h5" component="h2">
+                                Nuevo Tipo de Requisito
                         </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullWidth required className='textInput' id="standard-basic" label="Standard"
+                                inputRef={nameInput} onChange={event => setNombre(event.target.value)}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth required className='textInput' id="standard-basic" label="Standard" />
-                    </Grid>
-                </Grid>
-            </CardContent>
-            <CardActions>
-                <Button size="small" color="primary">Crear</Button>
-            </CardActions>
-        </Card>
-    </React.Fragment>
-  );
+                </CardContent>
+                <CardActions>
+                    <Button size="small" color="primary" onClick={() => { props.handleCrear(nombre); nameInput.current.value = ''; }}>Crear</Button>
+                </CardActions>
+            </Card>
+        </React.Fragment>
+    );
 }
