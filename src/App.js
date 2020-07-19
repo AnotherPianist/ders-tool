@@ -1,12 +1,12 @@
 import React from 'react';
-import CrearReq from './components/crearRequisito'
+import ListaReq from './components/listaRequisitos'
 import './App.css';
 
 function App() 
 {
   return (
     <div className="App">
-      <CrearReq/>
+      <ListaReq/>
     </div>
   );
 }
