@@ -12,11 +12,14 @@ class crearRequisito extends React.Component
     constructor(props) 
     {
         super(props);
-        this.state = 
-        {
-            tipo : "None",
-            requisitoNombre : ""
-        }
+        this.state = {
+            nombre: "",
+            id: 0,
+            funcional: false,
+            tipo: "None",
+            requisitos: []
+        };
+        this.onRequisitoAgregar = this.onRequisitoAgregar.bind(this);
     }
      
     changeTipo = (event) => 
@@ -27,9 +30,19 @@ class crearRequisito extends React.Component
 
     changeNombre = (event) => 
     {
-        this.setState({requisitoNombre:event.target.value});
-        console.log("RU nombre:" + this.state.requisitoNombre);
+        this.setState({nombre:event.target.value});
+        console.log("RU nombre:" + this.state.nombre);
     };
+
+    async onClick() {
+        localStorage.setItem('requisitos', JSON.stringify(this.state));   
+        
+    }
+
+    onRequisitoAgregar() {
+        this.props.agregarRequisito(this.state);
+    }
+
     render()
     {
         return (
@@ -37,11 +50,11 @@ class crearRequisito extends React.Component
             <Grid component="label" container alignItems="center" spacing = {2}>
                 <Grid item>
                     <IconButton aria-label="add" className = "margin">
-                        <AddCircleOutlineIcon onClick={() => { alert("RU: " + this.state.requisitoNombre + "\n" + "tipo: " + this.state.tipo) }}/>
+                        <AddCircleOutlineIcon onClick={() => { alert("RU: " + this.state.nombre + "\n" + "tipo: " + this.state.tipo) } /*this.onRequisitoAgregar*/}/>
                     </IconButton>
                 </Grid>
                 <Grid item xs>
-                    <TextField fullWidth required label="Nuevo requisito" value={this.state.requisitoNombre} onChange = {this.changeNombre} />
+                    <TextField fullWidth required label="Nuevo requisito" value={this.state.nombre} onChange = {this.changeNombre} />
                 </Grid>
                 <Grid item> 
                     <Select
