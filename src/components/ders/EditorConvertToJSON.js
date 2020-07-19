@@ -6,6 +6,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PropTypes from "prop-types";
 
 const EditorConvertToJSON = (props) => {
+  const { content } = props;
   const [contentState, setContentState] = useState(convertFromRaw(content));
 
   const onContentStateChange = (content) => {
@@ -21,7 +22,7 @@ const EditorConvertToJSON = (props) => {
         initialContentState={content}
         onContentStateChange={onContentStateChange}
       />
-      <textarea disabled value={JSON.stringify(contentState, null, 4)} />
+      {/*<textarea disabled value={JSON.stringify(contentState, null, 4)} />*/}
     </div>
   );
 };
@@ -30,7 +31,7 @@ EditorConvertToJSON.propTypes = {};
 
 export default EditorConvertToJSON;
 
-const content = {
+const contentDefault = {
   entityMap: {},
   blocks: [
     {
