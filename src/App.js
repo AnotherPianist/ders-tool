@@ -10,6 +10,8 @@ import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
 import TopBar from './components/topBar.jsx';
 import { Switch, Route } from 'react-router-dom';
+import TablaAnalisisRepago from '../src/components/TablaAnalisisRepago';
+import AnalisisRepago from '../src/Vistas/AnalisisRepago';
 
 const drawerWidth = 240;
 
@@ -149,6 +151,7 @@ class App extends React.Component {
             <Route path="/tablas" >
               {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
               <div><p>Tablas</p></div> {/* Reemplazable! */}
+              <div><AnalisisRepago/></div>
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
           </Switch>
