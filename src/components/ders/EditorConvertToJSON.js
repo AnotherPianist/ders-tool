@@ -6,11 +6,14 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PropTypes from "prop-types";
 
 const EditorConvertToJSON = (props) => {
-  const { content } = props;
+  const { content, index } = props;
+  let { infoDers } = props;
   const [contentState, setContentState] = useState(convertFromRaw(content));
 
   const onContentStateChange = (content) => {
     setContentState(content);
+    infoDers[index].description = content;
+    guardarEnJson(infoDers);
   };
 
   return (
@@ -45,3 +48,11 @@ const contentDefault = {
     },
   ],
 };
+
+function guardarEnJson(infoDers) {
+  fetch("/InformacionDers.json")
+    .then((response) => response.json())
+    .then((datos) => {
+      datos.data = infoDers;
+    });
+}
