@@ -1,12 +1,11 @@
 import React from 'react';
-import VerReq from "./verRequisito";
+import VerReq from "./VerRequisito";
 import Grid from '@material-ui/core/Grid';
 import CrearRequisito from './CrearRequisito';
+import Container from '@material-ui/core/Container';
 
-class ListaRequisitos extends React.Component 
-{
-    constructor(props) 
-    {
+class ListaRequisitos extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             requisitos: [],
@@ -34,8 +33,7 @@ class ListaRequisitos extends React.Component
             );
         });
         //data dummy para testing
-        const listRU = 
-        [
+        const listRU = [
             {
                 id : 1,
                 tipo : "Funcional",
@@ -48,8 +46,8 @@ class ListaRequisitos extends React.Component
             }
         ];
         return (
-        <div>
-            <Grid component="label" container alignItems="center" spacing = {2}>
+        <Container>
+            <Grid component="label" container alignItems="center" spacing={2}>
                 <Grid item xs>
                     {listRU.map(ru => <VerReq requisito = {ru}/>) /*itemsRequisitos*/}
                 </Grid>                 
@@ -57,7 +55,9 @@ class ListaRequisitos extends React.Component
             <Grid item xs>
                 <CrearRequisito agregarRequisito={this.agregarRequisito} />
             </Grid>
-        </div>
+        </Container>
         );
     }
-} export default ListaRequisitos;
+}
+
+export default ListaRequisitos;

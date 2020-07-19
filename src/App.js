@@ -9,6 +9,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
 import TopBar from './components/topBar.jsx';
+import ListaRequisitos from './components/ListaRequisitos';
 import { Switch, Route } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -142,8 +143,7 @@ class App extends React.Component {
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
             <Route path="/requisitos" >
-              {/* Acá iría el componente de requisitos, aunque no sé si eso deba ser un componente */}
-              <div><p>Requisitos</p></div> {/* Reemplazable! */}
+              <ListaRequisitos/>
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
             <Route path="/tablas" >
