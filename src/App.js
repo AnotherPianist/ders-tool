@@ -8,6 +8,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
+import Canvas from './components/Canvas.js';
 import TopBar from './components/topBar.jsx';
 import { Switch, Route } from 'react-router-dom';
 
@@ -146,7 +147,8 @@ class App extends React.Component {
               <div><p>Requisitos</p></div> {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
-            <Route path="/tablas" >
+            <Route path="/casos" >
+              <Canvas/>
               {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
               <div><p>Tablas</p></div> {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
