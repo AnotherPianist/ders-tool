@@ -8,7 +8,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
-import TopBar from './components/topBar.jsx';
+import TopBar from './components/topBar.js';
 import { Switch, Route } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -59,6 +59,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   drawerPaper: {
+    backgroundColor: '#4e73df !important',
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -83,7 +84,7 @@ const styles = theme => ({
     height: '100vh',
     overflow: 'auto',
   },
-  iconWhite: {
+  white:{
     color: 'white'
   }
 });
@@ -125,7 +126,7 @@ class App extends React.Component {
           open={this.state.open}
         >
           <div className={classes.toolbarIcon}>
-            <IconButton onClick={this.handleDrawerClose}>
+            <IconButton className={classes.white} onClick={this.handleDrawerClose}>
               <ChevronLeftIcon/>
             </IconButton>
           </div>

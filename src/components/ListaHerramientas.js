@@ -16,12 +16,15 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
-        marginTop: '3rem'
+        marginTop: '3rem',
+        color: 'white'
     },
     nested: {
         paddingLeft: theme.spacing(4),
     },
+    white:{
+        color: 'white'
+    }
 }));
 
 export default withRouter(props => {
@@ -48,7 +51,7 @@ export default withRouter(props => {
             className={classes.root}>
             {/* Elemento de lista principal */}
             <ListItem button onClick={handleClickMenu1}>
-                <ListItemIcon>
+                <ListItemIcon className={classes.white}>
                     <DescriptionIcon />
                 </ListItemIcon>
                 <ListItemText primary="DERS" />
@@ -59,7 +62,7 @@ export default withRouter(props => {
                 <List component="div" disablePadding>
                     {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
                     <ListItem button className={classes.nested} onClick={() => { props.history.push("/ders") }}>
-                        <ListItemIcon>
+                        <ListItemIcon className={classes.white}>
                             {/* Icono */}
                         </ListItemIcon>
                         <ListItemText primary="Placeholder" />
@@ -69,7 +72,7 @@ export default withRouter(props => {
             </Collapse>
             {/* Elemento de lista principal */}
             <ListItem button onClick={handleClickMenu2}>
-                <ListItemIcon>
+                <ListItemIcon className={classes.white}>
                     <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Requisitos" />
@@ -80,7 +83,7 @@ export default withRouter(props => {
                 <List component="div" disablePadding>
                     {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
                     <ListItem button className={classes.nested} onClick={() => { props.history.push("/requisitos") }}>
-                        <ListItemIcon>
+                        <ListItemIcon className={classes.white}>
                             {/* Icono */}
                         </ListItemIcon>
                         <ListItemText primary="Placeholder" />
@@ -90,7 +93,7 @@ export default withRouter(props => {
             </Collapse>
             {/* Elemento de lista principal */}
             <ListItem button onClick={handleClickMenu3} >
-                <ListItemIcon>
+                <ListItemIcon className={classes.white}>
                     <AssessmentIcon />
                 </ListItemIcon>
                 <ListItemText primary="Tablas y cálculos" />
@@ -100,7 +103,7 @@ export default withRouter(props => {
                 <List component="div" disablePadding>
                     {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
                     <ListItem button className={classes.nested} onClick={() => { props.history.push("/tablas") }}>
-                        <ListItemIcon>
+                        <ListItemIcon className={classes.white}>
                             {/* Icono */}
                         </ListItemIcon>
                         <ListItemText primary="Placeholder" />

@@ -42,7 +42,7 @@ export default function TopBar(props) {
               <div className="Tools">
                 <Button onClick={handleMenu}>
                   Archivo
-              </Button>
+                </Button>
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
