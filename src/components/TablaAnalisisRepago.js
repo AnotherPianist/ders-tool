@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   table: {
@@ -33,13 +34,43 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+var id = 5;
+
+/**
+ *
+ * @param {Nombre que tendra el elemento de la fila} nombre
+ * @param {Para ver si es que se puede editar, para el caso del costo acumulado, por ejemplo,
+ *  no se deberia editar debido a que es un valor que se calcula automaticamente} editable
+ * @param {Valor inicial que tendra la celda (por defecto deberia ser 0)} valor
+ */
 function crearElemento(nombre, editable, valor) {
   return { nombre, editable, valor };
+}
+
+/**
+ * Funcion que añade una columna y calcula el año automaticamente
+ */
+function crearColumna() {
+  id = id + 1;
+  const texto = "Año " + id;
+  const minWidth = 150;
+  return { id, texto, minWidth };
 }
 
 var valorCostoAcumulado = 0;
 var valorCostoDesarrollo = 0;
 
+//Por defecto se llega al año 5
+var columnas = [
+  { id: 0, texto: "Año " + 0, minWidth: 150 },
+  { id: 1, texto: "Año " + 1, minWidth: 150 },
+  { id: 2, texto: "Año " + 2, minWidth: 150 },
+  { id: 3, texto: "Año " + 3, minWidth: 150 },
+  { id: 4, texto: "Año " + 4, minWidth: 150 },
+  { id: 5, texto: "Año " + 5, minWidth: 150 },
+];
+
+//Datos que tendran las filas
 var filas = [
   crearElemento("Costo Desarrollo", true, valorCostoDesarrollo),
   crearElemento("Costo Operacion", true, 0),
@@ -60,66 +91,57 @@ export default function TablaAnalisisRepago() {
     console.log(event.target.value);
   };
 
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Elemento</StyledTableCell>
-            <StyledTableCell align="center">Año 0</StyledTableCell>
-            <StyledTableCell align="center">Año 1</StyledTableCell>
-            <StyledTableCell align="center">Año 2</StyledTableCell>
-            <StyledTableCell align="center">Año 3</StyledTableCell>
-            <StyledTableCell align="center">Año 4</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filas.map((fila) => (
-            <StyledTableRow key={fila}>
-              <StyledTableCell component="th" scope="fila">
-                {fila.nombre}
-              </StyledTableCell>
+  const agregarColumna = () => {
+    columnas.push(crearColumna());
+  };
 
-              <StyledTableCell align="center">
-                <TextField
-                  id="standard-basic"
-                  onChange={cambioCosto}
-                  label={!fila.editable ? fila.valor : "Ingresar Valor"}
-                  disabled={!fila.editable}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  id="standard-basic"
-                  label={!fila.editable ? fila.valor : "Ingresar Valor"}
-                  disabled={!fila.editable}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  id="standard-basic"
-                  label={!fila.editable ? fila.valor : "Ingresar Valor"}
-                  disabled={!fila.editable}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  id="standard-basic"
-                  label={!fila.editable ? fila.valor : "Ingresar Valor"}
-                  disabled={!fila.editable}
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <TextField
-                  id="standard-basic"
-                  label={!fila.editable ? fila.valor : "Ingresar Valor"}
-                  disabled={!fila.editable}
-                />
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+  return (
+    <Paper className={classes.root}>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Elemento</StyledTableCell>
+              {columnas.map((columna) => (
+                <StyledTableCell
+                  key={columna.id}
+                  align="center"
+                  style={{ minWidth: columna.minWidth }}
+                >
+                  {columna.texto}
+                </StyledTableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filas.map((fila) => {
+              return (
+                <StyledTableRow hover role="checkbox" tabIndex={-1} key={fila}>
+                  <StyledTableCell component="th" scope="fila">
+                    {fila.nombre}
+                  </StyledTableCell>
+                  {columnas.map((columna) => {
+                    return (
+                      <StyledTableCell key={columna.id}>
+                        <TextField
+                          id="standard-basic"
+                          onChange={cambioCosto}
+                          label={!fila.editable ? fila.valor : "Ingresar Valor"}
+                          disabled={!fila.editable}
+                        />
+                      </StyledTableCell>
+                    );
+                  })}
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button variant="contained" color="primary" onClick={agregarColumna}>
+        Boton en version inicial para agregar años(Hay que ingresar a otra
+        pagina y volver a esta para ver cambios)
+      </Button>
+    </Paper>
   );
 }
