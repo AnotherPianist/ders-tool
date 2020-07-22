@@ -35,7 +35,7 @@ export default function TopBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <TextField required id="standard-required" label="Obligatorio" defaultValue="Nuevo Proyecto" />
+          <TextField defaultValue="Nuevo Proyecto" />
           </Toolbar>
           <Grid>
             <Grid item>
