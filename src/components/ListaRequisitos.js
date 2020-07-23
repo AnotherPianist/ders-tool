@@ -1,63 +1,73 @@
 import React from 'react';
-import VerReq from "./VerRequisito";
-import Grid from '@material-ui/core/Grid';
-import CrearRequisito from './CrearRequisito';
-import Container from '@material-ui/core/Container';
+import Requisito from './Requisito';
+import CrearRU from './CrearRU';
 
 class ListaRequisitos extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            requisitos: [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      requisitos: [],
+      contadorRS: 1
+    };
+    this.crearRequisito = this.crearRequisito.bind(this);
+    this.actualizarRequisito = this.actualizarRequisito.bind(this);
+    this.eliminarRequisito = this.eliminarRequisito.bind(this);
+  }
+
+  crearRequisito(n, t) {
+    let nuevoRequisito = {
+      id: this.state.requisitos.length + 1,
+      nombre: n,
+      tipo: t,
+    };
+    const listaReq = this.state.requisitos.slice();
+    listaReq.push(nuevoRequisito);
+    this.setState({requisitos: listaReq});
+  }
+
+  actualizarRequisito(id, n, t) {
+    const listaReq = this.state.requisitos.slice();
+    for (const requisito of listaReq) {
+      if (requisito.id === id) {
+        requisito.nombre = n;
+        requisito.tipo = t;
+      }
+    }
+    this.setState({requisitos: listaReq});
+  }
+
+  eliminarRequisito(id) {
+    const listaReq = [];
+    let i = 1;
+    for (const requisito of this.state.requisitos) {
+      if (requisito.id !== id) {
+        const req = {
+          id: i,
+          nombre: requisito.nombre,
+          tipo: requisito.tipo
         };
-        this.agregarRequisito = this.agregarRequisito.bind(this);
+        i += 1;
+        listaReq.push(req);
+      }
     }
-   
-    async getRequisitos() {   
-        this.setState({
-            requisitos: JSON.parse(localStorage.getItem("requisitos")),
-            isLoaded: true
-        });  
-    }
+    this.setState({requisitos: listaReq});
+  }
 
-    agregarRequisito(requisito) {
-        this.setState((prevState) => {
-            prevState.requisitos.push(requisito);
-        });
-    }
-
-    render() {
-        let itemsRequisitos = this.state.requisitos.map((item) => {
-            return (
-                <VerReq requisito = {item}/>
-            );
-        });
-        //data dummy para testing
-        const listRU = [
-            {
-                id : 1,
-                tipo : "Funcional",
-                requisitoNombre : "RU1"
-            },
-            {
-                id : 2,
-                tipo : "No Funcional",
-                requisitoNombre : "requisito de prueba"
-            }
-        ];
-        return (
-        <Container>
-            <Grid component="label" container alignItems="center" spacing={2}>
-                <Grid item xs>
-                    {listRU.map(ru => <VerReq requisito = {ru}/>) /*itemsRequisitos*/}
-                </Grid>                 
-            </Grid>
-            <Grid item xs>
-                <CrearRequisito agregarRequisito={this.agregarRequisito} />
-            </Grid>
-        </Container>
-        );
-    }
+  render() {
+    const reqs = this.state.requisitos.map((req) => {
+      return (
+        <Requisito key={req.id} id={req.id} nombre={req.nombre} tipo={req.tipo} requisitos={[]} actualizarRequisito={this.actualizarRequisito} eliminarRequisito={this.eliminarRequisito}/>
+      );
+    });
+    return(
+      <>
+        <h3>-</h3>
+        <h1>Lista Requisitos</h1>
+        {reqs}
+        <CrearRU crearRequisito={this.crearRequisito}/>
+      </>
+    );
+  }
 }
 
 export default ListaRequisitos;
