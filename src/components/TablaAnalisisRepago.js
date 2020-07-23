@@ -57,8 +57,8 @@ function crearColumna() {
   return { id, texto, minWidth };
 }
 
-var valorCostoAcumulado = 0;
-var valorCostoDesarrollo = 0;
+// var valorCostoAcumulado = 0;
+// var valorCostoDesarrollo = 0;
 
 //Por defecto se llega al año 5
 var columnas = [
@@ -71,26 +71,42 @@ var columnas = [
 ];
 
 //Datos que tendran las filas
-var filas = [
-  crearElemento("Costo Desarrollo", true, valorCostoDesarrollo),
-  crearElemento("Costo Operacion", true, 0),
-  crearElemento("Factor Ajuste", true, 0),
-  crearElemento("Costos Ajustados", true, 0),
-  crearElemento("Costo Acumulado", false, valorCostoAcumulado),
-  crearElemento("Beneficios", true, 0),
-  crearElemento("Factor Ajuste", true, 0),
-  crearElemento("Beneficio Ajustado", true, 0),
-  crearElemento("Beneficio Acumulado", false, 0),
-  crearElemento("Beneficio-Costo", false, 0),
-];
+
 
 export default function TablaAnalisisRepago() {
   const classes = useStyles();
-
+  let [valorCostoAcumulado, setCostoD] = useState(0);
+  let [valorBeneAcumulado, setBeneficioAc] = useState(0);
+  let [velorBeneCosto, setBeneCosto] = useState(0);
+  let filasCosto = [
+    crearElemento("Costo Desarrollo", true, 0),
+    crearElemento("Costo Operacion", true, 0),
+    crearElemento("Factor Ajuste", true, 0),
+    crearElemento("Costos Ajustados", true, 0),
+    crearElemento("Costo Acumulado", false, valorCostoAcumulado),
+  ];
+  let filasBeneficio = [
+    crearElemento("Beneficios", true, 0),
+    crearElemento("Factor Ajuste", true, 0),
+    crearElemento("Beneficio Ajustado", true, 0),
+    crearElemento("Beneficio Acumulado", false, valorBeneAcumulado),
+  ];
+  let filaBeneCosto = [  
+    crearElemento("Beneficio-Costo", false, velorBeneCosto),
+  ];
   const cambioCosto = (event) => {
-    console.log(event.target.value);
+    valorCostoAcumulado = (valorCostoAcumulado)+parseInt(event.target.value);
+    setCostoD(valorCostoAcumulado);   
+    BeneficioCosto();
   };
-
+  const cambioBeneficio = (event) => {
+    valorBeneAcumulado = (valorBeneAcumulado)+parseInt(event.target.value);
+    setBeneficioAc(valorBeneAcumulado);    
+    BeneficioCosto();
+  };
+  const BeneficioCosto = () =>{
+    setBeneCosto(valorBeneAcumulado-valorCostoAcumulado);
+  }
   const agregarColumna = () => {
     columnas.push(crearColumna());
   };
@@ -114,7 +130,7 @@ export default function TablaAnalisisRepago() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filas.map((fila) => {
+            {filasCosto.map((fila) => {
               return (
                 <StyledTableRow hover role="checkbox" tabIndex={-1} key={fila}>
                   <StyledTableCell component="th" scope="fila">
@@ -126,6 +142,47 @@ export default function TablaAnalisisRepago() {
                         <TextField
                           id="standard-basic"
                           onChange={cambioCosto}
+                          label={!fila.editable ? fila.valor : "Ingresar Valor"}
+                          disabled={!fila.editable}
+                        />
+                      </StyledTableCell>
+                    );
+                  })}
+                </StyledTableRow>
+              );
+            })}
+            {filasBeneficio.map((fila) => {
+              return (
+                <StyledTableRow hover role="checkbox" tabIndex={-1} key={fila}>
+                  <StyledTableCell component="th" scope="fila">
+                    {fila.nombre}
+                  </StyledTableCell>
+                  {columnas.map((columna) => {
+                    return (
+                      <StyledTableCell key={columna.id}>
+                        <TextField
+                          id="standard-basic"
+                          onChange={cambioBeneficio}
+                          label={!fila.editable ? fila.valor : "Ingresar Valor"}
+                          disabled={!fila.editable}
+                        />
+                      </StyledTableCell>
+                    );
+                  })}
+                </StyledTableRow>
+              );
+            })}
+            {filaBeneCosto.map((fila) => {
+              return (
+                <StyledTableRow hover role="checkbox" tabIndex={-1} key={fila}>
+                  <StyledTableCell component="th" scope="fila">
+                    {fila.nombre}
+                  </StyledTableCell>
+                  {columnas.map((columna) => {
+                    return (
+                      <StyledTableCell key={columna.id}>
+                        <TextField
+                          id="standard-basic"                         
                           label={!fila.editable ? fila.valor : "Ingresar Valor"}
                           disabled={!fila.editable}
                         />
