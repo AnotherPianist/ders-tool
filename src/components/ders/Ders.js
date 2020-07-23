@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import EditorConvertToJSON from "./EditorConvertToJSON.js";
 import { Container, Typography, makeStyles } from "@material-ui/core";
 
-function useInformacionDers() {
-  const [infoDers, setInfoDers] = useState(data);
+/*function useInformacionDers() {
   useEffect(() => {
     fetch("/InformacionDers.json")
       .then((response) => response.json())
@@ -14,10 +12,23 @@ function useInformacionDers() {
   }, []);
 
   return infoDers;
-}
+}*/
 
 const Ders = (props) => {
-  let infoDers = useInformacionDers();
+  const { datosPreCargados } = props;
+  //localStorage.removeItem("ders");
+  const [infoDers, setInfoDers] = useState(
+    localStorage.getItem("ders") == null
+      ? dataDefault
+      : JSON.parse(localStorage.getItem("ders"))
+  );
+
+  useEffect(() => {
+    if (!datosPreCargados == null) {
+      //setInfoDers(datosPreCargados);
+    }
+  }, []);
+
   return (
     <Container
       style={{
@@ -29,6 +40,7 @@ const Ders = (props) => {
       <div className={useStyles.root}>
         {infoDers.map((info, index) => (
           <Container
+            key={index}
             style={{
               backgroundColor: "#E8E8E8",
               paddingBlockEnd: 50,
@@ -41,6 +53,7 @@ const Ders = (props) => {
               <EditorConvertToJSON
                 content={info.description}
                 index={index}
+                setInfoDers={setInfoDers}
                 infoDers={infoDers}
               />
             </Typography>
@@ -50,8 +63,6 @@ const Ders = (props) => {
     </Container>
   );
 };
-
-Ders.propTypes = {};
 
 export default Ders;
 
@@ -73,9 +84,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export let data = [
+export let dataDefault = [
   {
-    title: "Introdución",
+    title: "Introducción",
     description: {
       blocks: [
         {

@@ -1,19 +1,51 @@
-import React, { useState } from "react";
-import { convertFromRaw } from "draft-js";
+import React, { useState, useEffect } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
 import PropTypes from "prop-types";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return (
+    <MuiAlert
+      style={{
+        width: 150,
+        justifyContent: "center",
+      }}
+      elevation={1}
+      variant="filled"
+      {...props}
+    />
+  );
+}
 
 const EditorConvertToJSON = (props) => {
-  const { content, index } = props;
-  let { infoDers } = props;
-  const [contentState, setContentState] = useState(convertFromRaw(content));
+  const { content, index, infoDers, setInfoDers } = props;
+  const [contentState, setContentState] = useState(null);
+  const [activarMensaje, setActivarMensaje] = useState(false);
+  let copiaInfoDers = infoDers;
 
   const onContentStateChange = (content) => {
     setContentState(content);
-    infoDers[index].description = content;
-    guardarEnJson(infoDers);
+  };
+
+  useEffect(() => {
+    setInterval(handleClose, 5000);
+  }, []);
+
+  const onBlur = async () => {
+    copiaInfoDers[index].description = contentState; // guarda la nueva información
+
+    // Guarda la información Actualizada en el estado InfoDers del componente Ders.
+    await setInfoDers(copiaInfoDers);
+
+    // Guarda la información Actualizada en la variable ders en el localStorage.
+    localStorage.setItem("ders", JSON.stringify(copiaInfoDers));
+    // activa el mensaje de guardado
+    setActivarMensaje(true);
+  };
+
+  const handleClose = () => {
+    setActivarMensaje(false);
   };
 
   return (
@@ -24,35 +56,35 @@ const EditorConvertToJSON = (props) => {
         toolbarClassName="toolbar-class"
         initialContentState={content}
         onContentStateChange={onContentStateChange}
+        onBlur={onBlur}
       />
-      {/*<textarea disabled value={JSON.stringify(contentState, null, 4)} />*/}
+      {activarMensaje ? (
+        <div
+          style={{
+            width: 200,
+            height: 10,
+            marginLeft: "80%",
+            display: "flex",
+            alignSelf: "flex-end",
+            flexWrap: "wrap",
+          }}
+        >
+          <Alert onClose={handleClose} severity="success">
+            Guardado!!
+          </Alert>
+        </div>
+      ) : (
+        <div />
+      )}
     </div>
   );
 };
 
-EditorConvertToJSON.propTypes = {};
-
-export default EditorConvertToJSON;
-
-const contentDefault = {
-  entityMap: {},
-  blocks: [
-    {
-      key: "637gr",
-      text: "Initialized from content state.",
-      type: "unstyled",
-      depth: 0,
-      inlineStyleRanges: [],
-      entityRanges: [],
-      data: {},
-    },
-  ],
+EditorConvertToJSON.propTypes = {
+  content: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  infoDers: PropTypes.array.isRequired,
+  setInfoDers: PropTypes.func.isRequired,
 };
 
-function guardarEnJson(infoDers) {
-  fetch("/InformacionDers.json")
-    .then((response) => response.json())
-    .then((datos) => {
-      datos.data = infoDers;
-    });
-}
+export default EditorConvertToJSON;
