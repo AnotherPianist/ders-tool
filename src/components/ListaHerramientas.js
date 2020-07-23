@@ -10,7 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import DescriptionIcon from '@material-ui/icons/Description';
 import PersonIcon from '@material-ui/icons/Person';
 import AssessmentIcon from '@material-ui/icons/Assessment';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {

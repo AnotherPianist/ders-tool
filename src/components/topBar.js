@@ -35,16 +35,13 @@ export default function TopBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <TextField defaultValue="Nuevo Proyecto" />
+          <TextField placeholder="Nombre Proyecto" />
           </Toolbar>
           <Grid>
             <Grid item>
               <div className="Tools">
-                <Button onClick={handleMenu}>
-                  Archivo
-                </Button>
-                <Menu
-                  id="menu-appbar"
+                <Button onClick={handleMenu}>Archivo</Button>
+                <Menu id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     vertical: 'top',
