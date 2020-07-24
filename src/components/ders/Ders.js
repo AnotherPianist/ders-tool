@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import EditorConvertToJSON from "./EditorConvertToJSON.js";
 import { Container, Typography, makeStyles } from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import draftToHtml from 'draftjs-to-html';
+import jsPDF from 'jspdf';
 
 /*function useInformacionDers() {
   useEffect(() => {
@@ -13,6 +16,22 @@ import { Container, Typography, makeStyles } from "@material-ui/core";
 
   return infoDers;
 }*/
+
+function toPDF()
+{
+  
+  var data = JSON.parse(localStorage.getItem("ders"));
+  var htmlContent = "";
+  for(var i = 0; i< data.length; i++)
+    htmlContent += "<div> <h1>" + data[i].title + "</h1>" + draftToHtml(data[i].description) + "</div>";
+  var doc = new jsPDF("p", "mm", "a4", true, "smart");
+  doc.fromHTML(htmlContent, 15, 15, {
+      'width': 170,
+  });
+
+  doc.save("DERS.pdf");
+  console.log(htmlContent);
+}
 
 const Ders = (props) => {
   const { datosPreCargados } = props;
@@ -36,7 +55,11 @@ const Ders = (props) => {
         paddingBlockEnd: 50,
       }}
     >
-      <h1>Documento DERS</h1>
+      <div>
+        <h1>Documento DERS</h1>
+        <Button variant="outlined" onClick={toPDF}>Descargar como PDF</Button>
+      </div>
+      
       <div className={useStyles.root}>
         {infoDers.map((info, index) => (
           <Container
