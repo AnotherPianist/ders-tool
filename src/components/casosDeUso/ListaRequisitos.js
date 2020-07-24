@@ -20,10 +20,10 @@ const useStyles = makeStyles((theme) => ({
 function renderRow(props) {
   const { index, style } = props;
   let { text } = props;
-  text = "Poder dibujar cualquier cosa en el canvas es dificil";
+  text = "Requisito de sistema funcional para ser agregado en el canvas";
   return (
     <ListItem button style={style} key={index}>
-      <ListItemText primary={`RU ${index + 1}: ${text}`} />
+      <ListItemText primary={`RS ${index + 1}: ${text}`} />
     </ListItem>
   );
 }

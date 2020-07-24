@@ -6,7 +6,7 @@ import Canvas from "./Canvas";
 
 /*
 Este componente es la pantalla de casos de uso.
-Renderiza la barra de herramientas de la pantalla de casos de uso y el canvas
+Renderiza el canvas y la barra lateral de herramientas en la pantalla de casos de uso
 */
 class CasoDeUso extends Component {
   render() {
@@ -15,7 +15,7 @@ class CasoDeUso extends Component {
         <Grid p={2} item xs={6}>
           <BarraHerramientaCasosDeUso></BarraHerramientaCasosDeUso>
         </Grid>
-        <Grid item xs={18} backgroundColor="red">
+        <Grid item xs={18}>
           <Canvas></Canvas>
         </Grid>
       </Grid>
