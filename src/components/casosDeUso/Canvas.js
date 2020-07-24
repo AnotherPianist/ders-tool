@@ -2,7 +2,11 @@ import React, { Component } from "react";
 
 class Canvas extends Component {
   render() {
-    return <h1>Canvas</h1>;
+    return (
+      <div>
+        <h1>Canvas</h1>
+      </div>
+    );
   }
 }
 
