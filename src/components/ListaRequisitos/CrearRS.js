@@ -1,12 +1,13 @@
 import React from 'react';
 import { Grid, TextField, Select, MenuItem } from '@material-ui/core';
+import { throwStatement } from '@babel/types';
 
-class CrearRU extends React.Component {
+class CrearRS extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       nombre: "",
-      tipo: "Funcional"
+      tipo: "Funcional",
     }
     this.onChangeNombre = this.onChangeNombre.bind(this);
     this.onChangeTipo = this.onChangeTipo.bind(this);
@@ -23,8 +24,8 @@ class CrearRU extends React.Component {
 
   crearReq(e) {
     if (e.key === "Enter") {
-      this.props.crearRequisito(this.state.nombre, this.state.tipo);
-      e.target.value = "";
+        this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU);
+        e.target.value = "";
     }
   }
 
@@ -47,4 +48,4 @@ class CrearRU extends React.Component {
   }
 }
 
-export default CrearRU;
+export default CrearRS;

@@ -9,7 +9,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
 import TopBar from './components/topBar.jsx';
-import ListaRequisitos from './components/ListaRequisitos';
+import ListaRequisitos from './components/ListaRequisitos/ListaRequisitos';
 import { Switch, Route } from 'react-router-dom';
 
 const drawerWidth = 240;
