@@ -9,6 +9,11 @@ class RequisitoSistema extends React.Component {
         nombre: this.props.nombre,
         tipo: this.props.tipo,
     };
+    this.eliminarReq = this.eliminarReq.bind(this);
+  }
+  
+  eliminarReq() {
+    this.props.eliminarRequisitoSistema(this.props.id);
   }
 
   render() {

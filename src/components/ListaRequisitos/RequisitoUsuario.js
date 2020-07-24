@@ -30,7 +30,7 @@ class RequisitoUsuario extends React.Component {
   }
 
   eliminarReq() {
-    this.props.eliminarRequisito(this.props.id);
+    this.props.eliminarRequisitoUsuario(this.props.id);
   }
 
   render() {

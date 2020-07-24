@@ -35,7 +35,7 @@ class CrearRS extends React.Component {
         <Grid item xs={1}>
         </Grid>
         <Grid item xs={9}>
-          <TextField id="nombreForm" fullWidth style={{margin: "15px"}} placeholder="Nombre requisito" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
+          <TextField id="nombreForm" fullWidth style={{margin: "15px"}} placeholder="Nombre requisito sistema" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
         </Grid>
         <Grid item xs={2}>
           <Select id="tipoForm" defaultValue="Funcional" style={{margin: "15px"}} onChange={this.onChangeTipo}>
