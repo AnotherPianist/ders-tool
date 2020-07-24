@@ -1,8 +1,9 @@
 import React from 'react';
 import RequisitoUsuario from './RequisitoUsuario';
+import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
-import RequisitoSistema from './RequisitoSistema';
+import { Container, Typography } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class ListaRequisitos extends React.Component {
       contadorRS: 0
     };
     this.crearRequisitoUsuario = this.crearRequisitoUsuario.bind(this);
-    this.actualizarRequisito = this.actualizarRequisito.bind(this);
+    this.actualizarRequisitoUsuario = this.actualizarRequisitoUsuario.bind(this);
     this.eliminarRequisitoUsuario = this.eliminarRequisitoUsuario.bind(this);
     this.eliminarRequisitoSistema = this.eliminarRequisitoSistema.bind(this);
     this.crearRequisitoSistema = this.crearRequisitoSistema.bind(this);
@@ -39,10 +40,10 @@ class ListaRequisitos extends React.Component {
   crearRequisitoSistema(n, t, r){
     let nuevoRequisito = {
       key: this.state.contadorRS,
+      refRU: r,
       id: this.state.requisitosSistema.length + 1,
       nombre: n,
-      tipo: t,
-      refRU: r
+      tipo: t
     };
     const listaReq = this.state.requisitosSistema.slice();
     listaReq.push(nuevoRequisito);
@@ -52,7 +53,7 @@ class ListaRequisitos extends React.Component {
     });
   }
 
-  actualizarRequisito(id, n, t) {
+  actualizarRequisitoUsuario(id, n, t) {
     const listaReq = this.state.requisitosUsuario.slice();
     for (const requisito of listaReq) {
       if (requisito.id === id) {
@@ -70,16 +71,14 @@ class ListaRequisitos extends React.Component {
       if (requisito.id !== id) {
         const req = {
           key: requisito.key,
-          id: i,
+          id: i++,
           nombre: requisito.nombre,
           tipo: requisito.tipo
         };
-        i = i+1;
         listaReq.push(req);
       }
-      if(requisito.id === id){
+      else
         this.eliminarRequisitosSistemaRU(requisito.id);
-      }
     }
     this.setState({requisitosUsuario: listaReq});
   }
@@ -91,12 +90,11 @@ class ListaRequisitos extends React.Component {
       if (requisito.id !== id) {
         const req = {
           key: requisito.key,
-          id: i,
+          id: i++,
           nombre: requisito.nombre,
           tipo: requisito.tipo,
           refRU: requisito.refRU
         };
-        i = i+1;
         listaReq.push(req);
       }
     }
@@ -105,9 +103,9 @@ class ListaRequisitos extends React.Component {
  
   getRequisitosSistema(idRU){
     const reqsSistema = this.state.requisitosSistema.map((req) => {
-      if(req.refRU === idRU){
+      if (req.refRU === idRU)
         return <RequisitoSistema key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} eliminarRequisitoSistema={this.eliminarRequisitoSistema}/>
-      }
+      return null;
     });
     return reqsSistema;
   }
@@ -119,12 +117,11 @@ class ListaRequisitos extends React.Component {
       if (requisitoSistema.refRU !== idRU) {
         const req = {
           key: requisitoSistema.key,
-          id: i,
+          id: i++,
           nombre: requisitoSistema.nombre,
           tipo: requisitoSistema.tipo,        
-          refRU: (requisitoSistema.refRU>idRU) ? requisitoSistema.refRU-1 : requisitoSistema.refRU
+          refRU: (requisitoSistema.refRU > idRU) ? requisitoSistema.refRU - 1 : requisitoSistema.refRU
         };
-        i = i+1;
         listaReq.push(req);
       }
     }
@@ -134,21 +131,21 @@ class ListaRequisitos extends React.Component {
   render() {
     const reqsUsuario = this.state.requisitosUsuario.map((req) => {
       return (
-        <div>
-          <RequisitoUsuario key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} actualizarRequisito={this.actualizarRequisito} eliminarRequisitoUsuario={this.eliminarRequisitoUsuario} />
+        <>
+          <RequisitoUsuario key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} actualizarRequisito={this.actualizarRequisitoUsuario} eliminarRequisitoUsuario={this.eliminarRequisitoUsuario} />
           {this.getRequisitosSistema(req.id)}
-          <CrearRS refRU={req.id} crearRequisitoSistema={this.crearRequisitoSistema}/>
-        </div>
+          <CrearRS key={"crear" + req.key} refRU={req.id} crearRequisitoSistema={this.crearRequisitoSistema}/>
+        </>
       );
     });
 
     return(
-      <>
+      <Container>
         <h3>-</h3>
-        <h1>Lista requisitosUsuario</h1>
+        <Typography variant="h4" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
         <CrearRU crearRequisitoUsuario={this.crearRequisitoUsuario}/>
-      </>
+      </Container>
     );
   }
 }

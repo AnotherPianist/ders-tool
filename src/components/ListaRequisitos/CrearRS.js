@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid, TextField, Select, MenuItem } from '@material-ui/core';
-import { throwStatement } from '@babel/types';
 
 class CrearRS extends React.Component {
   constructor(props) {
@@ -23,22 +22,21 @@ class CrearRS extends React.Component {
   }
 
   crearReq(e) {
-    if (e.key === "Enter") {
+  if (e.key === "Enter" && this.state.nombre.length !== 0) {
         this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU);
+        this.setState({nombre: ""});
         e.target.value = "";
     }
   }
 
   render() {
     return(
-      <Grid container>
-        <Grid item xs={1}>
+      <Grid container style={{marginLeft: "15px"}}>
+        <Grid item xs={10} style={{padding: "15px"}}>
+          <TextField id="nombreForm" fullWidth size="small" placeholder="Nombre requisito sistema" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
         </Grid>
-        <Grid item xs={9}>
-          <TextField id="nombreForm" fullWidth style={{margin: "15px"}} placeholder="Nombre requisito sistema" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
-        </Grid>
-        <Grid item xs={2}>
-          <Select id="tipoForm" defaultValue="Funcional" style={{margin: "15px"}} onChange={this.onChangeTipo}>
+        <Grid item xs={2} style={{padding: "15px"}}>
+          <Select id="tipoForm" defaultValue="Funcional" fullWidth size="small" onChange={this.onChangeTipo}>
             <MenuItem value="Funcional">Funcional</MenuItem>
             <MenuItem value="No Funcional">No Funcional</MenuItem>
           </Select>
