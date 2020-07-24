@@ -12,6 +12,7 @@ import TopBar from "./components/topBar.js";
 import { Switch, Route } from "react-router-dom";
 import CasoDeUso from "./components/casosDeUso/CasoDeUso.js";
 
+
 const drawerWidth = 240;
 
 const styles = (theme) => ({
@@ -161,7 +162,9 @@ class App extends React.Component {
               {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
-            <Route path="/tablas">
+
+              <Route path="/tablas">
+
               {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
               <div>
                 <p>Tablas</p>

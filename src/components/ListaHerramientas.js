@@ -106,7 +106,7 @@ export default withRouter(props => {
                         <ListItemIcon className={classes.white}>
                             {/* Icono */}
                         </ListItemIcon>
-                        <ListItemText primary="Placeholder" />
+                        <ListItemText primary="Casos de Uso" />
                     </ListItem>
                     {/* Más ListItems */}
                 </List>
