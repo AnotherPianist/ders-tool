@@ -8,7 +8,7 @@ import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider';
 import ListaHerramientas from './components/ListaHerramientas.js';
-import Canvas from './components/Canvas.js';
+import Canvas from './components/casosDeUso/Canvas.js';
 import TopBar from './components/topBar.jsx';
 import { Switch, Route } from 'react-router-dom';
 
