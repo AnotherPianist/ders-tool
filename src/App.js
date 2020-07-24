@@ -163,11 +163,11 @@ class App extends React.Component {
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
 
-              <Route path="/tablas">
+              <Route path="/casos">
 
               {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
               <div>
-                <p>Tablas</p>
+                <p>casos de uso</p>
               </div>{" "}
               {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}

@@ -102,7 +102,7 @@ export default withRouter(props => {
             <Collapse in={openMenu3} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     {/* Ojo: la función onClick siguiente indica como debe hacerse el routing. El string debe ser igual que la de route en app.js*/}
-                    <ListItem button className={classes.nested} onClick={() => { props.history.push("/tablas") }}>
+                    <ListItem button className={classes.nested} onClick={() => { props.history.push("/casos") }}>
                         <ListItemIcon className={classes.white}>
                             {/* Icono */}
                         </ListItemIcon>
