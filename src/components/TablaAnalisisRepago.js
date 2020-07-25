@@ -139,6 +139,8 @@ export default function TablaAnalisisRepago() {
       } else {
         console.log("Ingresaste un porcentaje invalido");
       }
+      
+      console.log(columnas);
     });
   }
 
