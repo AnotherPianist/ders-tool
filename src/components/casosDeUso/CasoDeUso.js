@@ -19,7 +19,8 @@ class CasoDeUso extends Component {
           id: 1,
           x: 100,
           y: 100,
-          name: "hola como estasdf",
+          name:
+            "hola como estas hola como estas hola como estas hola como estas hola como estas hola como estas hola como estas hola como estas",
           alto: 100,
           ancho: 100,
         },
@@ -27,7 +28,8 @@ class CasoDeUso extends Component {
           id: 5,
           x: 200,
           y: 200,
-          name: "hola comos estas",
+          name:
+            "hola comos estas hola como estas hola como estas hola como estas ",
           alto: 100,
           ancho: 100,
         },
@@ -35,7 +37,7 @@ class CasoDeUso extends Component {
           id: 7,
           x: 300,
           y: 300,
-          name: "hola como estas",
+          name: "h",
           alto: 100,
           ancho: 100,
         },
@@ -50,17 +52,17 @@ class CasoDeUso extends Component {
   };
   //funcion que actualiza las coordenadas
   actualizarCoordenadas = (e) => {
-    {
-      //actualizacion de coordenadas en la lista de figuras
-      for (let index = 0; index < this.state.figuras.length; index++) {
-        if (this.state.figuras[index].id == e.currentTarget.attrs.id) {
-          //actualizacion de datos en lista figuras
-          var figuras = this.state.figuras;
-          figuras[index].x = e.currentTarget.attrs.x;
-          figuras[index].y = e.currentTarget.attrs.y;
-          this.setState({ figuras: figuras });
-        }
+    //actualizacion de coordenadas en la lista de figuras
+    for (let index = 0; index < this.state.figuras.length; index++) {
+      if (this.state.figuras[index].id == e.currentTarget.attrs.id) {
+        //actualizacion de datos en lista figuras
+        var figuras = this.state.figuras;
+        figuras[index].x = e.currentTarget.attrs.x;
+        figuras[index].y = e.currentTarget.attrs.y;
+        figuras[index].ancho = e.target.children[0].textWidth;
+        this.setState({ figuras: figuras });
       }
+
       console.log(this.state.figuras);
     }
   };

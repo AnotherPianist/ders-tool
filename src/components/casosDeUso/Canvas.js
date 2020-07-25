@@ -1,5 +1,6 @@
 import React from "react";
 import { Stage, Layer, Star, Text, Line, Ellipse } from "react-konva";
+import calculateSize from "calculate-size";
 import Konva from "konva";
 import { render } from "react-dom";
 import { Button } from "@material-ui/core";
@@ -26,6 +27,20 @@ class Canvas extends React.Component {
       resetClick: false,
     };
   }
+  componentDidMount() {
+    let figuras = this.props.figuras;
+    let ancho;
+
+    this.props.figuras.forEach((e) => {
+      ancho = calculateSize(e.name, {
+        font: "Arial",
+        fontSize: "20px",
+      });
+      e.ancho = ancho.width;
+    });
+    this.setState({ figuras: figuras });
+  }
+
   render() {
     return (
       <div>
@@ -88,20 +103,20 @@ class Canvas extends React.Component {
               }}
             >
               <Text
-                x={150}
-                y={200}
+                x={-this.props.figuras[i].ancho / 2}
+                y={-10}
                 fontSize={20}
                 text={this.props.figuras[i].name}
                 wrap="char"
                 align="center"
               />
               <Ellipse
-                width={100}
-                height={30}
+                width={100 + this.props.figuras[i].ancho}
+                height={50}
                 stroke="black"
                 strokeWidth={1.5}
-                x={150}
-                y={200}
+                x={0}
+                y={0}
               />
             </Layer>
           ))}
