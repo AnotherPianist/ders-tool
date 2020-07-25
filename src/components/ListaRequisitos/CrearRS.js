@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Select, MenuItem } from '@material-ui/core';
+import { Grid, TextField, Select, MenuItem, Tooltip } from '@material-ui/core';
 
 class CrearRS extends React.Component {
   constructor(props) {
@@ -30,15 +30,23 @@ class CrearRS extends React.Component {
   }
 
   render() {
+    const tiposReq = this.props.tiposRequisitos.map((tipoReq) => {
+      return (   
+        <Tooltip title={tipoReq.descripcion} placement="left" value={tipoReq.nombre}>      
+          <MenuItem>{tipoReq.nombre}</MenuItem>
+        </Tooltip>
+      );
+      
+    })
+
     return(
       <Grid container style={{marginLeft: "15px"}}>
-        <Grid item xs={10} style={{padding: "15px"}}>
+        <Grid item xs={10} style={{padding: "34px"}}>
           <TextField id="nombreForm" fullWidth size="small" placeholder="Nombre requisito sistema" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
         </Grid>
         <Grid item xs={2} style={{padding: "15px"}}>
           <Select id="tipoForm" defaultValue="Funcional" fullWidth size="small" onChange={this.onChangeTipo}>
-            <MenuItem value="Funcional">Funcional</MenuItem>
-            <MenuItem value="No Funcional">No Funcional</MenuItem>
+            {tiposReq}
           </Select>
         </Grid>
       </Grid>

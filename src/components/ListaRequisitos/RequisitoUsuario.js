@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Select, MenuItem, IconButton, Paper } from '@material-ui/core';
+import { Grid, TextField, Select, MenuItem, IconButton, Paper, Tooltip } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 class RequisitoUsuario extends React.Component {
@@ -34,6 +34,15 @@ class RequisitoUsuario extends React.Component {
   }
 
   render() {
+    const tiposReq = this.props.tiposRequisitos.map((tipoReq) => {
+      return (   
+        <Tooltip title={tipoReq.descripcion} placement="left" value={tipoReq.nombre}>      
+          <MenuItem>{tipoReq.nombre}</MenuItem>
+        </Tooltip>
+      );
+      
+    })
+
     return(
       <Grid container component={Paper}>
         <Grid item xs={1} style={{padding: "15px"}}>
@@ -42,10 +51,9 @@ class RequisitoUsuario extends React.Component {
         <Grid item xs={8} style={{padding: "15px"}}>
           <TextField fullWidth defaultValue={this.props.nombre} onChange={this.onChangeNombre}/>
         </Grid>
-        <Grid item xs={2} style={{padding: "15px"}}>
+        <Grid item xs={2}>
           <Select defaultValue={this.props.tipo} fullWidth onChange={this.onChangeTipo}>
-            <MenuItem value="Funcional">Funcional</MenuItem>
-            <MenuItem value="No Funcional">No Funcional</MenuItem>
+            {tiposReq}
           </Select>
         </Grid>
         <Grid item xs={1} style={{paddingTop: "8px", paddingLeft: "1rem"}} >

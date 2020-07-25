@@ -11,6 +11,18 @@ class ListaRequisitos extends React.Component {
     this.state = {
       requisitosUsuario: [],
       requisitosSistema: [],
+      tiposRequisitos: [
+        {
+          id: 0,
+          nombre: "Funcional",
+          descripcion: "Define una función del sistema"
+        },
+        {
+          id: 1,
+          nombre: "No Funcional",
+          descripcion: "Define una característica del sistema"
+        }
+      ],
       contadorRU: 0,
       contadorRS: 0
     };
@@ -104,7 +116,7 @@ class ListaRequisitos extends React.Component {
   getRequisitosSistema(idRU){
     const reqsSistema = this.state.requisitosSistema.map((req) => {
       if (req.refRU === idRU)
-        return <RequisitoSistema key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} eliminarRequisitoSistema={this.eliminarRequisitoSistema}/>
+        return <RequisitoSistema key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} eliminarRequisitoSistema={this.eliminarRequisitoSistema} tiposRequisitos={this.state.tiposRequisitos}/>
       return null;
     });
     return reqsSistema;
@@ -132,9 +144,9 @@ class ListaRequisitos extends React.Component {
     const reqsUsuario = this.state.requisitosUsuario.map((req) => {
       return (
         <>
-          <RequisitoUsuario key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} actualizarRequisito={this.actualizarRequisitoUsuario} eliminarRequisitoUsuario={this.eliminarRequisitoUsuario} />
+          <RequisitoUsuario key={req.key} id={req.id} nombre={req.nombre} tipo={req.tipo} actualizarRequisito={this.actualizarRequisitoUsuario} eliminarRequisitoUsuario={this.eliminarRequisitoUsuario} tiposRequisitos={this.state.tiposRequisitos}/>
           {this.getRequisitosSistema(req.id)}
-          <CrearRS key={"crear" + req.key} refRU={req.id} crearRequisitoSistema={this.crearRequisitoSistema}/>
+          <CrearRS key={"crear" + req.key} refRU={req.id} crearRequisitoSistema={this.crearRequisitoSistema} tiposRequisitos={this.state.tiposRequisitos}/>
         </>
       );
     });
@@ -144,7 +156,7 @@ class ListaRequisitos extends React.Component {
         <h3>-</h3>
         <Typography variant="h4" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
-        <CrearRU crearRequisitoUsuario={this.crearRequisitoUsuario}/>
+        <CrearRU crearRequisitoUsuario={this.crearRequisitoUsuario} tiposRequisitos={this.state.tiposRequisitos}/>
       </Container>
     );
   }

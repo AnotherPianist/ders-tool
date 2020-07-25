@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Select, MenuItem } from '@material-ui/core';
+import { Grid, TextField, Select, MenuItem, Tooltip } from '@material-ui/core';
 
 class CrearRU extends React.Component {
   constructor(props) {
@@ -30,16 +30,24 @@ class CrearRU extends React.Component {
   }
 
   render() {
+    const tiposReq = this.props.tiposRequisitos.map((tipoReq) => {
+      return (   
+        <Tooltip title={tipoReq.descripcion} placement="left" value={tipoReq.nombre}>      
+          <MenuItem>{tipoReq.nombre}</MenuItem>
+        </Tooltip>
+      );
+      
+    })
+
     return(
       <Grid container>
-        <Grid item xs={10} style={{padding: "15px"}}>
+        <Grid item xs={10} style={{padding: "16px"}}>
           <TextField id="nombreForm" fullWidth placeholder="Nombre requisito usuario" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
         </Grid>
-        <Grid item xs={2} style={{padding: "15px"}}>
-          <Select id="tipoForm" defaultValue="Funcional" fullWidth onChange={this.onChangeTipo}>
-            <MenuItem value="Funcional">Funcional</MenuItem>
-            <MenuItem value="No Funcional">No Funcional</MenuItem>
-          </Select>
+        <Grid item xs={2} >    
+            <Select id="tipoForm" defaultValue="Funcional" fullWidth onChange={this.onChangeTipo}>
+              {tiposReq}
+            </Select>
         </Grid>
       </Grid>
     );
