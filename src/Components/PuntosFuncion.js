@@ -63,6 +63,19 @@ class PuntosFuncion extends React.Component {
         this.setState({ consultas: valoresConsulta });
         this.updateTotal(valoresConsulta[4], "Consultas");
     }
+    updateIe(e) {
+        const valoresIe = this.state.ie.slice();
+        if (e.target.id === "i-S")
+            valoresIe[1] = parseInt(e.target.value);
+        else if (e.target.id === "i-M")
+            valoresIe[2] = parseInt(e.target.value);
+        else if (e.target.id === "i-Co")
+            valoresIe[3] = parseInt(e.target.value);
+        valoresIe[0] = valoresIe[1] + valoresIe[2] + valoresIe[3];
+        valoresIe[4] = valoresIe[1] * 3 + valoresIe[2] * 7 + valoresIe[3] * 15;
+        this.setState({ ie: valoresIe });
+        this.updateTotal(valoresIe[4], "Ie");
+    }
 
     updateAli(e) {
         const valoresAli = this.state.ali.slice();
@@ -102,11 +115,7 @@ class PuntosFuncion extends React.Component {
         console.log(this.state.total);
     }
 
-    updateIe(e) {
-        const valoresIe = this.state.ie.slice();
-        this.updateTotal(valoresIe[4], "Ie");
-    }
-
+    
     render() {
         return (
 
@@ -151,20 +160,20 @@ class PuntosFuncion extends React.Component {
                                 <TableCell align="right"><TextField id="c-T" type="number" inputProps={{ min: "0" }} value={this.state.consultas[4]} /></TableCell>
                             </TableRow>
                             <TableRow>
+                                <TableCell>Interfaces Externas</TableCell>
+                                <TableCell align="right"><TextField id="i-Ca" type="number" inputProps={{ min: "0" }} value={this.state.ie[0]} /></TableCell>
+                                <TableCell align="right"><TextField id="i-S" type="number" inputProps={{ min: "0" }} onChange={this.updateIe} defaultValue={0} /></TableCell>
+                                <TableCell align="right"><TextField id="i-M" type="number" inputProps={{ min: "0" }} onChange={this.updateIe} defaultValue={0} /></TableCell>
+                                <TableCell align="right"><TextField id="i-Co" type="number" inputProps={{ min: "0" }} onChange={this.updateIe} defaultValue={0} /></TableCell>
+                                <TableCell align="right"><TextField id="i-T" type="number" inputProps={{ min: "0" }} value={this.state.ie[4]} /></TableCell>
+                            </TableRow>
+                            <TableRow>
                                 <TableCell>Archivos Lógicos Internos</TableCell>
                                 <TableCell align="right"><TextField id="a-Ca" type="number" inputProps={{ min: "0" }} value={this.state.ali[0]} /></TableCell>
                                 <TableCell align="right"><TextField id="a-S" type="number" inputProps={{ min: "0" }} onChange={this.updateAli} defaultValue={0} /></TableCell>
                                 <TableCell align="right"><TextField id="a-M" type="number" inputProps={{ min: "0" }} onChange={this.updateAli} defaultValue={0} /></TableCell>
                                 <TableCell align="right"><TextField id="a-Co" type="number" inputProps={{ min: "0" }} onChange={this.updateAli} defaultValue={0} /></TableCell>
                                 <TableCell align="right"><TextField id="a-T" type="number" inputProps={{ min: "0" }} value={this.state.ali[4]} /></TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell>Interfaces Externas</TableCell>
-                                <TableCell align="right"></TableCell>
-                                <TableCell align="right"></TableCell>
-                                <TableCell align="right"></TableCell>
-                                <TableCell align="right"></TableCell>
-                                <TableCell align="right"></TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell></TableCell>
