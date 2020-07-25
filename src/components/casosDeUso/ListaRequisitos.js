@@ -11,8 +11,8 @@ para ser representados como casos de uso*/
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    height: 300,
-    maxWidth: 200,
+    height: "100%",
+    maxWidth: 235,
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -38,7 +38,7 @@ export default function ListaRequisitos(prop) {
 
   return (
     <div className={classes.root}>
-      <FixedSizeList height={300} width={200} itemSize={100} itemCount={20}>
+      <FixedSizeList height={300} width={235} itemSize={100} itemCount={20}>
         {renderRow}
       </FixedSizeList>
     </div>

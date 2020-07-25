@@ -54,7 +54,7 @@ class CasoDeUso extends Component {
   actualizarCoordenadas = (e) => {
     //actualizacion de coordenadas en la lista de figuras
     for (let index = 0; index < this.state.figuras.length; index++) {
-      if (this.state.figuras[index].id == e.currentTarget.attrs.id) {
+      if (this.state.figuras[index].id === e.currentTarget.attrs.id) {
         //actualizacion de datos en lista figuras
         var figuras = this.state.figuras;
         figuras[index].x = e.currentTarget.attrs.x;
@@ -75,8 +75,9 @@ class CasoDeUso extends Component {
             botonRequisitos={this.botonRequisitos}
           />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9} borderLeft={1}>
           <Canvas
+            bgcolor="blue"
             figuras={this.state.figuras}
             actualizarCoordenadas={this.actualizarCoordenadas}
           />

@@ -1,8 +1,6 @@
 import React from "react";
-import { Stage, Layer, Star, Text, Line, Ellipse } from "react-konva";
+import { Stage, Layer, Text, Line, Ellipse } from "react-konva";
 import calculateSize from "calculate-size";
-import Konva from "konva";
-import { render } from "react-dom";
 import { Button } from "@material-ui/core";
 
 class Canvas extends React.Component {
@@ -46,7 +44,9 @@ class Canvas extends React.Component {
       <div>
         <Button
           onClick={() => {
-            this.state.linea = !this.state.linea;
+            let { linea } = this.state;
+            linea = !linea;
+            this.setState({ linea });
             console.log(this.state.linea);
           }}
           color="primary"

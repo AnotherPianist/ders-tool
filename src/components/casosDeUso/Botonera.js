@@ -9,14 +9,17 @@ que se pueden dibujar en el canvas
 class Botonera extends Component {
   render() {
     return (
-      <Box p={5} mx="auto">
+      <Box pt={5} pl={0} mx="auto">
         <ButtonGroup
           orientation="vertical"
           color="primary"
           aria-label="vertical primary button group"
         >
           <Button>Actor</Button>
-          <Button>Asociación</Button>
+          <Button>Asociación Dirigida</Button>
+          <Button>Asociación No Dirigida</Button>
+          <Button>Generalización</Button>
+          <Button>Dependencia</Button>
           <Button>Extends</Button>
           <Button>Include</Button>
         </ButtonGroup>
