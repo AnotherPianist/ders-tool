@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -101,33 +101,43 @@ export default function TablaAnalisisRepago() {
     var beneficioTotal = 0;
     newArr.map((columna) => {
       //Calculos
-      var costo =
-        parseInt(newArr[columna.id].valores[1]) +
-        parseInt(newArr[columna.id].valores[0]);
-      var costoAño = costo * (newArr[columna.id].valores[2] / 100) + costo;
-      var beneficio = parseInt(newArr[columna.id].valores[5]);
-      var beneficioAño =
-        parseInt(beneficio) -
-        parseInt(beneficio) * (newArr[columna.id].valores[6] / 100);
-      costeTotal += costoAño;
-      beneficioTotal += parseInt(beneficioAño);
-      //Verificar que sean valores validos para hacer los cambios en la tabla
+      const ajusteCosto = newArr[columna.id].valores[2];
+      const ajusteBeneficio = newArr[columna.id].valores[6];
       if (
-        !isNaN(costeTotal) &&
-        !isNaN(costoAño) &&
-        !isNaN(beneficioTotal) &&
-        !isNaN(beneficioAño)
+        ajusteCosto >= 0 &&
+        ajusteCosto <= 100 &&
+        ajusteBeneficio >= 0 &&
+        ajusteBeneficio <= 100
       ) {
-        newArr[columna.id].valores[3] = costoAño;
-        newArr[columna.id].valores[4] = costeTotal;
-        newArr[columna.id].valores[7] = beneficioAño;
-        newArr[columna.id].valores[8] = beneficioTotal;
-        newArr[columna.id].valores[9] = beneficioTotal - costeTotal;
-        setColumnas(newArr);
+        var costo =
+          parseInt(newArr[columna.id].valores[1]) +
+          parseInt(newArr[columna.id].valores[0]);
+        var costoAño = costo * (ajusteCosto / 100) + costo;
+        var beneficio = parseInt(newArr[columna.id].valores[5]);
+        var beneficioAño =
+          parseInt(beneficio) - parseInt(beneficio) * (ajusteBeneficio / 100);
+        costeTotal += costoAño;
+        beneficioTotal += parseInt(beneficioAño);
+        //Verificar que sean valores validos para hacer los cambios en la tabla
+        if (
+          !isNaN(costeTotal) &&
+          !isNaN(costoAño) &&
+          !isNaN(beneficioTotal) &&
+          !isNaN(beneficioAño)
+        ) {
+          newArr[columna.id].valores[3] = costoAño;
+          newArr[columna.id].valores[4] = costeTotal;
+          newArr[columna.id].valores[7] = beneficioAño;
+          newArr[columna.id].valores[8] = beneficioTotal;
+          newArr[columna.id].valores[9] = beneficioTotal - costeTotal;
+          setColumnas(newArr);
+        } else {
+          console.log(
+            "Hubo un error, posiblemente no hayan valores en las celdas de las columnas anteriores o ingresaste un valor invalido"
+          );
+        }
       } else {
-        console.log(
-          "Hubo un error, posiblemente no hayan valores en las celdas de las columnas anteriores o ingresaste un valor invalido"
-        );
+        console.log("Ingresaste un porcentaje invalido");
       }
     });
   }
@@ -140,21 +150,27 @@ export default function TablaAnalisisRepago() {
     setColumnas(newState);
   };
 
+  /**
+   * Elimina la ultima columna de la tabla, debe por lo menos estar siempre el año 0
+   */
+  const eliminarColumna = () => {
+    if (id > 0) {
+      id = id - 1;
+      let newState = [...columnas];
+      newState.pop();
+      setColumnas(newState);
+    } else {
+      console.log("Debe haber por lo menos 1 año en la tabla");
+    }
+  };
+
   return (
     <Paper className={classes.root} key="Paper">
       <TableContainer className={classes.container} key="Contenedor">
         <Table stickyHeader aria-label="sticky table" key="Tabla">
           <TableHead>
             <TableRow>
-              <StyledTableCell>
-                <IconButton aria-label="add" onClick={agregarColumna}>
-                  <AddIcon />
-                </IconButton>
-                <IconButton aria-label="remove" onClick={agregarColumna}>
-                  <RemoveIcon />
-                </IconButton>
-                Elemento
-              </StyledTableCell>
+              <StyledTableCell>Elemento</StyledTableCell>
               {columnas.map((columna) => (
                 <StyledTableCell
                   key={columna.id}
@@ -164,6 +180,12 @@ export default function TablaAnalisisRepago() {
                   {columna.texto}
                 </StyledTableCell>
               ))}
+              <IconButton aria-label="add" onClick={agregarColumna}>
+                <AddIcon />
+              </IconButton>
+              <IconButton aria-label="remove" onClick={eliminarColumna}>
+                <RemoveIcon />
+              </IconButton>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -183,10 +205,7 @@ export default function TablaAnalisisRepago() {
                               parseInt(e.target.value) < 0 ||
                               isNaN(e.target.value)
                             ) {
-                              let newArr = columnas;
-                              newArr[columna.id].valores[index] =
-                                e.target.value;
-                              setColumnas(newArr);
+                              console.log("El valor ingresado no es valido");
                             } else {
                               let newArr = columnas;
                               newArr[columna.id].valores[index] =
