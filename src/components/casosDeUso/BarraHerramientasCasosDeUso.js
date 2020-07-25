@@ -14,7 +14,7 @@ class BarraHerramientasCasosDeUso extends Component {
         <Box mx="auto" p={1.5} pt={0}>
           REQUISITOS FUNCIONALES
         </Box>
-        <ListaRequisitos />
+        <ListaRequisitos requisitos={this.props.requistos} />
         <Botonera />
       </Box>
     );
