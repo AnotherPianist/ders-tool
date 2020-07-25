@@ -8,11 +8,6 @@ class RequisitoSistema extends React.Component {
     this.state = {
         nombre: this.props.nombre,
         tipo: this.props.tipo,
-        tipoRequisito: {
-          id: 0,
-          nombre: "",
-          descripcion: ""
-        }
     };
     this.eliminarReq = this.eliminarReq.bind(this);
   }
