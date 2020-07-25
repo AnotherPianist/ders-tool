@@ -33,7 +33,7 @@ renderRow.propTypes = {
   style: PropTypes.object.isRequired,
 };
 
-export default function ListaRequisitos() {
+export default function ListaRequisitos(prop) {
   const classes = useStyles();
 
   return (
