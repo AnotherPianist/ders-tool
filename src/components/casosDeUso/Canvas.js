@@ -67,8 +67,8 @@ class Canvas extends React.Component {
                 if (this.state.linea) {
                   if (this.state.nroClick === 0) {
                     let array = this.state.posLinea;
-                    array[0].x = e.currentTarget.attrs.x + 150;
-                    array[0].y = e.currentTarget.attrs.y + 200;
+                    array[0].x = e.currentTarget.attrs.x;
+                    array[0].y = e.currentTarget.attrs.y;
                     array[1].x = array[0].x;
                     array[1].y = array[0].y;
                     this.setState({ posLinea: array });
@@ -77,8 +77,8 @@ class Canvas extends React.Component {
                     let array = this.state.posLinea;
                     array[1].x = this.state.posLinea[1].x;
                     array[1].y = this.state.posLinea[1].y;
-                    array[0].x = e.currentTarget.attrs.x + 150;
-                    array[0].y = e.currentTarget.attrs.y + 200;
+                    array[0].x = e.currentTarget.attrs.x;
+                    array[0].y = e.currentTarget.attrs.y;
                     this.setState({ posLinea: array });
                     this.setState({ resetClick: true });
                   }
