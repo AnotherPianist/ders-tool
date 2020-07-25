@@ -39,6 +39,33 @@ class Canvas extends React.Component {
     this.setState({ figuras: figuras });
   }
 
+  dibujarTexto = (i) => {
+    return (
+      <Text
+        x={-this.props.figuras[i].ancho / 2}
+        y={-10}
+        fontSize={20}
+        text={this.props.figuras[i].name}
+        wrap="char"
+        align="center"
+      />
+    );
+  };
+
+  dibujarElipse = (i) => {
+    return (
+      <Ellipse
+        width={100 + this.props.figuras[i].ancho}
+        height={50}
+        stroke="black"
+        strokeWidth={1.5}
+        x={0}
+        y={0}
+        fill="white"
+      />
+    );
+  };
+
   render() {
     return (
       <div>
@@ -55,6 +82,21 @@ class Canvas extends React.Component {
           LINEA
         </Button>
         <Stage width={window.innerWidth} height={window.innerHeight}>
+          {[...Array(this.state.flecha.length)].map((_, i) => (
+            <Layer draggable>
+              <Line
+                points={[
+                  this.state.flecha[i].x1,
+                  this.state.flecha[i].y1,
+                  this.state.flecha[i].x2,
+                  this.state.flecha[i].y2,
+                ]}
+                tension={1}
+                closed
+                stroke="black"
+              />
+            </Layer>
+          ))}
           {[...Array(this.props.figuras.length)].map((_, i) => (
             <Layer
               key={i}
@@ -102,37 +144,12 @@ class Canvas extends React.Component {
                 }
               }}
             >
-              <Text
-                x={-this.props.figuras[i].ancho / 2}
-                y={-10}
-                fontSize={20}
-                text={this.props.figuras[i].name}
-                wrap="char"
-                align="center"
-              />
-              <Ellipse
-                width={100 + this.props.figuras[i].ancho}
-                height={50}
-                stroke="black"
-                strokeWidth={1.5}
-                x={0}
-                y={0}
-              />
-            </Layer>
-          ))}
-          {[...Array(this.state.flecha.length)].map((_, i) => (
-            <Layer draggable>
-              <Line
-                points={[
-                  this.state.flecha[i].x1,
-                  this.state.flecha[i].y1,
-                  this.state.flecha[i].x2,
-                  this.state.flecha[i].y2,
-                ]}
-                tension={1}
-                closed
-                stroke="black"
-              />
+              {/* El texto se debería dibujar después de la elipse para que se 
+              muestre encima de ella, pero si no lo dibujo antes también, no funciona bien,
+              no sé por qué */}
+              {this.dibujarTexto(i)}
+              {this.dibujarElipse(i)}
+              {this.dibujarTexto(i)}
             </Layer>
           ))}
         </Stage>
@@ -140,4 +157,5 @@ class Canvas extends React.Component {
     );
   }
 }
+
 export default Canvas;
