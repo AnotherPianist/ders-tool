@@ -4,13 +4,27 @@ import Estructura from './components/estructura/Estructura.js';
 import { Switch, Route } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import Ajustes from './components/ajustes/Ajustes';
+import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       idTiposRequisitos: 0,
-      tiposRequisitos: []
+      tiposRequisitos: [
+        {
+          id: 0,
+          nombre: "Funcional",
+          descripcion: "Define una función del sistema"
+        },
+        {
+          id: 1,
+          nombre: "No Funcional",
+          descripcion: "Define una característica del sistema"
+        }
+      ],
+      requisitosUsuario: [],
+      requisitosSistema: [],
     };
   }
 
@@ -46,6 +60,14 @@ class App extends React.Component {
     this.setState({tiposRequisitos: lista});
   }
 
+  actualizarRequisitosUsuario = listaRequisitos => {
+    this.setState({requisitosUsuario: listaRequisitos});
+  }
+
+  actualizarRequisitosSistema = listaRequisitos => {
+    this.setState({requisitosSistema: listaRequisitos});
+  }
+
   render() {
     return (
       <div style={{display: "flex"}}>
@@ -60,9 +82,13 @@ class App extends React.Component {
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
             <Route path="/requisitos" >
-              {/* Acá iría el componente de requisitos, aunque no sé si eso deba ser un componente */}
-              <div><p>Requisitos</p></div> {/* Reemplazable! */}
-              {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+              <ListaRequisitos
+                actualizarRequisitosUsuario={this.actualizarRequisitosUsuario}
+                actualizarRequisitosSistema={this.actualizarRequisitosSistema}
+                requisitosUsuario={this.state.requisitosUsuario}
+                requisitosSistema={this.state.requisitosSistema}
+                tiposRequisitos={this.state.tiposRequisitos}
+              />
             </Route>
             <Route path="/tablas" >
               {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}

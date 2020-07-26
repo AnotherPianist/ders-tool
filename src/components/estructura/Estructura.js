@@ -93,7 +93,7 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Requisitos</Typography>
           <List>
-          <ListItem button className={classes.whiteIcons}>
+          <ListItem button className={classes.whiteIcons} component={Link} to="/requisitos">
               <ListItemIcon className={classes.whiteIcons}><ViewListIcon/></ListItemIcon>
               <ListItemText primary="Lista de Requisitos"/>
             </ListItem>
