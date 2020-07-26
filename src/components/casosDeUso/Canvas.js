@@ -69,6 +69,8 @@ class Canvas extends React.Component {
   render() {
     return (
       <div>
+        {/* Boton para activar-desactivar el modo linea, si linea = true 
+        la funcionalidad onClick dibuja, si es false no lo hace*/}
         <Button
           onClick={() => {
             let { linea } = this.state;
@@ -81,9 +83,12 @@ class Canvas extends React.Component {
         >
           LINEA
         </Button>
+
         <Stage width={window.innerWidth} height={window.innerHeight}>
+          {/** Ciclo para dibujar lineas */}
           {[...Array(this.state.flecha.length)].map((_, i) => (
             <Layer draggable>
+              {/** Linea individual, obtenido desde el arreglo de flechas*/}
               <Line
                 points={[
                   this.state.flecha[i].x1,
@@ -106,6 +111,10 @@ class Canvas extends React.Component {
               draggable
               onDragEnd={(e) => this.props.actualizarCoordenadas(e)}
               onClick={(e) => {
+                /* Funcion para cuando se clickea en una figura, si el modo linea esta activado (linea=true) se procesaran 2 clicks de mouse:
+                nroClick = 0 es el primer click que define el inicio de la linea,
+                nroClick = 1 es el segundo clicl que define el fin de la linea.
+                 */
                 if (this.state.linea) {
                   if (this.state.nroClick === 0) {
                     let array = this.state.posLinea;
@@ -125,7 +134,8 @@ class Canvas extends React.Component {
                     this.setState({ resetClick: true });
                   }
                   this.setState({ nroClick: this.state.nroClick + 1 });
-
+                  /**Cuando se alcanza el segundo click se resetean las variables, se desactiva del modo linea y se guarda la linea obtenida,
+                   */
                   if (this.state.resetClick) {
                     this.setState({ nroClick: 0 });
                     this.setState({ resetClick: false });
