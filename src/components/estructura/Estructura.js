@@ -26,30 +26,29 @@ class Estructura extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isDrawerOpen: false, anchorArchivo: null, anchorEditar: null };
-    this.toggleDrawer = this.toggleDrawer.bind(this);
-    this.openArchivo = this.openArchivo.bind(this);
-    this.closeArchivo = this.closeArchivo.bind(this);
-    this.openEditar = this.openEditar.bind(this);
-    this.closeEditar = this.closeEditar.bind(this);
   }
 
-  toggleDrawer() {
+  toggleDrawer = () => {
     this.setState((prevState) => ({ isDrawerOpen: !prevState.isDrawerOpen }));
   }
 
-  openArchivo(e) {
+  editarNombre = (e) => {
+    this.props.actualizarNombreProyecto(e.target.value);
+  }
+
+  openArchivo = (e) => {
     this.setState({anchorArchivo: e.currentTarget});
   }
 
-  closeArchivo() {
+  closeArchivo = () => {
     this.setState({anchorArchivo: null});
   }
 
-  openEditar(e) {
+  openEditar = (e) => {
     this.setState({anchorEditar: e.currentTarget});
   }
 
-  closeEditar() {
+  closeEditar = () => {
     this.setState({anchorEditar: null});
   }
   
@@ -63,7 +62,7 @@ class Estructura extends React.Component {
             <IconButton onClick={this.toggleDrawer} style={{padding: "1rem"}}>
               <MenuIcon/>
             </IconButton>
-            <TextField id="nombreProyecto" placeholder="Nombre del proyecto" style={{padding: "1rem"}}/>
+            <TextField id="nombreProyecto" placeholder="Nombre del proyecto" style={{padding: "1rem"}} onChange={this.editarNombre}/>
             <Button onClick={this.openArchivo} style={{padding: "1rem"}}>Archivo</Button>
             <Menu open={Boolean(this.state.anchorArchivo)} onClose={this.closeArchivo} anchorEl={this.state.anchorArchivo}>
               <MenuItem onClick={this.closeArchivo}>Abrir</MenuItem>

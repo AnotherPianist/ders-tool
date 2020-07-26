@@ -11,6 +11,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      nombreProyecto: "",
       tiposRequisitos: [
         {
           id: 0,
@@ -35,6 +36,15 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    document.title = this.state.nombreProyecto + " - Plantilla de DERS";
+  }
+
+  actualizarNombreProyecto = async nombre => {
+    await this.setState({nombreProyecto: nombre});
+    document.title = this.state.nombreProyecto + " - Plantilla de DERS";
+  }
+
   actualizarTiposRequisitos = listaTipos => {
     this.setState({tiposRequisitos: listaTipos})
   }
@@ -55,7 +65,7 @@ class App extends React.Component {
     return (
       <div style={{display: "flex"}}>
         <CssBaseline />
-        <Estructura />
+        <Estructura nombreProyecto={this.state.nombreProyecto} actualizarNombreProyecto={this.actualizarNombreProyecto}/>
         <main style={{marginTop: "4rem"}}>
           <Switch>
             {/* Ejemplos de uso de Route path: */}
