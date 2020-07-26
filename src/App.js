@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import Ajustes from './components/ajustes/Ajustes';
 import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
+import PuntosFuncion from './components/puntosFuncion/PuntosFuncion';
 
 class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,13 @@ class App extends React.Component {
       ],
       requisitosUsuario: [],
       requisitosSistema: [],
+      puntosFuncion: {
+        entradas: [0, 1, 0],
+        salidas: [0, 2, 0],
+        consultas: [0, 3, 0],
+        ie: [0, 4, 0],
+        ali: [0, 5, 0],
+      }
     };
   }
 
@@ -68,6 +76,10 @@ class App extends React.Component {
     this.setState({requisitosSistema: listaRequisitos});
   }
 
+  actualizarPuntosFuncion = pf => {
+    this.setState({puntosFuncion: pf});
+  }
+
   render() {
     return (
       <div style={{display: "flex"}}>
@@ -102,6 +114,9 @@ class App extends React.Component {
                 actualizar={this.actualizarTipo} 
                 eliminar={this.eliminarTipo} 
               />
+            </Route>
+            <Route path="/puntosFuncion">
+              <PuntosFuncion puntos={this.state.puntosFuncion} actualizar={this.actualizarPuntosFuncion}/>
             </Route>
           </Switch>
         </main>

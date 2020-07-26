@@ -113,7 +113,7 @@ class Estructura extends React.Component {
               <ListItemIcon className={classes.whiteIcons}><TuneIcon/></ListItemIcon>
               <ListItemText primary="Ajuste Ambiental"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer} component={Link} to="/puntosFuncion">
               <ListItemIcon className={classes.whiteIcons}><AssessmentIcon/></ListItemIcon>
               <ListItemText primary="Puntos de Función"/>
             </ListItem>
