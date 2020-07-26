@@ -31,7 +31,8 @@ class Canvas extends React.Component {
       <div>
         <Button
           onClick={() => {
-            this.state.linea = !this.state.linea;
+            this.setState({ linea: !this.state.linea });
+            // this.state.linea = ;
             console.log(this.state.linea);
           }}
           color="primary"

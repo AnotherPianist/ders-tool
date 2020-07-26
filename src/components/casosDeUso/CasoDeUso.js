@@ -50,19 +50,17 @@ class CasoDeUso extends Component {
   };
   //funcion que actualiza las coordenadas
   actualizarCoordenadas = (e) => {
-    {
-      //actualizacion de coordenadas en la lista de figuras
-      for (let index = 0; index < this.state.figuras.length; index++) {
-        if (this.state.figuras[index].id == e.currentTarget.attrs.id) {
-          //actualizacion de datos en lista figuras
-          var figuras = this.state.figuras;
-          figuras[index].x = e.currentTarget.attrs.x;
-          figuras[index].y = e.currentTarget.attrs.y;
-          this.setState({ figuras: figuras });
-        }
+    //actualizacion de coordenadas en la lista de figuras
+    for (let index = 0; index < this.state.figuras.length; index++) {
+      if (this.state.figuras[index].id == e.currentTarget.attrs.id) {
+        //actualizacion de datos en lista figuras
+        var figuras = this.state.figuras;
+        figuras[index].x = e.currentTarget.attrs.x;
+        figuras[index].y = e.currentTarget.attrs.y;
+        this.setState({ figuras: figuras });
       }
-      console.log(this.state.figuras);
     }
+    console.log(this.state.figuras);
   };
   render() {
     return (
