@@ -85,7 +85,7 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Documento</Typography>
           <List>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} component={Link} to="/ders" onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><DescriptionIcon/></ListItemIcon>
               <ListItemText primary="Campos de DERS"/>
             </ListItem>
@@ -93,15 +93,15 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Requisitos</Typography>
           <List>
-          <ListItem button className={classes.whiteIcons} component={Link} to="/requisitos">
+          <ListItem button className={classes.whiteIcons} component={Link} to="/requisitos" onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><ViewListIcon/></ListItemIcon>
               <ListItemText primary="Lista de Requisitos"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TableChartIcon/></ListItemIcon>
               <ListItemText primary="Tarjetas de Volere"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><AccessibilityIcon/></ListItemIcon>
               <ListItemText primary="Casos de Uso"/>
             </ListItem>
@@ -109,15 +109,15 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Cálculos</Typography>
           <List>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TuneIcon/></ListItemIcon>
               <ListItemText primary="Ajuste Ambiental"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><AssessmentIcon/></ListItemIcon>
               <ListItemText primary="Puntos de Función"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TimelineIcon/></ListItemIcon>
               <ListItemText primary="Análisis de Repago"/>
             </ListItem>
