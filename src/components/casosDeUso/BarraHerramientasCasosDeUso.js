@@ -15,7 +15,10 @@ class BarraHerramientasCasosDeUso extends Component {
           REQUISITOS FUNCIONALES
         </Box>
         <Box ml={3} mr={3}>
-          <ListaRequisitos requisitos={this.props.requistos} />
+          <ListaRequisitos
+            requisitos={this.props.requisitos}
+            onClickRequisito={this.props.onClickRequisito}
+          />
         </Box>
         <Box mt={0.5} ml={2} pl={2} mb={1} pt={0}>
           <Botonera />

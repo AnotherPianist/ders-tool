@@ -25,6 +25,7 @@ class Canvas extends React.Component {
       resetClick: false,
     };
   }
+
   componentDidMount() {
     let figuras = this.props.figuras;
     let ancho;
@@ -87,7 +88,7 @@ class Canvas extends React.Component {
         <Stage width={window.innerWidth} height={window.innerHeight}>
           {/** Ciclo para dibujar lineas */}
           {[...Array(this.state.flecha.length)].map((_, i) => (
-            <Layer draggable>
+            <Layer key={i} draggable>
               {/** Linea individual, obtenido desde el arreglo de flechas*/}
               <Line
                 points={[

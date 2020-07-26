@@ -12,44 +12,32 @@ class CasoDeUso extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      requistos: ["requisito1", "requisito2"],
+      count: 0, //número de figuras ya dibujadas
+      requisitos: [
+        "requisito1",
+        "requisito2",
+        "requisito 3",
+        "requisito 4",
+        "requisito 5",
+        "requisito 6",
+        "requisito 7",
+        "requisito 8",
+      ],
 
       figuras: [
-        {
-          id: 1,
-          x: 100,
-          y: 100,
-          name:
-            "hola como estas hola como estas hola como estas hola como estas hola como estas hola como estas hola como estas hola como estas",
-          alto: 100,
-          ancho: 100,
-        },
-        {
-          id: 5,
-          x: 200,
-          y: 200,
-          name:
-            "hola comos estas hola como estas hola como estas hola como estas ",
-          alto: 100,
-          ancho: 100,
-        },
-        {
-          id: 7,
-          x: 300,
-          y: 300,
-          name: "h",
-          alto: 100,
-          ancho: 100,
-        },
+        // {
+        //   id:,
+        //   x:,
+        //   y:,
+        //   name:,
+        //   alto:,
+        //   ancho:,
+        // },
       ],
     };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
-    this.botonRequisitos = this.botonRequisitos.bind(this);
   }
 
-  botonRequisitos = (e) => {
-    console.log("boton");
-  };
   //funcion que actualiza las coordenadas
   actualizarCoordenadas = (e) => {
     //actualizacion de coordenadas en la lista de figuras
@@ -62,21 +50,38 @@ class CasoDeUso extends Component {
         figuras[index].ancho = e.target.children[0].textWidth;
         this.setState({ figuras: figuras });
       }
-
-      console.log(this.state.figuras);
     }
-    console.log(this.state.figuras);
   };
+
+  crearFigura = (props) => {
+    const { req } = props;
+
+    let count = this.state.count;
+    const figura = {
+      id: count,
+      x: 150,
+      y: 100,
+      name: req,
+      alto: 100,
+      ancho: 100,
+    };
+    count++;
+    this.setState({ count });
+    let figuras = [...this.state.figuras];
+    figuras.push(figura);
+    this.setState({ figuras });
+  };
+
   render() {
     return (
       <Grid container>
         <Grid p={2} item xs={3}>
           <BarraHerramientaCasosDeUso
-            requisitos={this.state.requistos}
-            botonRequisitos={this.botonRequisitos}
+            requisitos={this.state.requisitos}
+            onClickRequisito={this.crearFigura}
           />
         </Grid>
-        <Grid item xs={9} borderLeft={1}>
+        <Grid item xs={9}>
           <Canvas
             bgcolor="blue"
             figuras={this.state.figuras}
