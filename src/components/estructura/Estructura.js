@@ -11,6 +11,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import TuneIcon from '@material-ui/icons/Tune';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
     drawerPaper: {
@@ -70,7 +71,7 @@ class Estructura extends React.Component {
             </Menu>
             <Button onClick={this.openEditar} style={{padding: "1rem"}}>Editar</Button>
             <Menu open={Boolean(this.state.anchorEditar)} onClose={this.closeEditar} anchorEl={this.state.anchorEditar}>
-              <MenuItem onClick={this.closeEditar}>Ajustes</MenuItem>
+              <MenuItem onClick={this.closeEditar} component={Link} to="/ajustes" >Ajustes</MenuItem>
             </Menu>
             <Button style={{padding: "1rem"}}>Previsualizar</Button>
           </Toolbar>
