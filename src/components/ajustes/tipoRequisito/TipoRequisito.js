@@ -6,27 +6,23 @@ class TipoRequisito extends React.Component {
   constructor(props) {
     super(props);
     this.state={nombre: this.props.nombre, descripcion: this.props.descripcion};
-    this.onChangeNombre = this.onChangeNombre.bind(this);
-    this.onChangeDescripcion = this.onChangeDescripcion.bind(this);
-    this.actualizarTipoReq = this.actualizarTipoReq.bind(this);
-    this.eliminarTipoReq = this.eliminarTipoReq.bind(this);
   }
 
-  onChangeNombre(e) {
+  onChangeNombre = (e) => {
     this.setState({nombre: e.target.value});
     this.actualizarTipoReq();
   }
 
-  onChangeDescripcion(e) {
+  onChangeDescripcion = (e) => {
     this.setState({descripcion: e.target.value});
     this.actualizarTipoReq();
   }
 
-  actualizarTipoReq() {
-    this.props.actualizar(this.state.id, this.state.nombre, this.state.descripcion);
+  actualizarTipoReq = () => {
+    this.props.editar(this.props.id, this.state.nombre, this.state.descripcion);
   }
 
-  eliminarTipoReq() {
+  eliminarTipoReq = () => {
     this.props.eliminar(this.props.id);
   }
 

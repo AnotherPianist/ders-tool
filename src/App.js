@@ -11,7 +11,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      idTiposRequisitos: 0,
       tiposRequisitos: [
         {
           id: 0,
@@ -27,45 +26,17 @@ class App extends React.Component {
       requisitosUsuario: [],
       requisitosSistema: [],
       puntosFuncion: {
-        entradas: [0, 1, 0],
-        salidas: [0, 2, 0],
-        consultas: [0, 3, 0],
-        ie: [0, 4, 0],
-        ali: [0, 5, 0],
+        entradas: [0, 0, 0],
+        salidas: [0, 0, 0],
+        consultas: [0, 0, 0],
+        ie: [0, 0, 0],
+        ali: [0, 0, 0],
       }
     };
   }
 
-  crearTipo = (nombre, descripcion) => {
-    let nuevoTipo = {
-      id: this.state.idTiposRequisitos,
-      nombre: nombre,
-      descripcion: descripcion
-    };
-    this.setState( prevState => ({
-      idTiposRequisitos: prevState.idTiposRequisitos + 1,
-      tiposRequisitos: [...prevState.tiposRequisitos, nuevoTipo]
-    }));
-  }
-
-  actualizarTipo = (id, nombre, descripcion) => {
-    const lista = this.state.tiposRequisitos.slice();
-    for (const tipo of lista) {
-      if (tipo.id === id) {
-        tipo.nombre = nombre;
-        tipo.descripcion = descripcion;
-      }
-    }
-    this.setState({tiposRequisitos: lista});
-  }
-
-  eliminarTipo = (id) => {
-    const lista = [];
-    for (const tipo of this.state.tiposRequisitos) {
-      if (tipo.id !== id)
-        lista.push(tipo);
-    }
-    this.setState({tiposRequisitos: lista});
+  actualizarTiposRequisitos = listaTipos => {
+    this.setState({tiposRequisitos: listaTipos})
   }
 
   actualizarRequisitosUsuario = listaRequisitos => {
@@ -95,11 +66,11 @@ class App extends React.Component {
             </Route>
             <Route path="/requisitos" >
               <ListaRequisitos
-                actualizarRequisitosUsuario={this.actualizarRequisitosUsuario}
-                actualizarRequisitosSistema={this.actualizarRequisitosSistema}
                 requisitosUsuario={this.state.requisitosUsuario}
                 requisitosSistema={this.state.requisitosSistema}
                 tiposRequisitos={this.state.tiposRequisitos}
+                actualizarRequisitosUsuario={this.actualizarRequisitosUsuario}
+                actualizarRequisitosSistema={this.actualizarRequisitosSistema}
               />
             </Route>
             <Route path="/tablas" >
@@ -108,11 +79,7 @@ class App extends React.Component {
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
             <Route path="/ajustes">
-              <Ajustes 
-                tiposRequisitos={this.state.tiposRequisitos}
-                crear={this.crearTipo} 
-                actualizar={this.actualizarTipo} 
-                eliminar={this.eliminarTipo} 
+              <Ajustes tiposRequisitos={this.state.tiposRequisitos} actualizarTipos={this.actualizarTiposRequisitos}
               />
             </Route>
             <Route path="/puntosFuncion">
