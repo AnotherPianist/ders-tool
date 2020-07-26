@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import './App.css';
 import Estructura from './components/estructura/Estructura.js';
 import { Switch, Route } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
@@ -63,10 +63,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <div style={{display: "flex"}}>
+      <div className="App">
         <CssBaseline />
         <Estructura nombreProyecto={this.state.nombreProyecto} actualizarNombreProyecto={this.actualizarNombreProyecto}/>
-        <main style={{marginTop: "4rem"}}>
+        <main className="App-main">
           <Switch>
             {/* Ejemplos de uso de Route path: */}
             <Route path="/ders">
@@ -101,9 +101,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default App;
