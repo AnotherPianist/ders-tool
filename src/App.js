@@ -16,6 +16,8 @@ import './App.css';
 import PuntosFuncion from './Components/PuntosFuncion.js';
 import { CssBaseline } from '@material-ui/core';
 import Estructura from './components/estructura/Estructura.js';
+import TablaAnalisisRepago from '../src/components/TablaAnalisisRepago';
+import AnalisisRepago from '../src/Vistas/AnalisisRepago';
 
 class App extends React.Component {
   constructor(props) {
@@ -60,6 +62,14 @@ class App extends React.Component {
                 <PuntosFuncion/>
               </div>
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+            </Route>
+            <Route path="/repago">
+              <div>
+                <p>Análisis de Repago</p>
+              </div>
+              <div>
+                <AnalisisRepago/>
+              </div>
             </Route>
           </Switch>
         </main>
