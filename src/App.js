@@ -19,6 +19,7 @@ import Estructura from './components/estructura/Estructura.js';
 import TablaAnalisisRepago from '../src/components/TablaAnalisisRepago';
 import AnalisisRepago from '../src/Vistas/AnalisisRepago';
 import ListaRequisitos from './components/ListaRequisitos/ListaRequisitos';
+import Ajustes from "./components/Ajustes/Ajustes";
 
 class App extends React.Component {
   constructor(props) {
@@ -73,6 +74,14 @@ class App extends React.Component {
               </div>
               <div>
                 <AnalisisRepago/>
+              </div>
+            </Route>
+            <Route path="/ajustes">
+              <div>
+                <p>Ajustes</p>
+              </div>
+              <div>
+                <Ajustes/>
               </div>
             </Route>
           </Switch>
