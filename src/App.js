@@ -18,6 +18,7 @@ import { CssBaseline } from '@material-ui/core';
 import Estructura from './components/estructura/Estructura.js';
 import TablaAnalisisRepago from '../src/components/TablaAnalisisRepago';
 import AnalisisRepago from '../src/Vistas/AnalisisRepago';
+import ListaRequisitos from './components/ListaRequisitos/ListaRequisitos';
 
 class App extends React.Component {
   constructor(props) {
@@ -49,6 +50,9 @@ class App extends React.Component {
               <div>
                 <p>Requisitos</p>
               </div>{" "}
+              <div>
+                <ListaRequisitos/>
+              </div>
               {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
