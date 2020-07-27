@@ -11,6 +11,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import TuneIcon from '@material-ui/icons/Tune';
 import { withStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
     drawerPaper: {
@@ -25,30 +26,29 @@ class Estructura extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isDrawerOpen: false, anchorArchivo: null, anchorEditar: null };
-    this.toggleDrawer = this.toggleDrawer.bind(this);
-    this.openArchivo = this.openArchivo.bind(this);
-    this.closeArchivo = this.closeArchivo.bind(this);
-    this.openEditar = this.openEditar.bind(this);
-    this.closeEditar = this.closeEditar.bind(this);
   }
 
-  toggleDrawer() {
+  toggleDrawer = () => {
     this.setState((prevState) => ({ isDrawerOpen: !prevState.isDrawerOpen }));
   }
 
-  openArchivo(e) {
+  editarNombre = (e) => {
+    this.props.actualizarNombreProyecto(e.target.value);
+  }
+
+  openArchivo = (e) => {
     this.setState({anchorArchivo: e.currentTarget});
   }
 
-  closeArchivo() {
+  closeArchivo = () => {
     this.setState({anchorArchivo: null});
   }
 
-  openEditar(e) {
+  openEditar = (e) => {
     this.setState({anchorEditar: e.currentTarget});
   }
 
-  closeEditar() {
+  closeEditar = () => {
     this.setState({anchorEditar: null});
   }
   
@@ -62,7 +62,7 @@ class Estructura extends React.Component {
             <IconButton onClick={this.toggleDrawer} style={{padding: "1rem"}}>
               <MenuIcon/>
             </IconButton>
-            <TextField id="nombreProyecto" placeholder="Nombre del proyecto" style={{padding: "1rem"}}/>
+            <TextField id="nombreProyecto" placeholder="Nombre del proyecto" style={{padding: "1rem"}} onChange={this.editarNombre}/>
             <Button onClick={this.openArchivo} style={{padding: "1rem"}}>Archivo</Button>
             <Menu open={Boolean(this.state.anchorArchivo)} onClose={this.closeArchivo} anchorEl={this.state.anchorArchivo}>
               <MenuItem onClick={this.closeArchivo}>Abrir</MenuItem>
@@ -70,7 +70,7 @@ class Estructura extends React.Component {
             </Menu>
             <Button onClick={this.openEditar} style={{padding: "1rem"}}>Editar</Button>
             <Menu open={Boolean(this.state.anchorEditar)} onClose={this.closeEditar} anchorEl={this.state.anchorEditar}>
-              <MenuItem onClick={this.closeEditar}>Ajustes</MenuItem>
+              <MenuItem onClick={this.closeEditar} component={Link} to="/ajustes" >Ajustes</MenuItem>
             </Menu>
             <Button style={{padding: "1rem"}}>Previsualizar</Button>
           </Toolbar>
@@ -84,7 +84,7 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Documento</Typography>
           <List>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} component={Link} to="/ders" onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><DescriptionIcon/></ListItemIcon>
               <ListItemText primary="Campos de DERS"/>
             </ListItem>
@@ -92,15 +92,15 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Requisitos</Typography>
           <List>
-          <ListItem button className={classes.whiteIcons}>
+          <ListItem button className={classes.whiteIcons} component={Link} to="/requisitos" onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><ViewListIcon/></ListItemIcon>
               <ListItemText primary="Lista de Requisitos"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TableChartIcon/></ListItemIcon>
               <ListItemText primary="Tarjetas de Volere"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><AccessibilityIcon/></ListItemIcon>
               <ListItemText primary="Casos de Uso"/>
             </ListItem>
@@ -108,15 +108,15 @@ class Estructura extends React.Component {
           <Divider/>
           <Typography variant="h6" align="left" style={{padding: "1rem", color: "white"}}>Cálculos</Typography>
           <List>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TuneIcon/></ListItemIcon>
               <ListItemText primary="Ajuste Ambiental"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer} component={Link} to="/puntosFuncion">
               <ListItemIcon className={classes.whiteIcons}><AssessmentIcon/></ListItemIcon>
               <ListItemText primary="Puntos de Función"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons}>
+            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TimelineIcon/></ListItemIcon>
               <ListItemText primary="Análisis de Repago"/>
             </ListItem>
