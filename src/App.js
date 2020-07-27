@@ -14,139 +14,21 @@ import Ders from "./components/ders/Ders";
 import logo from './logo.svg';
 import './App.css'; 
 import PuntosFuncion from './Components/PuntosFuncion.js';
-
-const drawerWidth = 240;
-
-const styles = (theme) => ({
-  root: {
-    display: "flex",
-  },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    backgroundColor: "white !important",
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: "none",
-  },
-  title: {
-    flexGrow: 1,
-  },
-  drawerPaper: {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9),
-    },
-  },
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-    overflow: "auto",
-  },
-  iconWhite: {
-    color: "white",
-  },
-});
+import { CssBaseline } from '@material-ui/core';
+import Estructura from './components/estructura/Estructura.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      appbarOpen: true,
-    };
+    this.state = {};
   }
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
   render() {
-    const { classes } = this.props;
-
     return (
-      <div className={classes.root}>
+      <div style={{display: "flex"}}>
         <CssBaseline />
-        <TopBar
-          appBarClass={clsx(
-            classes.appBar,
-            this.state.open && classes.appBarShift
-          )}
-          toolBarClass={classes.toolbar}
-          handleDrawerOpen={this.handleDrawerOpen}
-          iconClass={clsx(
-            classes.menuButton,
-            this.state.open && classes.menuButtonHidden
-          )}
-        />
-
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(
-              classes.drawerPaper,
-              !this.state.open && classes.drawerPaperClose
-            ),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <ListaHerramientas />
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
+        <Estructura />
+        <main>
           <Switch>
             {/* Ejemplos de uso de Route path: */}
             <Route path="/ders">
@@ -190,4 +72,4 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+export default App;
