@@ -11,6 +11,9 @@ import ListaHerramientas from "./components/ListaHerramientas.js";
 import TopBar from "./components/topBar.jsx";
 import { Switch, Route } from "react-router-dom";
 import Ders from "./components/ders/Ders";
+import logo from './logo.svg';
+import './App.css'; 
+import PuntosFuncion from './Components/PuntosFuncion.js';
 
 const drawerWidth = 240;
 
@@ -171,6 +174,9 @@ class App extends React.Component {
                 <p>Tablas</p>
               </div>{" "}
               {/* Reemplazable! */}
+              <div>
+                <PuntosFuncion/>
+              </div>
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
           </Switch>
