@@ -7,18 +7,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Divider from "@material-ui/core/Divider";
-import ListaHerramientas from "./components/ListaHerramientas.js";
-import TopBar from "./components/topBar.jsx";
 import { Switch, Route } from "react-router-dom";
 import Ders from "./components/ders/Ders";
 import logo from './logo.svg';
 import './App.css'; 
-import PuntosFuncion from './Components/PuntosFuncion.js';
-import { CssBaseline } from '@material-ui/core';
 import Estructura from './components/estructura/Estructura.js';
 import TablaAnalisisRepago from '../src/components/TablaAnalisisRepago';
-import Ajustes from './components/ajustes/Ajustes';
-import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
+import Ajustes from './components/Ajustes';
+import ListaRequisitos from './components/ListaRequisitos/ListaRequisitos';
 import PuntosFuncion from './components/puntosFuncion/PuntosFuncion';
 
 class App extends React.Component {
@@ -87,6 +83,7 @@ class App extends React.Component {
               {/* Acá iría el componente de DERS, aunque no sé si eso deba ser un componente */}
               <div><p>Ders</p></div> {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+              <Ders/>
             </Route>
             <Route path="/requisitos" >
               <ListaRequisitos
@@ -98,9 +95,6 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/tablas" >
-              {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
-              <div><p>Tablas</p></div> {/* Reemplazable! */}
-              {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
             <Route path="/ajustes">
               <Ajustes tiposRequisitos={this.state.tiposRequisitos} actualizarTipos={this.actualizarTiposRequisitos}

@@ -1,7 +1,7 @@
 import React from 'react';
-import CrearTipoReq from './crearTipoRequisito';
-import ModificarTipoReq from './modificarTipoRequisito';
-import EliminarTipoReq from './eliminarTipoRequisito';
+import CrearTipoReq from './CrearTipoRequisito';
+import ModificarTipoReq from './ModificarTipoRequisito';
+import EliminarTipoReq from './EliminarTipoRequisito';
 
 class Ajustes extends React.Component {
   constructor(props) {

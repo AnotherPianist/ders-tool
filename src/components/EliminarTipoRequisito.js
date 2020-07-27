@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import './tipoRequisitos.css';
 
 export default function EliminarTipoReq(props) {
     const [requisito, setRequisitos] = React.useState('1');

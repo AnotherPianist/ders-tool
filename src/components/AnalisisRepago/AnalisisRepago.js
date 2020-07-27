@@ -1,5 +1,5 @@
 import React from "react";
-import TablaAnalisisRepago from '../components/TablaAnalisisRepago';
+import TablaAnalisisRepago from 'TablaAnalisisRepago';
 import { Button, Accordion } from "@material-ui/core";
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
