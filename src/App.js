@@ -1,22 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { withStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import IconButton from "@material-ui/core/IconButton";
-import Drawer from "@material-ui/core/Drawer";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import Divider from "@material-ui/core/Divider";
-import ListaHerramientas from "./components/ListaHerramientas.js";
-import TopBar from "./components/topBar.jsx";
-import { Switch, Route } from "react-router-dom";
-import Ders from "./components/ders/Ders";
-import logo from './logo.svg';
-import './App.css'; 
-import PuntosFuncion from './Components/PuntosFuncion.js';
-import { CssBaseline } from '@material-ui/core';
+import React from 'react';
+import './App.css';
 import Estructura from './components/estructura/Estructura.js';
-import TablaAnalisisRepago from '../src/components/TablaAnalisisRepago';
+import { Switch, Route } from 'react-router-dom';
+import { CssBaseline } from '@material-ui/core';
 import Ajustes from './components/ajustes/Ajustes';
 import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
 import PuntosFuncion from './components/puntosFuncion/PuntosFuncion';
@@ -115,9 +101,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default App;
