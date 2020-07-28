@@ -1,5 +1,5 @@
 import React from "react";
-import { Stage, Layer, Text, Line, Ellipse } from "react-konva";
+import { Stage, Layer, Text, Line, Ellipse, Arrow } from "react-konva";
 import calculateSize from "calculate-size";
 import { Button } from "@material-ui/core";
 
@@ -8,9 +8,9 @@ class Canvas extends React.Component {
     super(props);
 
     this.state = {
-      //Flecha1 contiene las flechas normales
+      //lineasSolidas contiene las flechas con lineas normales
       lineasSolidas: [],
-      //Flecha2 contiene las flechas punteadas de extend e include
+      //lineasPunteadas contiene las flechas punteadas de extend e include
       lineasPunteadas: [],
       //Arreglo de los puntos iniciales y finales de una linea
       posLinea: [
@@ -19,6 +19,7 @@ class Canvas extends React.Component {
       ],
       dibujarLinea: false,
       tipo: 0,
+      tipoLinea: 0,
       nroClick: 0,
       resetClick: false,
     };
@@ -37,7 +38,10 @@ class Canvas extends React.Component {
     });
     this.setState({ figuras: figuras });
   }
-
+  /**
+   * Funcion que dibuja el texto del requisito sobre la elipse
+   * @param i indice de la figura sobre la que dibujar el texto
+   */
   dibujarTexto = (i) => {
     return (
       <Text
@@ -50,7 +54,10 @@ class Canvas extends React.Component {
       />
     );
   };
-
+  /**
+   * Funcion que dibuja una elipse que representa un requisito
+   * @param i indice de la figura a dibujar
+   */
   dibujarElipse = (i) => {
     return (
       <Ellipse
@@ -64,7 +71,12 @@ class Canvas extends React.Component {
       />
     );
   };
-
+  /**
+   * Funcion creadora de los botones
+   * @param {*} name nombre del boton
+   * @param {*} tipo tipo de linea que dibujara el boton:
+   * 0 = asociacion no dir, 1 = include, 2 = extend, 3 = asociacion dirigida, 4 = generalizacion
+   */
   dibujarBotonAux = (name, tipo) => {
     return (
       <Button
@@ -80,81 +92,117 @@ class Canvas extends React.Component {
       </Button>
     );
   };
-  dibujarLineaPunteada = (i) => {
+  /**
+   * Funcion que dibuja una flecha punteada con la etiqueta de include o extend.
+   * @param  i indice de la flecha a dibujar
+   */
+  dibujarFlechaPunt = (i) => {
     return (
-      <Line
-        points={[
-          this.state.lineasPunteadas[i].x1,
-          this.state.lineasPunteadas[i].y1,
-          this.state.lineasPunteadas[i].x2,
-          this.state.lineasPunteadas[i].y2,
-        ]}
-        dash={[5, 5, 0.001, 1]}
-        tension={1}
-        closed
-        stroke="black"
-        lineJoin="round"
-      />
+      <>
+        <Arrow
+          points={[
+            this.state.lineasPunteadas[i].x1,
+            this.state.lineasPunteadas[i].y1,
+            this.state.lineasPunteadas[i].x2,
+            this.state.lineasPunteadas[i].y2,
+          ]}
+          dash={[5, 5, 0.001, 1]}
+          fill="black"
+          tension={1}
+          closed
+          stroke="black"
+          lineJoin="round"
+        />
+        <Text
+          x={this.calcularpuntomedio(
+            this.state.lineasPunteadas[i].x1,
+            this.state.lineasPunteadas[i].x2
+          )}
+          y={this.calcularpuntomedio(
+            this.state.lineasPunteadas[i].y1,
+            this.state.lineasPunteadas[i].y2
+          )}
+          fontSize={17}
+          fontStyle="italic"
+          text={this.state.lineasPunteadas[i].etiqueta}
+          wrap="char"
+          align="center"
+        />
+      </>
     );
   };
+
+  /**
+   * Funcion que dibuja una linea normal o una flecha normal
+   * @param i indice de la linea o la flecha a dibujar.
+   */
   dibujarLineaNormal = (i) => {
-    return (
-      <Line
-        points={[
-          this.state.lineasSolidas[i].x1,
-          this.state.lineasSolidas[i].y1,
-          this.state.lineasSolidas[i].x2,
-          this.state.lineasSolidas[i].y2,
-        ]}
-        tension={1}
-        closed
-        stroke="black"
-      />
-    );
+    if (this.state.lineasSolidas[i].tipo === 0) {
+      console.log("creando linea ");
+      return (
+        <Line
+          points={[
+            this.state.lineasSolidas[i].x1,
+            this.state.lineasSolidas[i].y1,
+            this.state.lineasSolidas[i].x2,
+            this.state.lineasSolidas[i].y2,
+          ]}
+          tension={1}
+          closed
+          stroke="black"
+        />
+      );
+    } else {
+      console.log("creando flecha");
+      var fill = "blue";
+      if (this.state.lineasSolidas[i].tipo === 3) {
+        fill = "black";
+      } else {
+        fill = "white";
+      }
+      return (
+        <Arrow
+          points={[
+            this.state.lineasSolidas[i].x1,
+            this.state.lineasSolidas[i].y1,
+            this.state.lineasSolidas[i].x2,
+            this.state.lineasSolidas[i].y2,
+          ]}
+          tension={1}
+          fill={fill}
+          closed
+          stroke="black"
+        />
+      );
+    }
   };
+
   calcularpuntomedio = (pto1, pto2) => {
     return (pto1 + pto2) / 2;
   };
-  dibujarEtiquetaLinea = (i) => {
-    return (
-      <Text
-        x={this.calcularpuntomedio(
-          this.state.lineasPunteadas[i].x1,
-          this.state.lineasPunteadas[i].x2
-        )}
-        y={this.calcularpuntomedio(
-          this.state.lineasPunteadas[i].y1,
-          this.state.lineasPunteadas[i].y2
-        )}
-        fontSize={17}
-        fontStyle="italic"
-        text={this.state.lineasPunteadas[i].etiqueta}
-        wrap="char"
-        align="center"
-      />
-    );
-  };
-  /* Funcion para cuando se clickea en una figura, si el modo linea esta activado (linea=true) se procesaran 2 clicks de mouse:
-  nroClick = 0 es el primer click que define el inicio de la linea,
-  nroClick = 1 es el segundo clicl que define el fin de la linea.
-  */
+  /**
+   * Funcion que define la linea entre dos figuras. Se procesaran 2 click consecutivos sobre las figuras que indicaran inicio y final de la linea.
+   * nroClick = 0 es el primer click que define el inicio de la linea,
+   * nroClick = 1 es el segundo click que define el fin de la linea.
+   * @param e
+   */
   definirLinea = (e) => {
     if (this.state.nroClick === 0) {
       console.log("click1..");
       let array = this.state.posLinea;
-      array[0].x = e.currentTarget.attrs.x;
-      array[0].y = e.currentTarget.attrs.y;
       array[1].x = e.currentTarget.attrs.x;
       array[1].y = e.currentTarget.attrs.y;
+      array[0].x = e.currentTarget.attrs.x;
+      array[0].y = e.currentTarget.attrs.y;
       this.setState({ posLinea: array });
     }
     if (this.state.nroClick === 1) {
       console.log("click2..");
       let array = this.state.posLinea;
-      array[0].x = e.currentTarget.attrs.x;
-      array[0].y = e.currentTarget.attrs.y;
-      array[1].x = this.state.posLinea[1].x;
-      array[1].y = this.state.posLinea[1].y;
+      array[1].x = e.currentTarget.attrs.x;
+      array[1].y = e.currentTarget.attrs.y;
+      array[0].x = this.state.posLinea[0].x;
+      array[0].y = this.state.posLinea[0].y;
       this.setState({ posLinea: array });
       this.setState({ resetClick: true });
     }
@@ -172,24 +220,31 @@ class Canvas extends React.Component {
         x2: this.state.posLinea[1].x,
         y2: this.state.posLinea[1].y,
         etiqueta: "",
+        tipo: 0,
       };
-      if (this.state.tipo === 0) {
-        var flecha1 = this.state.lineasSolidas;
-        flecha1.push(newFlecha);
+      if (
+        this.state.tipo === 0 ||
+        this.state.tipo === 3 ||
+        this.state.tipo === 4
+      ) {
+        console.log("0 o 3");
+        var lineasSolidas = this.state.lineasSolidas;
+        newFlecha.tipo = this.state.tipo;
+        lineasSolidas.push(newFlecha);
         this.setState({
-          flecha1: flecha1,
+          flecha1: lineasSolidas,
         });
       } else {
-        var flecha2 = this.state.lineasPunteadas;
+        var lineasPunteadas = this.state.lineasPunteadas;
         if (this.state.tipo === 1) {
           newFlecha.etiqueta = "<<i>>";
         } else {
           newFlecha.etiqueta = "<<e>>";
         }
 
-        flecha2.push(newFlecha);
+        lineasPunteadas.push(newFlecha);
         this.setState({
-          flecha2: flecha2,
+          flecha2: lineasPunteadas,
         });
       }
     }
@@ -199,10 +254,12 @@ class Canvas extends React.Component {
       <div>
         {/* Botones temporales para activar-desactivar el modo linea, si linea = true 
         la funcionalidad onClick dibuja, si es false no lo hace. Hay varios botones segun el 
-        tipo de la linea*/}
-        {this.dibujarBotonAux("Linea", 0)} {/*LINEA NORMAL*/}
-        {this.dibujarBotonAux("Linea_inc", 1)} {/*LINEA TIPO INCLUDE*/}
-        {this.dibujarBotonAux("Linea_ext", 2)} {/*LINEA TIPO EXTEND */}
+        tipo de la linea. */}
+        {this.dibujarBotonAux("Asocia_nodir", 0)} {/*LINEA NORMAL*/}
+        {this.dibujarBotonAux("Asocia_dir", 3)} {/*flecha NORMAL*/}
+        {this.dibujarBotonAux("Generalizacion", 4)} {/*flecha NORMAL*/}
+        {this.dibujarBotonAux("include", 1)} {/*flecha TIPO INCLUDE*/}
+        {this.dibujarBotonAux("extend", 2)} {/*flecha TIPO EXTEND */}
         <Stage width={window.innerWidth} height={window.innerHeight}>
           {/** Ciclo para dibujar lineas normales */}
 
@@ -217,8 +274,7 @@ class Canvas extends React.Component {
           {[...Array(this.state.lineasPunteadas.length)].map((_, i) => (
             <Layer key={i} draggable>
               {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarLineaPunteada(i)}
-              {this.dibujarEtiquetaLinea(i)}
+              {this.dibujarFlechaPunt(i)}
             </Layer>
           ))}
 
