@@ -97,8 +97,9 @@ class Canvas extends React.Component {
    * @param  i indice de la flecha a dibujar
    */
   dibujarFlechaPunt = (i) => {
-    return (
-      <>
+    if (this.state.lineasPunteadas[i].tipo === 5) {
+      console.log("DEPENDENCIA");
+      return (
         <Arrow
           points={[
             this.state.lineasPunteadas[i].x1,
@@ -106,32 +107,51 @@ class Canvas extends React.Component {
             this.state.lineasPunteadas[i].x2,
             this.state.lineasPunteadas[i].y2,
           ]}
-          dash={[5, 5, 0.001, 1]}
+          dash={[5, 5, 0.001, 5]}
           fill="black"
           tension={1}
           closed
           stroke="black"
           lineJoin="round"
         />
-        <Text
-          x={this.calcularpuntomedio(
-            this.state.lineasPunteadas[i].x1,
-            this.state.lineasPunteadas[i].x2
-          )}
-          y={this.calcularpuntomedio(
-            this.state.lineasPunteadas[i].y1,
-            this.state.lineasPunteadas[i].y2
-          )}
-          fontSize={17}
-          fontStyle="italic"
-          text={this.state.lineasPunteadas[i].etiqueta}
-          wrap="char"
-          align="center"
-        />
-      </>
-    );
+      );
+    } else {
+      console.log("include extend");
+      return (
+        <>
+          <Arrow
+            points={[
+              this.state.lineasPunteadas[i].x1,
+              this.state.lineasPunteadas[i].y1,
+              this.state.lineasPunteadas[i].x2,
+              this.state.lineasPunteadas[i].y2,
+            ]}
+            dash={[5, 5, 0.001, 5]}
+            fill="black"
+            tension={1}
+            closed
+            stroke="black"
+            lineJoin="round"
+          />
+          <Text
+            x={this.calcularpuntomedio(
+              this.state.lineasPunteadas[i].x1,
+              this.state.lineasPunteadas[i].x2
+            )}
+            y={this.calcularpuntomedio(
+              this.state.lineasPunteadas[i].y1,
+              this.state.lineasPunteadas[i].y2
+            )}
+            fontSize={17}
+            fontStyle="italic"
+            text={this.state.lineasPunteadas[i].etiqueta}
+            wrap="char"
+            align="center"
+          />
+        </>
+      );
+    }
   };
-
   /**
    * Funcion que dibuja una linea normal o una flecha normal
    * @param i indice de la linea o la flecha a dibujar.
@@ -238,7 +258,7 @@ class Canvas extends React.Component {
         var lineasPunteadas = this.state.lineasPunteadas;
         if (this.state.tipo === 1) {
           newFlecha.etiqueta = "<<i>>";
-        } else {
+        } else if (this.state.tipo === 2) {
           newFlecha.etiqueta = "<<e>>";
         }
 
@@ -256,10 +276,13 @@ class Canvas extends React.Component {
         la funcionalidad onClick dibuja, si es false no lo hace. Hay varios botones segun el 
         tipo de la linea. */}
         {this.dibujarBotonAux("Asocia_nodir", 0)} {/*LINEA NORMAL*/}
-        {this.dibujarBotonAux("Asocia_dir", 3)} {/*flecha NORMAL*/}
-        {this.dibujarBotonAux("Generalizacion", 4)} {/*flecha NORMAL*/}
+        {this.dibujarBotonAux("Asocia_dir", 3)}{" "}
+        {/*flecha NORMAL con punta cerrada*/}
+        {this.dibujarBotonAux("Generalizacion", 4)}{" "}
+        {/*flecha NORMAL con punta abierta*/}
         {this.dibujarBotonAux("include", 1)} {/*flecha TIPO INCLUDE*/}
         {this.dibujarBotonAux("extend", 2)} {/*flecha TIPO EXTEND */}
+        {this.dibujarBotonAux("depend", 5)} {/*flecha dependencia */}
         <Stage width={window.innerWidth} height={window.innerHeight}>
           {/** Ciclo para dibujar lineas normales */}
 
