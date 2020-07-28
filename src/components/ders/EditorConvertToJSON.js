@@ -42,6 +42,8 @@ const EditorConvertToJSON = (props) => {
     localStorage.setItem("ders", JSON.stringify(copiaInfoDers));
     // activa el mensaje de guardado
     setActivarMensaje(true);
+
+    console.log(infoDers);
   };
 
   const handleClose = () => {
@@ -54,7 +56,7 @@ const EditorConvertToJSON = (props) => {
         wrapperClassName="wrapper-class"
         editorClassName="editer-content"
         toolbarClassName="toolbar-class"
-        initialContentState={content}
+        initialContentState={content ? content : contentDefault}
         onContentStateChange={onContentStateChange}
         onBlur={onBlur}
       />
@@ -81,10 +83,25 @@ const EditorConvertToJSON = (props) => {
 };
 
 EditorConvertToJSON.propTypes = {
-  content: PropTypes.object.isRequired,
+  content: PropTypes.object,
   index: PropTypes.number.isRequired,
   infoDers: PropTypes.array.isRequired,
   setInfoDers: PropTypes.func.isRequired,
 };
 
 export default EditorConvertToJSON;
+
+const contentDefault = {
+  entityMap: {},
+  blocks: [
+    {
+      key: "637gr",
+      text: "[Inserte texto...]",
+      type: "unstyled",
+      depth: 0,
+      inlineStyleRanges: [],
+      entityRanges: [],
+      data: {},
+    },
+  ],
+};
