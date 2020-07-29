@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-
+import Container from "@material-ui/core/Container";
 import BarraHerramientaCasosDeUso from "./BarraHerramientasCasosDeUso";
 import Canvas from "./Canvas";
 
@@ -71,24 +71,28 @@ class CasoDeUso extends Component {
     figuras.push(figura);
     this.setState({ figuras });
   };
+  /* <Box component="span" style={{ backgroundColor: "#cfe8fc" }}>
+    hola
+  </Box> */
 
   render() {
     return (
-      <Grid container>
-        <Grid p={2} item xs={3}>
-          <BarraHerramientaCasosDeUso
-            requisitos={this.state.requisitos}
-            onClickRequisito={this.crearFigura}
-          />
+      <Container fixed>
+        <Grid container spacing={3}>
+          <Grid item xs={3}>
+            <BarraHerramientaCasosDeUso
+              requisitos={this.state.requisitos}
+              onClickRequisito={this.crearFigura}
+            />
+          </Grid>
+          <Grid item xs={9}>
+            <Canvas
+              figuras={this.state.figuras}
+              actualizarCoordenadas={this.actualizarCoordenadas}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={9}>
-          <Canvas
-            bgcolor="blue"
-            figuras={this.state.figuras}
-            actualizarCoordenadas={this.actualizarCoordenadas}
-          />
-        </Grid>
-      </Grid>
+      </Container>
     );
   }
 }

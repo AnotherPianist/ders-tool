@@ -9,7 +9,7 @@ que se pueden dibujar en el canvas
 class Botonera extends Component {
   render() {
     return (
-      <Box pt={5} pl={0} mx="auto">
+      <Box mx="auto" textAlign="center">
         <ButtonGroup
           orientation="vertical"
           color="primary"
