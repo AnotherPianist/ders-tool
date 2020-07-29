@@ -51,8 +51,9 @@ class CasoDeUso extends Component {
   }
 
   guardarFlecha(flecha) {
-    console.log('punteadas: '+this.state.lineasPunteadas);
-    console.log('solidas: '+this.state.lineasSolidas);
+    console.log('punteadas: '+this.state.lineasPunteadas.length);
+    console.log('solidas: '+this.state.lineasSolidas.length);
+    console.log(this.state.lineasSolidas[0].fig1);
     /*
     if(this.state.bandera)
     {
@@ -61,18 +62,20 @@ class CasoDeUso extends Component {
     }
     */
    console.log('la flecha: '+flecha.length)
+   console.log('su posicion: '+flecha[0].tipo)
     let ultimaPosicion = flecha.length -1;
     if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id)
     {
       console.log('dentro del if');
       if (
-        flecha.tipo === 0 ||
-        flecha.tipo === 3 ||
-        flecha.tipo === 4
+        flecha[ultimaPosicion].tipo === 0 ||
+        flecha[ultimaPosicion].tipo === 3 ||
+        flecha[ultimaPosicion].tipo === 4 
       ){
+        console.log('guardan2');
         this.setState({lineasSolidas: flecha});
-        console.log('flecha solida: ');
-        console.log(flecha);
+        console.log('flechas solida: ');
+        console.log(this.state.lineasSolidas);
       }
       else{
         this.setState({lineasPunteadas: flecha});
@@ -124,7 +127,7 @@ class CasoDeUso extends Component {
         }
       }
     }
-    console.log('cantidad flechas solidas: '+this.state.lineasPunteadas.length);
+    console.log('cantidad flechas punteadas: '+this.state.lineasPunteadas.length);
     for(let i = 0; i < this.state.lineasPunteadas.length; i++)
     {
       let flechaActualizada = this.state.lineasPunteadas[i];
@@ -178,8 +181,6 @@ class CasoDeUso extends Component {
         figuras[index].y = e.currentTarget.attrs.y;
         figuras[index].ancho = e.target.children[0].textWidth;
         this.setState({ figuras: figuras });
-        console.log('flecha dragg');
-        console.log(this.state.flecha);
         this.buscarFlecha(figuras[index], e);
       }
     }
