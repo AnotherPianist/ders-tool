@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+
 import {
   List,
   ListItem,
@@ -21,7 +22,15 @@ class ListaRequisitos extends React.Component {
     });
 
     return (
-      <Paper style={{ maxHeight: 200, overflow: "auto" }}>
+      <Paper
+        style={{
+          maxHeight: 150,
+          minHeight: 150,
+          minWidth: 235,
+          maxWidth: 235,
+          overflow: "auto",
+        }}
+      >
         <List>{requisitos}</List>
       </Paper>
     );

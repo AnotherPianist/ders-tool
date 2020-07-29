@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 
 import BarraHerramientaCasosDeUso from "./BarraHerramientasCasosDeUso";
 import Canvas from "./Canvas";
+import calculateSize from "calculate-size";
 
 /*
 Este componente es la pantalla de casos de uso.
@@ -14,8 +15,8 @@ class CasoDeUso extends Component {
     this.state = {
       count: 0, //número de figuras ya dibujadas
       requisitos: [
-        "requisito1",
-        "requisito2",
+        "requisito 1",
+        "requisito 2",
         "requisito 3",
         "requisito 4",
         "requisito 5",
@@ -85,90 +86,93 @@ class CasoDeUso extends Component {
     }
   }
 
-
-
-  buscarFlecha(figuraActualizada, e){
-    console.log('actualizando flecha');
-    console.log('cantidad flechas solidas: '+this.state.lineasSolidas.length);
-    for(let j = 0; j < this.state.lineasSolidas.length; j++)
-    {
+  buscarFlecha(figuraActualizada, e) {
+    console.log("actualizando flecha");
+    console.log("cantidad flechas solidas: " + this.state.lineasSolidas.length);
+    for (let j = 0; j < this.state.lineasSolidas.length; j++) {
       let flechaActualizada = this.state.lineasSolidas[j];
-      console.log('flecha actualizada: '+flechaActualizada.fig1);
-      console.log('flecha actualizada: '+flechaActualizada.fig2);
+      console.log("flecha actualizada: " + flechaActualizada.fig1);
+      console.log("flecha actualizada: " + flechaActualizada.fig2);
       let arrayFlechas = this.state.lineasSolidas;
 
-      console.log('id figura: '+figuraActualizada.id+' id flecha fig1: '+this.state.lineasSolidas[j].fig1.id);
-      if (figuraActualizada.id === this.state.lineasSolidas[j].fig1.id)
-      {
-        if (flechaActualizada !== null){
-            flechaActualizada.fig1.x = e.currentTarget.attrs.x;
-            flechaActualizada.fig1.y = e.currentTarget.attrs.y;
-            arrayFlechas.splice(j, flechaActualizada);
-            this.setState({ lineasSolidas: arrayFlechas});
-            console.log('flecha actualizada');
-            console.log(this.state.lineasSolidas[j]);
+      console.log(
+        "id figura: " +
+          figuraActualizada.id +
+          " id flecha fig1: " +
+          this.state.lineasSolidas[j].fig1.id
+      );
+      if (figuraActualizada.id === this.state.lineasSolidas[j].fig1.id) {
+        if (flechaActualizada !== null) {
+          flechaActualizada.fig1.x = e.currentTarget.attrs.x;
+          flechaActualizada.fig1.y = e.currentTarget.attrs.y;
+          arrayFlechas.splice(j, flechaActualizada);
+          this.setState({ lineasSolidas: arrayFlechas });
+          console.log("flecha actualizada");
+          console.log(this.state.lineasSolidas[j]);
         }
-      }
-      else
-      {
-        console.log('id figura: '+figuraActualizada.id+' id flecha fig2: '+this.state.lineasSolidas[j].fig2.id);
-        if (figuraActualizada.id === this.state.lineasSolidas[j].fig2.id)
-        {
+      } else {
+        console.log(
+          "id figura: " +
+            figuraActualizada.id +
+            " id flecha fig2: " +
+            this.state.lineasSolidas[j].fig2.id
+        );
+        if (figuraActualizada.id === this.state.lineasSolidas[j].fig2.id) {
           flechaActualizada.fig2.x = e.currentTarget.attrs.x;
           flechaActualizada.fig2.y = e.currentTarget.attrs.y;
           arrayFlechas.splice(j, flechaActualizada);
           this.setState({ lineasSolidas: arrayFlechas });
-          console.log('flecha actualizada');
+          console.log("flecha actualizada");
           console.log(this.state.lineasSolidas[j]);
-        }
-        else
-        {
-          console.log('flecha no encontrada en las solidas');
+        } else {
+          console.log("flecha no encontrada en las solidas");
         }
       }
     }
-    console.log('cantidad flechas punteadas: '+this.state.lineasPunteadas.length);
-    for(let i = 0; i < this.state.lineasPunteadas.length; i++)
-    {
+    console.log(
+      "cantidad flechas solidas: " + this.state.lineasPunteadas.length
+    );
+    for (let i = 0; i < this.state.lineasPunteadas.length; i++) {
       let flechaActualizada = this.state.lineasPunteadas[i];
-      console.log('flecha actualizada: '+flechaActualizada.fig1);
-      console.log('flecha actualizada: '+flechaActualizada.fig2);
+      console.log("flecha actualizada: " + flechaActualizada.fig1);
+      console.log("flecha actualizada: " + flechaActualizada.fig2);
       let arrayFlechas = this.state.lineasPunteadas;
 
-      console.log('id figura: '+figuraActualizada.id+' id flecha fig1: '+this.state.lineasPunteadas[i].fig1.id);
-      if (figuraActualizada.id === this.state.lineasPunteadas[i].fig1.id)
-      {
-        if (flechaActualizada !== null){
-            flechaActualizada.fig1.x = e.currentTarget.attrs.x;
-            flechaActualizada.fig1.y = e.currentTarget.attrs.y;
-            arrayFlechas.splice(i, flechaActualizada);
-            this.setState({ lineasPunteadas: arrayFlechas});
-            console.log('flecha actualizada');
-            console.log(this.state.lineasPunteadas[i]);
+      console.log(
+        "id figura: " +
+          figuraActualizada.id +
+          " id flecha fig1: " +
+          this.state.lineasPunteadas[i].fig1.id
+      );
+      if (figuraActualizada.id === this.state.lineasPunteadas[i].fig1.id) {
+        if (flechaActualizada !== null) {
+          flechaActualizada.fig1.x = e.currentTarget.attrs.x;
+          flechaActualizada.fig1.y = e.currentTarget.attrs.y;
+          arrayFlechas.splice(i, flechaActualizada);
+          this.setState({ lineasPunteadas: arrayFlechas });
+          console.log("flecha actualizada");
+          console.log(this.state.lineasPunteadas[i]);
         }
-      }
-      else
-      {
-        console.log('id figura: '+figuraActualizada.id+' id flecha fig2: '+this.state.lineasPunteadas[i].fig2.id);
-        if (figuraActualizada.id === this.state.lineasPunteadas[i].fig2.id)
-        {
+      } else {
+        console.log(
+          "id figura: " +
+            figuraActualizada.id +
+            " id flecha fig2: " +
+            this.state.lineasPunteadas[i].fig2.id
+        );
+        if (figuraActualizada.id === this.state.lineasPunteadas[i].fig2.id) {
           flechaActualizada.fig2.x = e.currentTarget.attrs.x;
           flechaActualizada.fig2.y = e.currentTarget.attrs.y;
           arrayFlechas.splice(i, flechaActualizada);
           this.setState({ lineasPunteadas: arrayFlechas });
-          console.log('flecha actualizada');
+          console.log("flecha actualizada");
           console.log(this.state.lineasPunteadas[i]);
-        }
-        else
-        {
-          console.log('flecha no encontrada en las punteadas');
+        } else {
+          console.log("flecha no encontrada en las punteadas");
         }
       }
     }
   }
-    
-  
-
 
   //funcion que actualiza las coordenadas
   actualizarCoordenadas = (e) => {
@@ -188,15 +192,20 @@ class CasoDeUso extends Component {
 
   crearFigura = (props) => {
     const { req } = props;
-
+    const ancho = calculateSize(req, {
+      font: "Arial",
+      fontSize: "20px",
+    });
     let count = this.state.count;
+    const x = ancho.width / 2 + 100;
+
     const figura = {
       id: count,
-      x: 150,
+      x: x,
       y: 100,
       name: req,
       alto: 100,
-      ancho: 100,
+      ancho: ancho.width,
     };
     count++;
     this.setState({ count });
@@ -207,24 +216,27 @@ class CasoDeUso extends Component {
 
   render() {
     return (
-      <Grid container>
-        <Grid p={2} item xs={3}>
-          <BarraHerramientaCasosDeUso
-            requisitos={this.state.requisitos}
-            onClickRequisito={this.crearFigura}
-          />
-        </Grid>
-        <Grid item xs={9}>
-          <Canvas
-            bgcolor="blue"
-            figuras={this.state.figuras}
-            lineasPunteadas={this.state.lineasPunteadas}
-            lineasSolidas={this.state.lineasSolidas}
-            guardarFlecha={this.guardarFlecha}
-            actualizarCoordenadas={this.actualizarCoordenadas}
-          />
-        </Grid>
-      </Grid>
+      <div style={{ width: "100%" }}>
+        <Box display="flex" p={1} bgcolor="background.paper">
+          <Box p={1} width="100%" borderRight="outset" bgcolor="white">
+            <Box p={1} width={250}>
+              <BarraHerramientaCasosDeUso
+                requisitos={this.state.requisitos}
+                onClickRequisito={this.crearFigura}
+              />
+            </Box>
+          </Box>
+          <Box flexShrink={0} bgcolor="white">
+            <Canvas
+              figuras={this.state.figuras}
+              lineasPunteadas={this.state.lineasPunteadas}
+              lineasSolidas={this.state.lineasSolidas}
+              guardarFlecha={this.guardarFlecha}
+              actualizarCoordenadas={this.actualizarCoordenadas}
+            />
+          </Box>
+        </Box>
+      </div>
     );
   }
 }

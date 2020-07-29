@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 import Botonera from "./Botonera";
 import ListaRequisitos from "./ListaRequisitos";
@@ -9,21 +10,27 @@ y el listado de requisitos que se pueden agregar al canvas como casos de uso.
 */
 class BarraHerramientasCasosDeUso extends Component {
   render() {
+    const center = {
+      textAlign: "center",
+    };
     return (
-      <Box bgcolor="#f9f6f4">
-        <Box mt={2} ml={3} pl={4} mb={1} pt={0}>
-          REQUISITOS FUNCIONALES
-        </Box>
-        <Box ml={3} mr={3}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography style={center}>REQUISITOS FUNCIONALES</Typography>
+        </Grid>
+
+        <Grid item xs={12}>
           <ListaRequisitos
+            style={center}
             requisitos={this.props.requisitos}
             onClickRequisito={this.props.onClickRequisito}
           />
-        </Box>
-        <Box mt={0.5} ml={2} pl={2} mb={1} pt={0}>
+        </Grid>
+
+        <Grid item xs={12}>
           <Botonera />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     );
   }
 }
