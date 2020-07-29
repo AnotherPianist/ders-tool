@@ -15,8 +15,8 @@ class CasoDeUso extends Component {
     this.state = {
       count: 0, //número de figuras ya dibujadas
       requisitos: [
-        "requisito1",
-        "requisito2",
+        "requisito 1",
+        "requisito 2",
         "requisito 3",
         "requisito 4",
         "requisito 5",
@@ -211,7 +211,7 @@ class CasoDeUso extends Component {
     return (
       <div style={{ width: "100%" }}>
         <Box display="flex" p={1} bgcolor="background.paper">
-          <Box p={1} width="100%" borderRight="outset" bgcolor="#f4f4f4">
+          <Box p={1} width="100%" borderRight="outset" bgcolor="white">
             <Box p={1} width={250}>
               <BarraHerramientaCasosDeUso
                 requisitos={this.state.requisitos}
@@ -219,7 +219,7 @@ class CasoDeUso extends Component {
               />
             </Box>
           </Box>
-          <Box p={1} flexShrink={0} bgcolor="white">
+          <Box flexShrink={0} bgcolor="white">
             <Canvas
               figuras={this.state.figuras}
               lineasPunteadas={this.state.lineasPunteadas}
