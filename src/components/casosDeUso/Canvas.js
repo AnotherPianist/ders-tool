@@ -8,12 +8,9 @@ class Canvas extends React.Component {
     super(props);
 
     this.state = {
-      //lineasSolidas contiene las flechas con lineas normales
-      lineasSolidas: [],
-      //lineasPunteadas contiene las flechas punteadas de extend e include
-      lineasPunteadas: [],
       //Arreglo de los puntos iniciales y finales de una linea
       posLinea: [
+        {id1: 0, id2: 0},
         { x: 0, y: 0 },
         { x: 0, y: 0 },
       ],
@@ -22,6 +19,9 @@ class Canvas extends React.Component {
       tipoLinea: 0,
       nroClick: 0,
       resetClick: false,
+      nlinea: 1,
+      figura1: {},
+      figura2: {}
     };
   }
 
@@ -97,15 +97,15 @@ class Canvas extends React.Component {
    * @param  i indice de la flecha a dibujar
    */
   dibujarFlechaPunt = (i) => {
-    if (this.state.lineasPunteadas[i].tipo === 5) {
+    if (this.props.lineasPunteadas[i].tipo === 5) {
       console.log("DEPENDENCIA");
       return (
         <Arrow
           points={[
-            this.state.lineasPunteadas[i].x1,
-            this.state.lineasPunteadas[i].y1,
-            this.state.lineasPunteadas[i].x2,
-            this.state.lineasPunteadas[i].y2,
+            this.props.lineasPunteadas[i].fig1.x,
+            this.props.lineasPunteadas[i].fig1.y,
+            this.props.lineasPunteadas[i].fig2.x,
+            this.props.lineasPunteadas[i].fig2.y,
           ]}
           dash={[5, 5, 0.001, 5]}
           fill="black"
@@ -121,10 +121,10 @@ class Canvas extends React.Component {
         <>
           <Arrow
             points={[
-              this.state.lineasPunteadas[i].x1,
-              this.state.lineasPunteadas[i].y1,
-              this.state.lineasPunteadas[i].x2,
-              this.state.lineasPunteadas[i].y2,
+              this.props.lineasPunteadas[i].fig1.x,
+              this.props.lineasPunteadas[i].fig1.y,
+              this.props.lineasPunteadas[i].fig2.x,
+              this.props.lineasPunteadas[i].fig2.y,
             ]}
             dash={[5, 5, 0.001, 5]}
             fill="black"
@@ -135,16 +135,16 @@ class Canvas extends React.Component {
           />
           <Text
             x={this.calcularpuntomedio(
-              this.state.lineasPunteadas[i].x1,
-              this.state.lineasPunteadas[i].x2
+              this.props.lineasPunteadas[i].fig1.x,
+              this.props.lineasPunteadas[i].fig2.x
             )}
             y={this.calcularpuntomedio(
-              this.state.lineasPunteadas[i].y1,
-              this.state.lineasPunteadas[i].y2
+              this.props.lineasPunteadas[i].fig1.y,
+              this.props.lineasPunteadas[i].fig2.y
             )}
             fontSize={17}
             fontStyle="italic"
-            text={this.state.lineasPunteadas[i].etiqueta}
+            text={this.props.lineasPunteadas[i].etiqueta}
             wrap="char"
             align="center"
           />
@@ -157,15 +157,16 @@ class Canvas extends React.Component {
    * @param i indice de la linea o la flecha a dibujar.
    */
   dibujarLineaNormal = (i) => {
-    if (this.state.lineasSolidas[i].tipo === 0) {
+    if (this.props.lineasSolidas[i].tipo === 0) {
       console.log("creando linea ");
+      console.log(this.props.lineasSolidas[i]);
       return (
         <Line
           points={[
-            this.state.lineasSolidas[i].x1,
-            this.state.lineasSolidas[i].y1,
-            this.state.lineasSolidas[i].x2,
-            this.state.lineasSolidas[i].y2,
+            this.props.lineasSolidas[i].fig1.x,
+            this.props.lineasSolidas[i].fig1.y,
+            this.props.lineasSolidas[i].fig2.x,
+            this.props.lineasSolidas[i].fig2.y,
           ]}
           tension={1}
           closed
@@ -175,7 +176,7 @@ class Canvas extends React.Component {
     } else {
       console.log("creando flecha");
       var fill = "blue";
-      if (this.state.lineasSolidas[i].tipo === 3) {
+      if (this.props.lineasSolidas[i].tipo === 3) {
         fill = "black";
       } else {
         fill = "white";
@@ -183,10 +184,10 @@ class Canvas extends React.Component {
       return (
         <Arrow
           points={[
-            this.state.lineasSolidas[i].x1,
-            this.state.lineasSolidas[i].y1,
-            this.state.lineasSolidas[i].x2,
-            this.state.lineasSolidas[i].y2,
+            this.props.lineasSolidas[i].x1,
+            this.props.lineasSolidas[i].y1,
+            this.props.lineasSolidas[i].x2,
+            this.props.lineasSolidas[i].y2,
           ]}
           tension={1}
           fill={fill}
@@ -207,23 +208,39 @@ class Canvas extends React.Component {
    * @param e
    */
   definirLinea = (e) => {
+    let fig1 = {
+      x: 0,
+      y: 0,
+      id: 0
+    };
+    let fig2 = {
+      x: 0,
+      y: 0,
+      id: 0
+    };
     if (this.state.nroClick === 0) {
       console.log("click1..");
-      let array = this.state.posLinea;
-      array[1].x = e.currentTarget.attrs.x;
-      array[1].y = e.currentTarget.attrs.y;
-      array[0].x = e.currentTarget.attrs.x;
-      array[0].y = e.currentTarget.attrs.y;
-      this.setState({ posLinea: array });
+      fig1.x = e.currentTarget.attrs.x;
+      fig1.y = e.currentTarget.attrs.y;
+      fig1.id = e.currentTarget.attrs.id;
+      console.log('se clickeo la figura con id: '+fig1.id);
+      console.log('fig1: ');
+      console.log(fig1);
+      this.setState({figura1: fig1});
     }
     if (this.state.nroClick === 1) {
       console.log("click2..");
-      let array = this.state.posLinea;
-      array[1].x = e.currentTarget.attrs.x;
-      array[1].y = e.currentTarget.attrs.y;
-      array[0].x = this.state.posLinea[0].x;
-      array[0].y = this.state.posLinea[0].y;
-      this.setState({ posLinea: array });
+      fig2.x = e.currentTarget.attrs.x;
+      fig2.y = e.currentTarget.attrs.y;
+      fig2.id = e.currentTarget.attrs.id;
+      var xAux= fig2.x + 150;
+      fig1.x = xAux;
+      var yAux= fig2.y + 200;
+      fig1.y = yAux;
+      console.log('se clickeo la figura con id: '+fig2.id);
+      console.log('fig2: ');
+      console.log(fig2);
+      this.setState({figura2: fig2})
       this.setState({ resetClick: true });
     }
     this.setState({ nroClick: this.state.nroClick + 1 });
@@ -231,41 +248,63 @@ class Canvas extends React.Component {
     se desactiva del modo linea y se guarda la linea obtenida*/
     if (this.state.resetClick) {
       console.log("reseteando..");
+
       this.setState({ nroClick: 0 });
       this.setState({ resetClick: false });
       this.setState({ dibujarLinea: false });
-      var newFlecha = {
-        x1: this.state.posLinea[0].x,
-        y1: this.state.posLinea[0].y,
-        x2: this.state.posLinea[1].x,
-        y2: this.state.posLinea[1].y,
-        etiqueta: "",
-        tipo: 0,
-      };
+      
+      
       if (
         this.state.tipo === 0 ||
         this.state.tipo === 3 ||
         this.state.tipo === 4
       ) {
         console.log("0 o 3");
-        var lineasSolidas = this.state.lineasSolidas;
-        newFlecha.tipo = this.state.tipo;
-        lineasSolidas.push(newFlecha);
-        this.setState({
-          flecha1: lineasSolidas,
-        });
+        var lineasSolidas = this.props.lineasSolidas;
+        lineasSolidas.push(
+          {
+            id: this.state.nlinea,
+            fig1: this.state.figura1,
+            fig2: this.state.figura2,
+            etiqueta: "",
+            tipo: this.state.tipo
+          }
+        );
+        let nlineaAux = this.state.nlinea;
+        nlineaAux = nlineaAux + 1;
+        this.setState({nlinea: nlineaAux});
+        console.log('new flecha: '+lineasSolidas.length);
+        this.props.guardarFlecha(lineasSolidas);
+        
       } else {
-        var lineasPunteadas = this.state.lineasPunteadas;
+        var lineasPunteadas = this.props.lineasPunteadas;
         if (this.state.tipo === 1) {
-          newFlecha.etiqueta = "<<i>>";
+          lineasPunteadas.push(
+            {
+              id: this.state.nlinea,
+              fig1: this.state.figura1,
+              fig2: this.state.figura2,
+              etiqueta: "<<i>>",
+              tipo: this.state.tipo
+            }
+          );
         } else if (this.state.tipo === 2) {
-          newFlecha.etiqueta = "<<e>>";
+          lineasPunteadas.push(
+            {
+              id: this.state.nlinea,
+              fig1: this.state.figura1,
+              fig2: this.state.figura2,
+              etiqueta: "<<e>>",
+              tipo: this.state.tipo
+            }
+          );
         }
-
-        lineasPunteadas.push(newFlecha);
-        this.setState({
-          flecha2: lineasPunteadas,
-        });
+        
+        let nlineaAux = this.state.nlinea;
+        nlineaAux = nlineaAux + 1;
+        this.setState({nlinea: nlineaAux});
+        console.log('linnnn222: '+lineasPunteadas);
+        this.props.guardarFlecha(lineasPunteadas);
       }
     }
   };
@@ -286,18 +325,20 @@ class Canvas extends React.Component {
         <Stage width={window.innerWidth} height={window.innerHeight}>
           {/** Ciclo para dibujar lineas normales */}
 
-          {[...Array(this.state.lineasSolidas.length)].map((_, i) => (
+          {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
             <Layer key={i} draggable>
               {/** Linea individual, obtenido desde el arreglo de flechas*/}
               {this.dibujarLineaNormal(i)}
+              {console.log('dibujado')}
             </Layer>
           ))}
 
           {/** Ciclo para dibujar lineas punteadas include y extend */}
-          {[...Array(this.state.lineasPunteadas.length)].map((_, i) => (
+          {[...Array(this.props.lineasPunteadas.length)].map((_, i) => (
             <Layer key={i} draggable>
               {/** Linea individual, obtenido desde el arreglo de flechas*/}
               {this.dibujarFlechaPunt(i)}
+              {console.log('dibujado')}
             </Layer>
           ))}
 

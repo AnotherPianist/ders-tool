@@ -24,6 +24,17 @@ class CasoDeUso extends Component {
         "requisito 8",
       ],
 
+      //lineasSolidas contiene las flechas con lineas normales
+      lineasSolidas: [],
+      //lineasPunteadas contiene las flechas punteadas de extend e include
+      lineasPunteadas: [],
+      /*
+      flechas: [{
+        id:0,
+        fig1: {x:0,y:0,id:0},
+        fig2: {x:0,y:0,id:0}
+      }],
+      */
       figuras: [
         // {
         //   id:,
@@ -36,7 +47,125 @@ class CasoDeUso extends Component {
       ],
     };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
+    this.guardarFlecha = this.guardarFlecha.bind(this);
   }
+
+  guardarFlecha(flecha) {
+    console.log('punteadas: '+this.state.lineasPunteadas);
+    console.log('solidas: '+this.state.lineasSolidas);
+    /*
+    if(this.state.bandera)
+    {
+      flecha.shift();
+      this.setState({bandera: false});
+    }
+    */
+   console.log('la flecha: '+flecha.length)
+    let ultimaPosicion = flecha.length -1;
+    if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id)
+    {
+      console.log('dentro del if');
+      if (
+        flecha.tipo === 0 ||
+        flecha.tipo === 3 ||
+        flecha.tipo === 4
+      ){
+        this.setState({lineasSolidas: flecha});
+        console.log('flecha solida: ');
+        console.log(flecha);
+      }
+      else{
+        this.setState({lineasPunteadas: flecha});
+        console.log('flecha punteada: ');
+        console.log(flecha);
+      }
+    }
+  }
+
+
+
+  buscarFlecha(figuraActualizada, e){
+    console.log('actualizando flecha');
+    console.log('cantidad flechas solidas: '+this.state.lineasSolidas.length);
+    for(let j = 0; j < this.state.lineasSolidas.length; j++)
+    {
+      let flechaActualizada = this.state.lineasSolidas[j];
+      console.log('flecha actualizada: '+flechaActualizada.fig1);
+      console.log('flecha actualizada: '+flechaActualizada.fig2);
+      let arrayFlechas = this.state.lineasSolidas;
+
+      console.log('id figura: '+figuraActualizada.id+' id flecha fig1: '+this.state.lineasSolidas[j].fig1.id);
+      if (figuraActualizada.id === this.state.lineasSolidas[j].fig1.id)
+      {
+        if (flechaActualizada !== null){
+            flechaActualizada.fig1.x = e.currentTarget.attrs.x;
+            flechaActualizada.fig1.y = e.currentTarget.attrs.y;
+            arrayFlechas.splice(j, flechaActualizada);
+            this.setState({ lineasSolidas: arrayFlechas});
+            console.log('flecha actualizada');
+            console.log(this.state.lineasSolidas[j]);
+        }
+      }
+      else
+      {
+        console.log('id figura: '+figuraActualizada.id+' id flecha fig2: '+this.state.lineasSolidas[j].fig2.id);
+        if (figuraActualizada.id === this.state.lineasSolidas[j].fig2.id)
+        {
+          flechaActualizada.fig2.x = e.currentTarget.attrs.x;
+          flechaActualizada.fig2.y = e.currentTarget.attrs.y;
+          arrayFlechas.splice(j, flechaActualizada);
+          this.setState({ lineasSolidas: arrayFlechas });
+          console.log('flecha actualizada');
+          console.log(this.state.lineasSolidas[j]);
+        }
+        else
+        {
+          console.log('flecha no encontrada en las solidas');
+        }
+      }
+    }
+    console.log('cantidad flechas solidas: '+this.state.lineasPunteadas.length);
+    for(let i = 0; i < this.state.lineasPunteadas.length; i++)
+    {
+      let flechaActualizada = this.state.lineasPunteadas[i];
+      console.log('flecha actualizada: '+flechaActualizada.fig1);
+      console.log('flecha actualizada: '+flechaActualizada.fig2);
+      let arrayFlechas = this.state.lineasPunteadas;
+
+      console.log('id figura: '+figuraActualizada.id+' id flecha fig1: '+this.state.lineasPunteadas[i].fig1.id);
+      if (figuraActualizada.id === this.state.lineasPunteadas[i].fig1.id)
+      {
+        if (flechaActualizada !== null){
+            flechaActualizada.fig1.x = e.currentTarget.attrs.x;
+            flechaActualizada.fig1.y = e.currentTarget.attrs.y;
+            arrayFlechas.splice(i, flechaActualizada);
+            this.setState({ lineasPunteadas: arrayFlechas});
+            console.log('flecha actualizada');
+            console.log(this.state.lineasPunteadas[i]);
+        }
+      }
+      else
+      {
+        console.log('id figura: '+figuraActualizada.id+' id flecha fig2: '+this.state.lineasPunteadas[i].fig2.id);
+        if (figuraActualizada.id === this.state.lineasPunteadas[i].fig2.id)
+        {
+          flechaActualizada.fig2.x = e.currentTarget.attrs.x;
+          flechaActualizada.fig2.y = e.currentTarget.attrs.y;
+          arrayFlechas.splice(i, flechaActualizada);
+          this.setState({ lineasPunteadas: arrayFlechas });
+          console.log('flecha actualizada');
+          console.log(this.state.lineasPunteadas[i]);
+        }
+        else
+        {
+          console.log('flecha no encontrada en las punteadas');
+        }
+      }
+    }
+  }
+    
+  
+
 
   //funcion que actualiza las coordenadas
   actualizarCoordenadas = (e) => {
@@ -49,6 +178,9 @@ class CasoDeUso extends Component {
         figuras[index].y = e.currentTarget.attrs.y;
         figuras[index].ancho = e.target.children[0].textWidth;
         this.setState({ figuras: figuras });
+        console.log('flecha dragg');
+        console.log(this.state.flecha);
+        this.buscarFlecha(figuras[index], e);
       }
     }
   };
@@ -85,6 +217,9 @@ class CasoDeUso extends Component {
           <Canvas
             bgcolor="blue"
             figuras={this.state.figuras}
+            lineasPunteadas={this.state.lineasPunteadas}
+            lineasSolidas={this.state.lineasSolidas}
+            guardarFlecha={this.guardarFlecha}
             actualizarCoordenadas={this.actualizarCoordenadas}
           />
         </Grid>
