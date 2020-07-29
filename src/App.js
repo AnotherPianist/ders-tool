@@ -6,6 +6,7 @@ import { CssBaseline } from '@material-ui/core';
 import Ajustes from './components/ajustes/Ajustes';
 import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
 import PuntosFuncion from './components/puntosFuncion/PuntosFuncion';
+import VistaPrevisualizacion from './components/previsualizacion/VistaPrevisualizacion';
 
 class App extends React.Component {
   constructor(props) {
@@ -91,6 +92,9 @@ class App extends React.Component {
             <Route path="/ajustes">
               <Ajustes tiposRequisitos={this.state.tiposRequisitos} actualizarTipos={this.actualizarTiposRequisitos}
               />
+            </Route>
+            <Route path="/previsualizar">
+              <VistaPrevisualizacion/>
             </Route>
             <Route path="/puntosFuncion">
               <PuntosFuncion puntos={this.state.puntosFuncion} actualizar={this.actualizarPuntosFuncion}/>

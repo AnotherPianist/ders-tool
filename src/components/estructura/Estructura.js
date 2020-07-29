@@ -72,7 +72,7 @@ class Estructura extends React.Component {
             <Menu open={Boolean(this.state.anchorEditar)} onClose={this.closeEditar} anchorEl={this.state.anchorEditar}>
               <MenuItem onClick={this.closeEditar} component={Link} to="/ajustes" >Ajustes</MenuItem>
             </Menu>
-            <Button style={{padding: "1rem"}}>Previsualizar</Button>
+            <Button style={{padding: "1rem"}} component={Link} to="/previsualizar">Previsualizar</Button>
           </Toolbar>
         </AppBar>
         <Drawer classes={{ paper: classes.drawerPaper }} anchor="left" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
