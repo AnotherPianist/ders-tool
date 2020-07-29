@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 import Botonera from "./Botonera";
 import ListaRequisitos from "./ListaRequisitos";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 
 /* Este componente es una barra lateral a la izquierda del canvas que contiene el conjunto de botones
 y el listado de requisitos que se pueden agregar al canvas como casos de uso. 

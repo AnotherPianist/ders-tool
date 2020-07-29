@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+
 import BarraHerramientaCasosDeUso from "./BarraHerramientasCasosDeUso";
 import Canvas from "./Canvas";
+import calculateSize from "calculate-size";
 
 /*
 Este componente es la pantalla de casos de uso.
@@ -14,7 +15,7 @@ class CasoDeUso extends Component {
     this.state = {
       count: 0, //número de figuras ya dibujadas
       requisitos: [
-        "requisito1",
+        "requisito1 dshsdbhs jhasdjsaj jsndknfdsjk sansnajsjn jnsdanasdjn",
         "requisito2",
         "requisito 3",
         "requisito 4",
@@ -55,15 +56,20 @@ class CasoDeUso extends Component {
 
   crearFigura = (props) => {
     const { req } = props;
-
+    const ancho = calculateSize(req, {
+      font: "Arial",
+      fontSize: "20px",
+    });
     let count = this.state.count;
+    const x = ancho.width / 2 + 100;
+
     const figura = {
       id: count,
-      x: 150,
+      x: x,
       y: 100,
       name: req,
       alto: 100,
-      ancho: 100,
+      ancho: ancho.width,
     };
     count++;
     this.setState({ count });
@@ -71,28 +77,27 @@ class CasoDeUso extends Component {
     figuras.push(figura);
     this.setState({ figuras });
   };
-  /* <Box component="span" style={{ backgroundColor: "#cfe8fc" }}>
-    hola
-  </Box> */
 
   render() {
     return (
-      <Container fixed>
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <BarraHerramientaCasosDeUso
-              requisitos={this.state.requisitos}
-              onClickRequisito={this.crearFigura}
-            />
-          </Grid>
-          <Grid item xs={9}>
+      <div style={{ width: "100%" }}>
+        <Box display="flex" p={1} bgcolor="background.paper">
+          <Box p={1} width="100%" borderRight="outset" bgcolor="#f4f4f4">
+            <Box p={1} width={250}>
+              <BarraHerramientaCasosDeUso
+                requisitos={this.state.requisitos}
+                onClickRequisito={this.crearFigura}
+              />
+            </Box>
+          </Box>
+          <Box p={1} flexShrink={0} bgcolor="white">
             <Canvas
               figuras={this.state.figuras}
               actualizarCoordenadas={this.actualizarCoordenadas}
             />
-          </Grid>
-        </Grid>
-      </Container>
+          </Box>
+        </Box>
+      </div>
     );
   }
 }

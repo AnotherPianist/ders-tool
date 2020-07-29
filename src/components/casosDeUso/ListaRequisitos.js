@@ -24,9 +24,11 @@ class ListaRequisitos extends React.Component {
     return (
       <Paper
         style={{
-          maxHeight: 200,
+          maxHeight: 150,
+          minHeight: 150,
+          minWidth: 235,
+          maxWidth: 235,
           overflow: "auto",
-          minWidth: 200,
         }}
       >
         <List>{requisitos}</List>
