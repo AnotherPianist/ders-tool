@@ -28,7 +28,17 @@ class BarraHerramientasCasosDeUso extends Component {
         </Grid>
 
         <Grid item xs={12}>
-          <Botonera />
+          <Botonera
+            onClickRequisito={this.props.onClickRequisito}
+            onClickActor={this.props.onClickActor}
+            onClickAsocDir={this.props.onClickAsocDir}
+            onClickAsocNoDir={this.props.onClickAsocNoDir}
+            onClickGeneralizacion={this.props.onClickGeneralizacion}
+            onClickDependencia={this.props.onClickDependencia}
+            onClickExtends={this.props.onClickExtends}
+            onClickInclude={this.props.onClickInclude}
+            onClickSujeto={this.props.onClickSujeto}
+          />
         </Grid>
       </Grid>
     );

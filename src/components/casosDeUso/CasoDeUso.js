@@ -254,6 +254,38 @@ class CasoDeUso extends Component {
     this.setState({ tipo });
   };
 
+  handleActor = () => {
+    console.log("actor");
+  };
+
+  handleAsociacionDirigida = () => {
+    console.log("aociacion dirigida");
+  };
+
+  handleAsociacionNoDirigida = () => {
+    console.log("asociacion no dirigida");
+  };
+
+  handleGeneralizacion = () => {
+    console.log("generalización");
+  };
+
+  handleDependencia = () => {
+    console.log("dependencia");
+  };
+
+  handleExtends = () => {
+    console.log("extends");
+  };
+
+  handleInclude = () => {
+    console.log("include");
+  };
+
+  handleSujeto = () => {
+    console.log("sujeto");
+  };
+
   render() {
     return (
       <div style={{ width: "100%" }}>
@@ -263,6 +295,14 @@ class CasoDeUso extends Component {
               <BarraHerramientaCasosDeUso
                 requisitos={this.state.requisitos}
                 onClickRequisito={this.crearFigura}
+                onClickActor={this.handleActor}
+                onClickAsocDir={this.handleAsociacionDirigida}
+                onClickAsocNoDir={this.handleAsociacionNoDirigida}
+                onClickGeneralizacion={this.handleGeneralizacion}
+                onClickDependencia={this.handleDependencia}
+                onClickExtends={this.handleExtends}
+                onClickInclude={this.handleInclude}
+                onClickSujeto={this.handleSujeto}
               />
             </Box>
           </Box>
