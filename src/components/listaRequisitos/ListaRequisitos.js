@@ -17,6 +17,7 @@ class ListaRequisitos extends React.Component {
   crearRequisitoUsuario = (n, t) => {
     let nuevoRequisito = {
       key: this.state.contadorRU,
+      ru: true,
       id: this.props.requisitosUsuario.length + 1,
       nombre: n,
       tipo: t,
@@ -27,13 +28,15 @@ class ListaRequisitos extends React.Component {
     this.props.actualizarRequisitosUsuario(listaReq);
   }
 
-  crearRequisitoSistema = (n, t, r) => {
+  crearRequisitoSistema = (n, t, r, i) => {
     let nuevoRequisito = {
       key: this.state.contadorRS,
-      refRU:[r],
+      refRU: r,
+      ru: false,
       id: this.props.requisitosSistema.length + 1,
       nombre: n,
-      tipo: t
+      tipo: t,
+      invocaA: i
     };
     const listaReq = this.props.requisitosSistema.slice();
     listaReq.push(nuevoRequisito);
@@ -81,7 +84,8 @@ class ListaRequisitos extends React.Component {
           id: i++,
           nombre: requisito.nombre,
           tipo: requisito.tipo,
-          refRU: requisito.refRU.slice()
+          refRU: requisito.refRU,
+          invocaA: requisito.invocaA
         };
         listaReq.push(req);
       }
@@ -90,102 +94,49 @@ class ListaRequisitos extends React.Component {
   }
  
   obtenerRequisitosSistema = (idRU) => {
-    console.log(this.props.requisitosSistema);
     const reqsSistema = this.props.requisitosSistema.map((req) => {
-      for (const refRU of req.refRU) {
-        console.log(idRU);
-        console.log(refRU);
-        if (refRU === idRU){
-          console.log("entre");
-          return <RequisitoSistema
-                    key={req.key}
-                    id={req.id}
-                    nombre={req.nombre}
-                    tipo={req.tipo}
-                    eliminarRequisitoSistema={this.eliminarRequisitoSistema}
-                    tiposRequisitos={this.props.tiposRequisitos}
-                  />      
-        }
+      if (req.refRU === idRU){
+        return <RequisitoSistema
+                  key={req.key}
+                  id={req.id}
+                  nombre={req.nombre}
+                  tipo={req.tipo}
+                  eliminarRequisitoSistema={this.eliminarRequisitoSistema}
+                  tiposRequisitos={this.props.tiposRequisitos}
+                />;
       }
+      return null;
     });
     return reqsSistema;
   }
 
   obtenerRequisitosParaInvocar = (idRU) => {
     const requisitosInvocar = [];
-    this.props.requisitosSistema.map((req) => {
-      for(const refRU of req.refRU){
-        if (refRU !== idRU){
-          const reqSistema = {
-            key: req.key,
-            refRU: req.refRU,
-            id: req.id,
-            nombre: "RS"+req.id+": "+req.nombre,
-            tipo: req.tipo
-          };
-          requisitosInvocar.push(reqSistema);
-        }
-      }
-    });
-    this.props.requisitosUsuario.map((req) => {
-      if(req.id !== idRU){
-        const reqUsuario = {
-          key: req.key,
-          id: req.id,
-          nombre: "RU"+req.id+": "+req.nombre,
-          tipo: req.tipo
-        };
-        requisitosInvocar.push(reqUsuario);
-      }
-    });
+    for (const req of this.props.requisitosUsuario)
+      if (req.id !== idRU)
+        requisitosInvocar.push(req);
+    for (const req of this.props.requisitosSistema)
+      if (req.refRU !== idRU)
+        requisitosInvocar.push(req);
     return requisitosInvocar;
-  }
-
-  invocarRequisito = (tipo, idReq, idRU) => {
-    const requisitosSistema = this.props.requisitosSistema.slice();
-    if(tipo === "RS"){
-      for(const requisitoSistema of requisitosSistema){
-        if(requisitoSistema.id === idReq){
-          if(!this.tieneRefRU(requisitoSistema,idRU)){
-            requisitoSistema.refRU.push(idRU);
-          }
-        }  
-      }
-    }
-    this.props.actualizarRequisitosSistema(requisitosSistema);
   }
 
   eliminarRequisitosSistemaRU = (idRU) => {
     const listaReq = [];
     let i = 1;
     for (const requisitoSistema of this.props.requisitosSistema) {
-      for(const refRU of requisitoSistema.refRU){
-        if (refRU !== idRU) {
-          const listaRefRU = [];
-          for(const refRU of requisitoSistema.refRU){
-            listaRefRU.push((refRU > idRU) ? refRU-1 : refRU);
-          }
-          const req = {
-            key: requisitoSistema.key,
-            id: i++,
-            nombre: requisitoSistema.nombre,
-            tipo: requisitoSistema.tipo,        
-            refRU: listaRefRU.slice()
-          };
-          listaReq.push(req);
-        }
+      if (requisitoSistema.refRU !== idRU) {
+        const req = {
+          key: requisitoSistema.key,
+          id: i++,
+          nombre: requisitoSistema.nombre,
+          tipo: requisitoSistema.tipo,        
+          refRU: (requisitoSistema.refRU > idRU) ? requisitoSistema.refRU-1 : requisitoSistema.refRU
+        };
+        listaReq.push(req);
       }
     }
     this.props.actualizarRequisitosSistema(listaReq);  
-  }
-
-  tieneRefRU(requisito, refRUNueva){
-    for(const refRU of requisito.refRU){
-      if(refRU === refRUNueva){
-        return true;
-      }
-    }
-    return false;
   }
 
   render() {
@@ -204,7 +155,7 @@ class ListaRequisitos extends React.Component {
           {this.obtenerRequisitosSistema(req.id)}
           <CrearRS 
             key={"crear" + req.key} 
-            refRU={req.id} 
+            refRU={req.id}
             crearRequisitoSistema={this.crearRequisitoSistema} 
             tiposRequisitos={this.props.tiposRequisitos}
             requisitosInvocar={this.obtenerRequisitosParaInvocar(req.id)}

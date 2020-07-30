@@ -40,7 +40,6 @@ class RequisitoUsuario extends React.Component {
           <MenuItem>{tipoReq.nombre}</MenuItem>
         </Tooltip>
       );
-      
     })
 
     return(

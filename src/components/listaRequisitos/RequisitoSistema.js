@@ -23,7 +23,6 @@ class RequisitoSistema extends React.Component {
           <MenuItem>{tipoReq.nombre}</MenuItem>
         </Tooltip>
       );
-      
     })
 
     return(

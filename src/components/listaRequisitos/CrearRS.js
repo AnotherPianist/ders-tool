@@ -12,7 +12,6 @@ class CrearRS extends React.Component {
     this.onChangeNombre = this.onChangeNombre.bind(this);
     this.onChangeTipo = this.onChangeTipo.bind(this);
     this.crearReq = this.crearReq.bind(this);
-    this.invocarRequisito = this.invocarRequisito.bind(this);
   }
 
   onChangeNombre(e) {
@@ -24,17 +23,21 @@ class CrearRS extends React.Component {
   }
 
   crearReq(e) {
-  if (e.key === "Enter" && this.state.nombre.length !== 0) {
-        this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU);
-        this.setState({nombre: ""});
-        e.target.value = "";
+    console.log("crear"+e.target.value);
+    if (e.key === "Enter" && this.state.nombre.length !== 0) {
+      this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU, null);
+      this.setState({nombre: ""});
+      e.target.value = "";
     }
   }
 
-  invocarRequisito(e){
-    if (e.key === "Enter" && e.target.value !== ""){
-      let idReq = parseInt(e.target.value.slice(2).split(":", 1)[0]);
-      this.props.invocarRequisito((e.target.value.includes("RU") ? "RU" : "RS"), idReq, this.props.refRU);
+  selectedAutoComplete = (e, value) => {
+    console.log("invocar"+value);
+    if (e.key === "Enter" && this.state.nombre.length !== 0) {
+      if (value === null) {
+        this.props.crearRequisitoSistema("Invocar a" + value.id + ": " + value.nombre, value.tipo, this.props.refRU, value.key);
+        this.setState({nombre: ""});
+      }
     }
   }
 
@@ -45,25 +48,24 @@ class CrearRS extends React.Component {
           <MenuItem>{tipoReq.nombre}</MenuItem>
         </Tooltip>
       );
-      
     });
 
     return(
       <Grid container style={{marginLeft: "15px"}}>
         <Grid item xs={10} style={{padding: "34px"}}>          
           <Autocomplete
-            onKeyDown={this.invocarRequisito}
             freeSolo
+            onKeyDown={this.selectedAutoComplete}
             size="small"
             options={this.props.requisitosInvocar}
-            getOptionLabel={(option) => option.nombre}
+            getOptionLabel={(option) => option.id + ": " + option.nombre}
             style={{ width: 980 }}
-            renderInput={(params) => 
+            renderInput={(params) =>
               <TextField {...params}
-                id="nombreForm" 
-                onChange={this.onChangeNombre} 
-                onKeyDown={this.crearReq} 
-                variant="standard" 
+                id="nombreForm"
+                onChange={this.onChangeNombre}
+                onKeyDown={this.crearReq}
+                variant="standard"
                 placeholder="Nombre requisito sistema"
               />}
           />
