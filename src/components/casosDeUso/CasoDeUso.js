@@ -52,19 +52,13 @@ class CasoDeUso extends Component {
   }
 
   guardarFlecha(flecha) {
-    console.log('punteadas: '+this.state.lineasPunteadas.length);
-    console.log('solidas: '+this.state.lineasSolidas.length);
-    console.log(this.state.lineasSolidas[0].fig1);
-    /*
-    if(this.state.bandera)
-    {
-      flecha.shift();
-      this.setState({bandera: false});
-    }
-    */
-   console.log('la flecha: '+flecha.length)
-   console.log('su posicion: '+flecha[0].tipo)
+    console.log('punteadas: '+this.state.lineasPunteadas);
+    console.log('solidas: '+this.state.lineasSolidas);
+   console.log('la flecha: '+flecha.length);
+   
     let ultimaPosicion = flecha.length -1;
+    console.log('su posicion: '+flecha[ultimaPosicion].tipo)
+    console.log('id fig1: '+flecha[ultimaPosicion].fig1.id+' id fig2: '+flecha[ultimaPosicion].fig2.id);
     if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id)
     {
       console.log('dentro del if');
@@ -81,9 +75,14 @@ class CasoDeUso extends Component {
       else{
         this.setState({lineasPunteadas: flecha});
         console.log('flecha punteada: ');
-        console.log(flecha);
+        console.log(this.state.lineasPunteadas);
       }
     }
+      console.log('IDs IGUALES');
+      console.log('flechas solida: ');
+      console.log(this.state.lineasSolidas);
+      console.log('flecha punteada: ');
+        console.log(this.state.lineasPunteadas);
   }
 
   buscarFlecha(figuraActualizada, e) {

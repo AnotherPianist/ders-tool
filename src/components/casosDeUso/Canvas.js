@@ -161,7 +161,6 @@ class Canvas extends React.Component {
     let tipo = this.props.lineasSolidas[i].tipo;
     if (tipo === 0) {
       console.log("Dibujando Solida:");
-      console.log(this.props.lineasSolidas[i]);
       return (
         <Line
           points={[
@@ -177,7 +176,6 @@ class Canvas extends React.Component {
       );
     } else if (tipo === 3 || tipo === 4) {
       console.log("Dibujando Solida:");
-      console.log(this.props.lineasSolidas[i]);
       var fill = "blue";
       if (tipo === 3) {
         fill = "black";
@@ -242,11 +240,7 @@ class Canvas extends React.Component {
       this.setState({ nroClick: 0 });
       this.setState({ resetClick: false });
       this.setState({ dibujarLinea: false });
-      if (
-        this.state.tipo === 0 ||
-        this.state.tipo === 3 ||
-        this.state.tipo === 4
-      ) {
+      if ((this.state.tipo === 0 || this.state.tipo === 3 || this.state.tipo === 4) & (this.state.figura1.id !== this.state.figura2.id)) {
         var lineasSolidas = this.props.lineasSolidas;
         lineasSolidas.push({
           fig1: this.state.figura1,
@@ -283,8 +277,10 @@ class Canvas extends React.Component {
             tipo: this.state.tipo,
           });
         }
-        console.log("listaNuevaP: " + lineasPunteadas.length);
-        this.props.guardarFlecha(lineasPunteadas);
+        if (this.state.figura1.id !== this.state.figura2.id){
+          console.log("listaNuevaP: " + lineasPunteadas.length);
+          this.props.guardarFlecha(lineasPunteadas);
+        }
       }
     }
   };
