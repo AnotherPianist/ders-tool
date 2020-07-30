@@ -56,26 +56,7 @@ class Canvas extends React.Component {
       />
     );
   };
-  /**
-   * Funcion creadora de los botones
-   * @param {*} name nombre del boton
-   * @param {*} tipo tipo de linea que dibujara el boton:
-   * 0 = asociacion no dir, 1 = include, 2 = extend, 3 = asociacion dirigida, 4 = generalizacion
-   */
-  dibujarBotonAux = (name, tipo) => {
-    return (
-      <Button
-        onClick={() => {
-          this.props.setDibujarLinea(true);
-          this.props.setTipo(tipo);
-        }}
-        color="primary"
-        variant="outlined"
-      >
-        {name}
-      </Button>
-    );
-  };
+
   /**
    * Funcion que dibuja una flecha punteada con la etiqueta de include o extend.
    * @param  i indice de la flecha a dibujar
@@ -279,17 +260,6 @@ class Canvas extends React.Component {
   render() {
     return (
       <div>
-        {/* Botones temporales para activar-desactivar el modo linea, si linea = true 
-        la funcionalidad onClick dibuja, si es false no lo hace. Hay varios botones segun el 
-        tipo de la linea. */}
-        {this.dibujarBotonAux("Asocia_nodir", 0)} {/*LINEA NORMAL*/}
-        {this.dibujarBotonAux("Asocia_dir", 3)}{" "}
-        {/*flecha NORMAL con punta cerrada*/}
-        {this.dibujarBotonAux("Generalizacion", 4)}{" "}
-        {/*flecha NORMAL con punta abierta*/}
-        {this.dibujarBotonAux("include", 1)} {/*flecha TIPO INCLUDE*/}
-        {this.dibujarBotonAux("extend", 2)} {/*flecha TIPO EXTEND */}
-        {this.dibujarBotonAux("depend", 5)} {/*flecha dependencia */}
         <Stage width={window.innerWidth} height={window.innerHeight}>
           {/** Ciclo para dibujar lineas normales */}
 
