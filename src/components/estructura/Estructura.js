@@ -116,7 +116,7 @@ class Estructura extends React.Component {
               <ListItemIcon className={classes.whiteIcons}><AssessmentIcon/></ListItemIcon>
               <ListItemText primary="Puntos de Función"/>
             </ListItem>
-            <ListItem button className={classes.whiteIcons} onClick={this.toggleDrawer}>
+            <ListItem button className={classes.whiteIcons} component={Link} to="/analisisRepago" onClick={this.toggleDrawer}>
               <ListItemIcon className={classes.whiteIcons}><TimelineIcon/></ListItemIcon>
               <ListItemText primary="Análisis de Repago"/>
             </ListItem>
