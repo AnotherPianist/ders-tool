@@ -260,26 +260,38 @@ class CasoDeUso extends Component {
 
   handleAsociacionDirigida = () => {
     console.log("aociacion dirigida");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 3 });
   };
 
   handleAsociacionNoDirigida = () => {
     console.log("asociacion no dirigida");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 0 });
   };
 
   handleGeneralizacion = () => {
     console.log("generalización");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 4 });
   };
 
   handleDependencia = () => {
     console.log("dependencia");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 5 });
   };
 
   handleExtends = () => {
     console.log("extends");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 2 });
   };
 
   handleInclude = () => {
     console.log("include");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 1 });
   };
 
   handleSujeto = () => {
