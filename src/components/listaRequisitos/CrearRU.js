@@ -42,10 +42,19 @@ class CrearRU extends React.Component {
     return(
       <Grid container>
         <Grid item xs={10} style={{padding: "16px"}}>
-          <TextField id="nombreForm" fullWidth placeholder="Nombre requisito usuario" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
+          <TextField 
+            id="nombreForm" 
+            fullWidth placeholder="Nombre requisito usuario" 
+            onChange={this.onChangeNombre} 
+            onKeyDown={this.crearReq}
+          />
         </Grid>
         <Grid item xs={2} >    
-            <Select id="tipoForm" defaultValue="Funcional" fullWidth onChange={this.onChangeTipo}>
+            <Select 
+              id="tipoForm" 
+              defaultValue="Funcional" 
+              fullWidth 
+              onChange={this.onChangeTipo}>
               {tiposReq}
             </Select>
         </Grid>

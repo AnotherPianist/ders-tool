@@ -1,4 +1,5 @@
 import React from 'react';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Grid, TextField, Select, MenuItem, Tooltip } from '@material-ui/core';
 
 class CrearRS extends React.Component {
@@ -11,6 +12,7 @@ class CrearRS extends React.Component {
     this.onChangeNombre = this.onChangeNombre.bind(this);
     this.onChangeTipo = this.onChangeTipo.bind(this);
     this.crearReq = this.crearReq.bind(this);
+    this.invocarRequisito = this.invocarRequisito.bind(this);
   }
 
   onChangeNombre(e) {
@@ -29,6 +31,13 @@ class CrearRS extends React.Component {
     }
   }
 
+  invocarRequisito(e){
+    if (e.key === "Enter" && e.target.value !== ""){
+      let idReq = parseInt(e.target.value.slice(2).split(":", 1)[0]);
+      this.props.invocarRequisito((e.target.value.includes("RU") ? "RU" : "RS"), idReq, this.props.refRU);
+    }
+  }
+
   render() {
     const tiposReq = this.props.tiposRequisitos.map((tipoReq) => {
       return (   
@@ -37,15 +46,34 @@ class CrearRS extends React.Component {
         </Tooltip>
       );
       
-    })
+    });
 
     return(
       <Grid container style={{marginLeft: "15px"}}>
-        <Grid item xs={10} style={{padding: "34px"}}>
-          <TextField id="nombreForm" fullWidth size="small" placeholder="Nombre requisito sistema" onChange={this.onChangeNombre} onKeyDown={this.crearReq}/>
+        <Grid item xs={10} style={{padding: "34px"}}>          
+          <Autocomplete
+            onKeyDown={this.invocarRequisito}
+            freeSolo
+            size="small"
+            options={this.props.requisitosInvocar}
+            getOptionLabel={(option) => option.nombre}
+            style={{ width: 980 }}
+            renderInput={(params) => 
+              <TextField {...params}
+                id="nombreForm" 
+                onChange={this.onChangeNombre} 
+                onKeyDown={this.crearReq} 
+                variant="standard" 
+                placeholder="Nombre requisito sistema"
+              />}
+          />
         </Grid>
         <Grid item xs={2} style={{padding: "15px"}}>
-          <Select id="tipoForm" defaultValue="Funcional" fullWidth size="small" onChange={this.onChangeTipo}>
+          <Select 
+            id="tipoForm" 
+            defaultValue="Funcional" 
+            fullWidth size="small" 
+            onChange={this.onChangeTipo}>
             {tiposReq}
           </Select>
         </Grid>
