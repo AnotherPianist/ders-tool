@@ -46,14 +46,28 @@ class CasoDeUso extends Component {
         //   ancho:,
         // },
       ],
+
+      //Arreglo de los puntos iniciales y finales de una linea
+      posLinea: [
+        { id1: 0, id2: 0 },
+        { x: 0, y: 0 },
+        { x: 0, y: 0 },
+      ],
+      dibujarLinea: false,
+      tipo: 0,
+      tipoLinea: 0,
+      nroClick: 0,
+      resetClick: false,
+      figura1: {},
+      figura2: {},
     };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
   }
 
   guardarFlecha(flecha) {
-    console.log('punteadas: '+this.state.lineasPunteadas.length);
-    console.log('solidas: '+this.state.lineasSolidas.length);
+    console.log("punteadas: " + this.state.lineasPunteadas.length);
+    console.log("solidas: " + this.state.lineasSolidas.length);
     console.log(this.state.lineasSolidas[0].fig1);
     /*
     if(this.state.bandera)
@@ -62,25 +76,23 @@ class CasoDeUso extends Component {
       this.setState({bandera: false});
     }
     */
-   console.log('la flecha: '+flecha.length)
-   console.log('su posicion: '+flecha[0].tipo)
-    let ultimaPosicion = flecha.length -1;
-    if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id)
-    {
-      console.log('dentro del if');
+    console.log("la flecha: " + flecha.length);
+    console.log("su posicion: " + flecha[0].tipo);
+    let ultimaPosicion = flecha.length - 1;
+    if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id) {
+      console.log("dentro del if");
       if (
         flecha[ultimaPosicion].tipo === 0 ||
         flecha[ultimaPosicion].tipo === 3 ||
-        flecha[ultimaPosicion].tipo === 4 
-      ){
-        console.log('guardan2');
-        this.setState({lineasSolidas: flecha});
-        console.log('flechas solida: ');
+        flecha[ultimaPosicion].tipo === 4
+      ) {
+        console.log("guardan2");
+        this.setState({ lineasSolidas: flecha });
+        console.log("flechas solida: ");
         console.log(this.state.lineasSolidas);
-      }
-      else{
-        this.setState({lineasPunteadas: flecha});
-        console.log('flecha punteada: ');
+      } else {
+        this.setState({ lineasPunteadas: flecha });
+        console.log("flecha punteada: ");
         console.log(flecha);
       }
     }
@@ -214,6 +226,34 @@ class CasoDeUso extends Component {
     this.setState({ figuras });
   };
 
+  handleFiguras = (figuras) => {
+    this.setState({ figuras });
+  };
+
+  handleFigura1 = (figura1) => {
+    this.setState({ figura1 });
+  };
+
+  handleFigura2 = (figura2) => {
+    this.setState({ figura2 });
+  };
+
+  handleResetClick = (resetClick) => {
+    this.setState({ resetClick });
+  };
+
+  handleNroClick = (nroClick) => {
+    this.setState({ nroClick });
+  };
+
+  handleDibujarLinea = (dibujarLinea) => {
+    this.setState({ dibujarLinea });
+  };
+
+  handleTipo = (tipo) => {
+    this.setState({ tipo });
+  };
+
   render() {
     return (
       <div style={{ width: "100%" }}>
@@ -233,6 +273,19 @@ class CasoDeUso extends Component {
               lineasSolidas={this.state.lineasSolidas}
               guardarFlecha={this.guardarFlecha}
               actualizarCoordenadas={this.actualizarCoordenadas}
+              setFiguras={this.handleFiguras}
+              nroClick={this.state.nroClick}
+              setNroClick={this.handleNroClick}
+              setFigura1={this.handleFigura1}
+              setFigura2={this.handleFigura2}
+              setResetClick={this.handleResetClick}
+              resetClick={this.state.resetClick}
+              setDibujarLinea={this.handleDibujarLinea}
+              tipo={this.state.tipo}
+              setTipo={this.handleTipo}
+              figura1={this.state.figura1}
+              figura2={this.state.figura2}
+              dibujarLinea={this.state.dibujarLinea}
             />
           </Box>
         </Box>

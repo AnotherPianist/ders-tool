@@ -7,21 +7,7 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      //Arreglo de los puntos iniciales y finales de una linea
-      posLinea: [
-        { id1: 0, id2: 0 },
-        { x: 0, y: 0 },
-        { x: 0, y: 0 },
-      ],
-      dibujarLinea: false,
-      tipo: 0,
-      tipoLinea: 0,
-      nroClick: 0,
-      resetClick: false,
-      figura1: {},
-      figura2: {},
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -35,7 +21,7 @@ class Canvas extends React.Component {
       });
       e.ancho = ancho.width;
     });
-    this.setState({ figuras: figuras });
+    this.props.setFiguras(figuras);
   }
   /**
    * Funcion que dibuja el texto del requisito sobre la elipse
@@ -80,8 +66,8 @@ class Canvas extends React.Component {
     return (
       <Button
         onClick={() => {
-          this.setState({ dibujarLinea: true });
-          this.setState({ tipo: tipo });
+          this.props.setDibujarLinea(true);
+          this.props.setTipo(tipo);
         }}
         color="primary"
         variant="outlined"
@@ -222,65 +208,67 @@ class Canvas extends React.Component {
       y: 0,
       id: 0,
     };
-    if (this.state.nroClick === 0) {
+    if (this.props.nroClick === 0) {
       fig1.x = e.currentTarget.attrs.x;
       fig1.y = e.currentTarget.attrs.y;
       fig1.id = e.currentTarget.attrs.id;
-      this.setState({ figura1: fig1 });
+      this.props.setFigura1(fig1);
     }
-    if (this.state.nroClick === 1) {
+    if (this.props.nroClick === 1) {
       fig2.x = e.currentTarget.attrs.x;
       fig2.y = e.currentTarget.attrs.y;
       fig2.id = e.currentTarget.attrs.id;
-      this.setState({ figura2: fig2 });
-      this.setState({ resetClick: true });
+      this.props.setFigura2(fig2);
+      this.props.setResetClick(true);
     }
-    this.setState({ nroClick: this.state.nroClick + 1 });
+    let n = this.props.nroClick;
+    n += 1;
+    this.props.setNroClick(n);
     /**Cuando se alcanza el segundo click se resetean las variables, 
     se desactiva del modo linea y se guarda la linea obtenida*/
-    if (this.state.resetClick) {
-      this.setState({ nroClick: 0 });
-      this.setState({ resetClick: false });
-      this.setState({ dibujarLinea: false });
+    if (this.props.resetClick) {
+      this.props.setNroClick(0);
+      this.props.setResetClick(false);
+      this.props.setDibujarLinea(false);
       if (
-        this.state.tipo === 0 ||
-        this.state.tipo === 3 ||
-        this.state.tipo === 4
+        this.props.tipo === 0 ||
+        this.props.tipo === 3 ||
+        this.props.tipo === 4
       ) {
         var lineasSolidas = this.props.lineasSolidas;
         lineasSolidas.push({
-          fig1: this.state.figura1,
-          fig2: this.state.figura2,
+          fig1: this.props.figura1,
+          fig2: this.props.figura2,
           etiqueta: "",
-          tipo: this.state.tipo,
+          tipo: this.props.tipo,
         });
         console.log("listaNuevaS: " + lineasSolidas.length);
         this.props.guardarFlecha(lineasSolidas);
       } else {
         var lineasPunteadas = this.props.lineasPunteadas;
-        if (this.state.tipo === 1) {
+        if (this.props.tipo === 1) {
           lineasPunteadas.push({
             id: this.state.nlinea,
-            fig1: this.state.figura1,
-            fig2: this.state.figura2,
+            fig1: this.props.figura1,
+            fig2: this.props.figura2,
             etiqueta: "<<i>>",
-            tipo: this.state.tipo,
+            tipo: this.props.tipo,
           });
-        } else if (this.state.tipo === 2) {
+        } else if (this.props.tipo === 2) {
           lineasPunteadas.push({
             id: this.state.nlinea,
-            fig1: this.state.figura1,
-            fig2: this.state.figura2,
+            fig1: this.props.figura1,
+            fig2: this.props.figura2,
             etiqueta: "<<e>>",
-            tipo: this.state.tipo,
+            tipo: this.props.tipo,
           });
         } else {
           lineasPunteadas.push({
             id: this.state.nlinea,
-            fig1: this.state.figura1,
-            fig2: this.state.figura2,
+            fig1: this.props.figura1,
+            fig2: this.props.figura2,
             etiqueta: "",
-            tipo: this.state.tipo,
+            tipo: this.props.tipo,
           });
         }
         console.log("listaNuevaP: " + lineasPunteadas.length);
@@ -329,7 +317,7 @@ class Canvas extends React.Component {
               draggable
               onDragEnd={(e) => this.props.actualizarCoordenadas(e)}
               onClick={(e) => {
-                if (this.state.dibujarLinea) {
+                if (this.props.dibujarLinea) {
                   this.definirLinea(e);
                 }
               }}
