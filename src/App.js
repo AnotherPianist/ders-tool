@@ -6,6 +6,7 @@ import { CssBaseline } from '@material-ui/core';
 import Ajustes from './components/ajustes/Ajustes';
 import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
 import PuntosFuncion from './components/puntosFuncion/PuntosFuncion';
+import Ders from './components/ders/Ders';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class App extends React.Component {
           descripcion: "Define una característica del sistema"
         }
       ],
+      textoDers: [],
       requisitosUsuario: [],
       requisitosSistema: [],
       puntosFuncion: {
@@ -61,6 +63,10 @@ class App extends React.Component {
     this.setState({puntosFuncion: pf});
   }
 
+  actualizarTextoDers = infoDers => {
+    this.setState({textoDers: infoDers});
+  }
+
   render() {
     return (
       <div className="App">
@@ -70,9 +76,10 @@ class App extends React.Component {
           <Switch>
             {/* Ejemplos de uso de Route path: */}
             <Route path="/ders">
-              {/* Acá iría el componente de DERS, aunque no sé si eso deba ser un componente */}
-              <div><p>Ders</p></div> {/* Reemplazable! */}
-              {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
+              <Ders 
+                textoDers={this.state.textoDers}
+                actualizarInfoDers={this.actualizarTextoDers}
+              />
             </Route>
             <Route path="/requisitos" >
               <ListaRequisitos
