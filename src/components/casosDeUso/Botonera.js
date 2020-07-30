@@ -22,6 +22,7 @@ class Botonera extends Component {
           <Button>Dependencia</Button>
           <Button>Extends</Button>
           <Button>Include</Button>
+          <Button>Sujeto</Button>
         </ButtonGroup>
       </Box>
     );
