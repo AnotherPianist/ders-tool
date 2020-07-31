@@ -15,13 +15,20 @@ class Botonera extends Component {
           color="primary"
           aria-label="vertical primary button group"
         >
-          <Button>Actor</Button>
-          <Button>Asociación Dirigida</Button>
-          <Button>Asociación No Dirigida</Button>
-          <Button>Generalización</Button>
-          <Button>Dependencia</Button>
-          <Button>Extends</Button>
-          <Button>Include</Button>
+          <Button onClick={this.props.onClickActor}>Actor</Button>
+          <Button onClick={this.props.onClickAsocDir}>
+            Asociación Dirigida
+          </Button>
+          <Button onClick={this.props.onClickAsocNoDir}>
+            Asociación No Dirigida
+          </Button>
+          <Button onClick={this.props.onClickGeneralizacion}>
+            Generalización
+          </Button>
+          <Button onClick={this.props.onClickDependencia}>Dependencia</Button>
+          <Button onClick={this.props.onClickExtends}>Extends</Button>
+          <Button onClick={this.props.onClickInclude}>Include</Button>
+          <Button onClick={this.props.onClickSujeto}>Sujeto</Button>
         </ButtonGroup>
       </Box>
     );

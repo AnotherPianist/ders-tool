@@ -46,43 +46,60 @@ class CasoDeUso extends Component {
         //   ancho:,
         // },
       ],
+
+      //Arreglo de los puntos iniciales y finales de una linea
+      posLinea: [
+        { id1: 0, id2: 0 },
+        { x: 0, y: 0 },
+        { x: 0, y: 0 },
+      ],
+      dibujarLinea: false,
+      tipo: 0,
+      tipoLinea: 0,
+      nroClick: 0,
+      resetClick: false,
+      figura1: {},
+      figura2: {},
     };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
   }
 
   guardarFlecha(flecha) {
-    console.log('punteadas: '+this.state.lineasPunteadas);
-    console.log('solidas: '+this.state.lineasSolidas);
-   console.log('la flecha: '+flecha.length);
-   
-    let ultimaPosicion = flecha.length -1;
-    console.log('su posicion: '+flecha[ultimaPosicion].tipo)
-    console.log('id fig1: '+flecha[ultimaPosicion].fig1.id+' id fig2: '+flecha[ultimaPosicion].fig2.id);
-    if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id)
-    {
-      console.log('dentro del if');
+    console.log("punteadas: " + this.state.lineasPunteadas);
+    console.log("solidas: " + this.state.lineasSolidas);
+    console.log("la flecha: " + flecha.length);
+
+    let ultimaPosicion = flecha.length - 1;
+    console.log("su posicion: " + flecha[ultimaPosicion].tipo);
+    console.log(
+      "id fig1: " +
+        flecha[ultimaPosicion].fig1.id +
+        " id fig2: " +
+        flecha[ultimaPosicion].fig2.id
+    );
+    if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id) {
+      console.log("dentro del if");
       if (
         flecha[ultimaPosicion].tipo === 0 ||
         flecha[ultimaPosicion].tipo === 3 ||
-        flecha[ultimaPosicion].tipo === 4 
-      ){
-        console.log('guardan2');
-        this.setState({lineasSolidas: flecha});
-        console.log('flechas solida: ');
+        flecha[ultimaPosicion].tipo === 4
+      ) {
+        console.log("guardan2");
+        this.setState({ lineasSolidas: flecha });
+        console.log("flechas solida: ");
         console.log(this.state.lineasSolidas);
-      }
-      else{
-        this.setState({lineasPunteadas: flecha});
-        console.log('flecha punteada: ');
+      } else {
+        this.setState({ lineasPunteadas: flecha });
+        console.log("flecha punteada: ");
         console.log(this.state.lineasPunteadas);
       }
     }
-      console.log('IDs IGUALES');
-      console.log('flechas solida: ');
-      console.log(this.state.lineasSolidas);
-      console.log('flecha punteada: ');
-        console.log(this.state.lineasPunteadas);
+    console.log("IDs IGUALES");
+    console.log("flechas solida: ");
+    console.log(this.state.lineasSolidas);
+    console.log("flecha punteada: ");
+    console.log(this.state.lineasPunteadas);
   }
 
   buscarFlecha(figuraActualizada, e) {
@@ -213,6 +230,78 @@ class CasoDeUso extends Component {
     this.setState({ figuras });
   };
 
+  handleFiguras = (figuras) => {
+    this.setState({ figuras });
+  };
+
+  handleFigura1 = (figura1) => {
+    this.setState({ figura1 });
+  };
+
+  handleFigura2 = (figura2) => {
+    this.setState({ figura2 });
+  };
+
+  handleResetClick = (resetClick) => {
+    this.setState({ resetClick });
+  };
+
+  handleNroClick = (nroClick) => {
+    this.setState({ nroClick });
+  };
+
+  handleDibujarLinea = (dibujarLinea) => {
+    this.setState({ dibujarLinea });
+  };
+
+  handleTipo = (tipo) => {
+    this.setState({ tipo });
+  };
+
+  handleActor = () => {
+    console.log("actor");
+  };
+
+  handleAsociacionDirigida = () => {
+    console.log("aociacion dirigida");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 3 });
+  };
+
+  handleAsociacionNoDirigida = () => {
+    console.log("asociacion no dirigida");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 0 });
+  };
+
+  handleGeneralizacion = () => {
+    console.log("generalización");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 4 });
+  };
+
+  handleDependencia = () => {
+    console.log("dependencia");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 5 });
+  };
+
+  handleExtends = () => {
+    console.log("extends");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 2 });
+  };
+
+  handleInclude = () => {
+    console.log("include");
+    this.setState({ dibujarLinea: true });
+    this.setState({ tipo: 1 });
+  };
+
+  handleSujeto = () => {
+    console.log("sujeto");
+  };
+
   render() {
     return (
       <div style={{ width: "100%" }}>
@@ -222,6 +311,14 @@ class CasoDeUso extends Component {
               <BarraHerramientaCasosDeUso
                 requisitos={this.state.requisitos}
                 onClickRequisito={this.crearFigura}
+                onClickActor={this.handleActor}
+                onClickAsocDir={this.handleAsociacionDirigida}
+                onClickAsocNoDir={this.handleAsociacionNoDirigida}
+                onClickGeneralizacion={this.handleGeneralizacion}
+                onClickDependencia={this.handleDependencia}
+                onClickExtends={this.handleExtends}
+                onClickInclude={this.handleInclude}
+                onClickSujeto={this.handleSujeto}
               />
             </Box>
           </Box>
@@ -232,6 +329,19 @@ class CasoDeUso extends Component {
               lineasSolidas={this.state.lineasSolidas}
               guardarFlecha={this.guardarFlecha}
               actualizarCoordenadas={this.actualizarCoordenadas}
+              setFiguras={this.handleFiguras}
+              nroClick={this.state.nroClick}
+              setNroClick={this.handleNroClick}
+              setFigura1={this.handleFigura1}
+              setFigura2={this.handleFigura2}
+              setResetClick={this.handleResetClick}
+              resetClick={this.state.resetClick}
+              setDibujarLinea={this.handleDibujarLinea}
+              tipo={this.state.tipo}
+              setTipo={this.handleTipo}
+              figura1={this.state.figura1}
+              figura2={this.state.figura2}
+              dibujarLinea={this.state.dibujarLinea}
             />
           </Box>
         </Box>
