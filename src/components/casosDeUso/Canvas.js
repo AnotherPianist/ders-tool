@@ -1,7 +1,6 @@
 import React from "react";
 import { Stage, Layer, Text, Line, Ellipse, Arrow } from "react-konva";
 import calculateSize from "calculate-size";
-import { Button } from "@material-ui/core";
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -128,7 +127,6 @@ class Canvas extends React.Component {
     let tipo = this.props.lineasSolidas[i].tipo;
     if (tipo === 0) {
       console.log("Dibujando Solida:");
-      console.log(this.props.lineasSolidas[i]);
       return (
         <Line
           points={[
@@ -144,7 +142,6 @@ class Canvas extends React.Component {
       );
     } else if (tipo === 3 || tipo === 4) {
       console.log("Dibujando Solida:");
-      console.log(this.props.lineasSolidas[i]);
       var fill = "blue";
       if (tipo === 3) {
         fill = "black";
@@ -212,9 +209,10 @@ class Canvas extends React.Component {
       this.props.setResetClick(false);
       this.props.setDibujarLinea(false);
       if (
-        this.props.tipo === 0 ||
-        this.props.tipo === 3 ||
-        this.props.tipo === 4
+        (this.props.tipo === 0 ||
+          this.props.tipo === 3 ||
+          this.props.tipo === 4) &
+        (this.props.figura1.id !== this.props.figura2.id)
       ) {
         var lineasSolidas = this.props.lineasSolidas;
         lineasSolidas.push({
@@ -229,7 +227,7 @@ class Canvas extends React.Component {
         var lineasPunteadas = this.props.lineasPunteadas;
         if (this.props.tipo === 1) {
           lineasPunteadas.push({
-            id: this.state.nlinea,
+            //  id: this.state.nlinea,
             fig1: this.props.figura1,
             fig2: this.props.figura2,
             etiqueta: "<<i>>",
@@ -237,7 +235,7 @@ class Canvas extends React.Component {
           });
         } else if (this.props.tipo === 2) {
           lineasPunteadas.push({
-            id: this.state.nlinea,
+            //    id: this.state.nlinea,
             fig1: this.props.figura1,
             fig2: this.props.figura2,
             etiqueta: "<<e>>",
@@ -245,15 +243,17 @@ class Canvas extends React.Component {
           });
         } else {
           lineasPunteadas.push({
-            id: this.state.nlinea,
+            // id: this.state.nlinea,
             fig1: this.props.figura1,
             fig2: this.props.figura2,
             etiqueta: "",
             tipo: this.props.tipo,
           });
         }
-        console.log("listaNuevaP: " + lineasPunteadas.length);
-        this.props.guardarFlecha(lineasPunteadas);
+        if (this.props.figura1.id !== this.props.figura2.id) {
+          console.log("listaNuevaP: " + lineasPunteadas.length);
+          this.props.guardarFlecha(lineasPunteadas);
+        }
       }
     }
   };
