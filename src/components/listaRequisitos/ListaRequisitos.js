@@ -89,6 +89,45 @@ class ListaRequisitos extends React.Component {
         };
         listaReq.push(req);
       }
+      else
+        this.eliminarRequisitosSistemaInvocan(requisito.key);
+      
+    }
+    this.props.actualizarRequisitosSistema(listaReq);
+  }
+
+  eliminarRequisitosSistemaRU = (idRU) => {
+    const listaReq = [];
+    let i = 1;
+    for (const requisitoSistema of this.props.requisitosSistema) {
+      if (requisitoSistema.refRU !== idRU) {
+        const req = {
+          key: requisitoSistema.key,
+          id: i++,
+          nombre: requisitoSistema.nombre,
+          tipo: requisitoSistema.tipo,        
+          refRU: (requisitoSistema.refRU > idRU) ? requisitoSistema.refRU-1 : requisitoSistema.refRU
+        };
+        listaReq.push(req);
+      }
+    }
+    this.props.actualizarRequisitosSistema(listaReq);  
+  }
+
+  eliminarRequisitosSistemaInvocan = (keyRS) =>{
+    const listaReq = [];
+    let i = 1;
+    for(const reqSistema of this.props.requisitosSistema){
+      if(reqSistema.invocaA !== keyRS && reqSistema.key !== keyRS){
+        const req = {
+          key: reqSistema.key,
+          id: i++,
+          nombre: reqSistema.nombre,
+          tipo: reqSistema.tipo,        
+          refRU: reqSistema.refRU
+        };
+        listaReq.push(req);
+      }  
     }
     this.props.actualizarRequisitosSistema(listaReq);
   }
@@ -111,64 +150,55 @@ class ListaRequisitos extends React.Component {
   }
 
   obtenerRequisitosParaInvocar = (idRU) => {
-    console.log(idRU);
     const requisitosInvocar = [];
     const requisitosUsuario = [];
     const requisitosSistema = [];
+    var x;
+    for (const reqSistema of this.props.requisitosSistema){
+      if (reqSistema.refRU !== idRU && reqSistema.invocaA === -1){
+        requisitosSistema.push(reqSistema);
+      }
+    }
     for (const reqUsuario of this.props.requisitosUsuario){
       if (reqUsuario.id !== idRU){
         requisitosUsuario.push(reqUsuario);
       }
     }
     if (this.obtenerListaRequisitosSistema(idRU).length>0){
-      for(const reqSistema of this.obtenerListaRequisitosSistema(idRU)){
+      for (const reqSistema of this.obtenerListaRequisitosSistema(idRU)){
+        x = 1;
+        for (const req of requisitosSistema){
+          if (reqSistema.invocaA === req.key){
+            const index = requisitosSistema.indexOf(req);
+            requisitosSistema.splice(index, 1);
+            x = 0;
+          }
+        }
         for (const req of requisitosUsuario){
-          if(reqSistema.invocaA === req.key){
+          if (reqSistema.invocaA === req.key && x == true){
             const index = requisitosUsuario.indexOf(req);
             requisitosUsuario.splice(index, 1);
           }
         }
       }
     }
-    for(const req of requisitosUsuario){
+    for (const req of requisitosUsuario){
       requisitosInvocar.push(req);
     }
-
-    for(const reqSistema of this.props.requisitosSistema){
-      if(reqSistema.refRU !== idRU){
-        requisitosSistema.push(reqSistema);
-      }
+    for (const req of requisitosSistema){
+      requisitosInvocar.push(req);
     }
-    
     return requisitosInvocar;
   }
 
   obtenerListaRequisitosSistema = (idRU) => {
     const requisitosSistema = [];
-    for(const reqSistema of this.props.requisitosSistema){
-      if(reqSistema.refRU === idRU){
+    for (const reqSistema of this.props.requisitosSistema){
+      if (reqSistema.refRU === idRU){
         requisitosSistema.push(reqSistema);  
       }
     }
     return requisitosSistema;
-  }
-
-  eliminarRequisitosSistemaRU = (idRU) => {
-    const listaReq = [];
-    let i = 1;
-    for (const requisitoSistema of this.props.requisitosSistema) {
-      if (requisitoSistema.refRU !== idRU) {
-        const req = {
-          key: requisitoSistema.key,
-          id: i++,
-          nombre: requisitoSistema.nombre,
-          tipo: requisitoSistema.tipo,        
-          refRU: (requisitoSistema.refRU > idRU) ? requisitoSistema.refRU-1 : requisitoSistema.refRU
-        };
-        listaReq.push(req);
-      }
-    }
-    this.props.actualizarRequisitosSistema(listaReq);  
   }
 
   render() {
@@ -196,7 +226,6 @@ class ListaRequisitos extends React.Component {
         </>
       );
     });
-
     return(
       <Container>
         <Typography variant="h4" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
