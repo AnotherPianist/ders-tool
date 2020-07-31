@@ -11,7 +11,6 @@ class CrearRS extends React.Component {
     }
     this.onChangeNombre = this.onChangeNombre.bind(this);
     this.onChangeTipo = this.onChangeTipo.bind(this);
-    this.crearReq = this.crearReq.bind(this);
   }
 
   onChangeNombre(e) {
@@ -22,22 +21,19 @@ class CrearRS extends React.Component {
     this.setState({tipo: e.target.value});
   }
 
-  crearReq(e) {
-    console.log("crear"+e.target.value);
+  crearReq = (e) => {
     if (e.key === "Enter" && this.state.nombre.length !== 0) {
-      this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU, null);
+      this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU, -1);
       this.setState({nombre: ""});
-      e.target.value = "";
-    }
+      e.target.value = "";    
+    }   
   }
 
-  selectedAutoComplete = (e, value) => {
-    console.log("invocar"+value);
-    if (e.key === "Enter" && this.state.nombre.length !== 0) {
-      if (value === null) {
-        this.props.crearRequisitoSistema("Invocar a" + value.id + ": " + value.nombre, value.tipo, this.props.refRU, value.key);
-        this.setState({nombre: ""});
-      }
+  crearReqInvocar = (e, value) => {
+    if (!(value == null)) {
+      this.props.crearRequisitoSistema("Invocar a " + (value.ru ? "RU" : "RS") + value.id + ": " + value.nombre, value.tipo, this.props.refRU, value.key);
+      this.setState({nombre: ""});
+      e.target.value = "";    
     }
   }
 
@@ -54,17 +50,16 @@ class CrearRS extends React.Component {
       <Grid container style={{marginLeft: "15px"}}>
         <Grid item xs={10} style={{padding: "34px"}}>          
           <Autocomplete
-            freeSolo
-            onKeyDown={this.selectedAutoComplete}
             size="small"
             options={this.props.requisitosInvocar}
-            getOptionLabel={(option) => option.id + ": " + option.nombre}
+            getOptionLabel={(option) => (option.ru ? "RU" : "RS") + option.id + ": " + option.nombre}
             style={{ width: 980 }}
+            onChange={this.crearReqInvocar}
+            onKeyDown={this.crearReq}
             renderInput={(params) =>
               <TextField {...params}
-                id="nombreForm"
                 onChange={this.onChangeNombre}
-                onKeyDown={this.crearReq}
+                id="nombreForm" 
                 variant="standard"
                 placeholder="Nombre requisito sistema"
               />}

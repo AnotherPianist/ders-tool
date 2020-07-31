@@ -111,14 +111,46 @@ class ListaRequisitos extends React.Component {
   }
 
   obtenerRequisitosParaInvocar = (idRU) => {
+    console.log(idRU);
     const requisitosInvocar = [];
-    for (const req of this.props.requisitosUsuario)
-      if (req.id !== idRU)
-        requisitosInvocar.push(req);
-    for (const req of this.props.requisitosSistema)
-      if (req.refRU !== idRU)
-        requisitosInvocar.push(req);
+    const requisitosUsuario = [];
+    const requisitosSistema = [];
+    for (const reqUsuario of this.props.requisitosUsuario){
+      if (reqUsuario.id !== idRU){
+        requisitosUsuario.push(reqUsuario);
+      }
+    }
+    if (this.obtenerListaRequisitosSistema(idRU).length>0){
+      for(const reqSistema of this.obtenerListaRequisitosSistema(idRU)){
+        for (const req of requisitosUsuario){
+          if(reqSistema.invocaA === req.key){
+            const index = requisitosUsuario.indexOf(req);
+            requisitosUsuario.splice(index, 1);
+          }
+        }
+      }
+    }
+    for(const req of requisitosUsuario){
+      requisitosInvocar.push(req);
+    }
+
+    for(const reqSistema of this.props.requisitosSistema){
+      if(reqSistema.refRU !== idRU){
+        requisitosSistema.push(reqSistema);
+      }
+    }
+    
     return requisitosInvocar;
+  }
+
+  obtenerListaRequisitosSistema = (idRU) => {
+    const requisitosSistema = [];
+    for(const reqSistema of this.props.requisitosSistema){
+      if(reqSistema.refRU === idRU){
+        requisitosSistema.push(reqSistema);  
+      }
+    }
+    return requisitosSistema;
   }
 
   eliminarRequisitosSistemaRU = (idRU) => {
