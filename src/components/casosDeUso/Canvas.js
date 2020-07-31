@@ -19,6 +19,8 @@ class Canvas extends React.Component {
       tipoLinea: 0,
       nroClick: 0,
       resetClick: false,
+      fig1Aux: 0,
+      fig2Aux: 0,
       figura1: {},
       figura2: {},
     };
@@ -97,8 +99,8 @@ class Canvas extends React.Component {
   dibujarFlechaPunt = (i) => {
     let tipo = this.props.lineasPunteadas[i].tipo;
     if (this.props.lineasPunteadas[i].tipo === 5) {
-      console.log("Dibujando Punt:");
-      console.log(this.props.lineasPunteadas[i]);
+      //console.log("Dibujando Punt:");
+      //console.log(this.props.lineasPunteadas[i]);
       return (
         <Arrow
           points={[
@@ -116,8 +118,8 @@ class Canvas extends React.Component {
         />
       );
     } else if (tipo === 1 || tipo === 2) {
-      console.log("Dibujando Punt:");
-      console.log(this.props.lineasPunteadas[i]);
+      //console.log("Dibujando Punt:");
+      //console.log(this.props.lineasPunteadas[i]);
       return (
         <>
           <Arrow
@@ -160,7 +162,7 @@ class Canvas extends React.Component {
   dibujarLineaNormal = (i) => {
     let tipo = this.props.lineasSolidas[i].tipo;
     if (tipo === 0) {
-      console.log("Dibujando Solida:");
+      //console.log("Dibujando Solida:");
       return (
         <Line
           points={[
@@ -175,7 +177,7 @@ class Canvas extends React.Component {
         />
       );
     } else if (tipo === 3 || tipo === 4) {
-      console.log("Dibujando Solida:");
+      //console.log("Dibujando Solida:");
       var fill = "blue";
       if (tipo === 3) {
         fill = "black";
@@ -203,6 +205,37 @@ class Canvas extends React.Component {
   calcularpuntomedio = (pto1, pto2) => {
     return (pto1 + pto2) / 2;
   };
+
+  encontrarPuntosMasCercanos = (fig1, fig2) => {
+    //console.log("encontrar puntos");
+    let ancho1 = this.props.figuras[fig1.id].ancho;
+    let alto1 = this.props.figuras[fig1.id].alto;
+    let ancho2 = this.props.figuras[fig2.id].ancho;
+    let alto2 = this.props.figuras[fig2.id].alto;
+    let id1 = fig1.id;
+    let id2 = fig2.id;
+
+    let x1 = fig1.x;
+    let y1 = fig1.y;
+    let x2 = fig2.x;
+    let y2 = fig2.y;
+
+    let p1 = [
+      { x: x1, y: y1 - alto1, id: id1 },
+      { x: x1, y: y1 + alto1, id: id1 },
+      { x: x1 - ancho1, y: y1, id: id1 },
+      { x: x1 + ancho1, y: y1, id: id1 },
+    ];
+    let p2 = [
+      { x: x2, y: y2 - alto2, id: id2 },
+      { x: x2, y: y2 + alto2, id: id2 },
+      { x: x2 - ancho2, y: y2, id: id2 },
+      { x: x2 + ancho2, y: y2, id: id2 },
+    ];
+
+    this.state.fig1Aux = p1[2];
+    this.state.fig2Aux = p2[3];
+  };
   /**
    * Funcion que define la linea entre dos figuras. Se procesaran 2 click consecutivos sobre las figuras que indicaran inicio y final de la linea.
    * nroClick = 0 es el primer click que define el inicio de la linea,
@@ -226,6 +259,7 @@ class Canvas extends React.Component {
       fig1.id = e.currentTarget.attrs.id;
       this.setState({ figura1: fig1 });
     }
+    //console.log();
     if (this.state.nroClick === 1) {
       fig2.x = e.currentTarget.attrs.x;
       fig2.y = e.currentTarget.attrs.y;
@@ -234,13 +268,20 @@ class Canvas extends React.Component {
       this.setState({ resetClick: true });
     }
     this.setState({ nroClick: this.state.nroClick + 1 });
+
     /**Cuando se alcanza el segundo click se resetean las variables, 
     se desactiva del modo linea y se guarda la linea obtenida*/
     if (this.state.resetClick) {
       this.setState({ nroClick: 0 });
       this.setState({ resetClick: false });
       this.setState({ dibujarLinea: false });
-      if ((this.state.tipo === 0 || this.state.tipo === 3 || this.state.tipo === 4) & (this.state.figura1.id !== this.state.figura2.id)) {
+
+      if (
+        (this.state.tipo === 0 ||
+          this.state.tipo === 3 ||
+          this.state.tipo === 4) &
+        (this.state.figura1.id !== this.state.figura2.id)
+      ) {
         var lineasSolidas = this.props.lineasSolidas;
         lineasSolidas.push({
           fig1: this.state.figura1,
@@ -248,7 +289,7 @@ class Canvas extends React.Component {
           etiqueta: "",
           tipo: this.state.tipo,
         });
-        console.log("listaNuevaS: " + lineasSolidas.length);
+        //console.log("listaNuevaS: " + lineasSolidas.length);
         this.props.guardarFlecha(lineasSolidas);
       } else {
         var lineasPunteadas = this.props.lineasPunteadas;
@@ -277,8 +318,8 @@ class Canvas extends React.Component {
             tipo: this.state.tipo,
           });
         }
-        if (this.state.figura1.id !== this.state.figura2.id){
-          console.log("listaNuevaP: " + lineasPunteadas.length);
+        if (this.state.figura1.id !== this.state.figura2.id) {
+          //console.log("listaNuevaP: " + lineasPunteadas.length);
           this.props.guardarFlecha(lineasPunteadas);
         }
       }
