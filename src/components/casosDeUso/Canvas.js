@@ -1,14 +1,21 @@
 import React from "react";
-import { Stage, Layer, Text, Line, Ellipse, Arrow } from "react-konva";
+import { Stage, Layer, Text, Line, Ellipse, Arrow, Circle } from "react-konva";
 import calculateSize from "calculate-size";
+import Rectangle from "./Rectangle";
+import TransformerComponent from "./TransformerComponent";
 
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { selectedShapeName: "" };
   }
 
+  /**
+  *Se encarga de inicializar el ancho que tendrá la elipse, 
+  *adaptandose
+  al tamaño del texto según la fuente y su tamaño
+  */
   componentDidMount() {
     let figuras = this.props.figuras;
     let ancho;
@@ -63,8 +70,6 @@ class Canvas extends React.Component {
   dibujarFlechaPunt = (i) => {
     let tipo = this.props.lineasPunteadas[i].tipo;
     if (this.props.lineasPunteadas[i].tipo === 5) {
-      //console.log("Dibujando Punt:");
-      //console.log(this.props.lineasPunteadas[i]);
       return (
         <Arrow
           points={[
@@ -82,8 +87,6 @@ class Canvas extends React.Component {
         />
       );
     } else if (tipo === 1 || tipo === 2) {
-      //console.log("Dibujando Punt:");
-      //console.log(this.props.lineasPunteadas[i]);
       return (
         <>
           <Arrow
@@ -126,7 +129,6 @@ class Canvas extends React.Component {
   dibujarLineaNormal = (i) => {
     let tipo = this.props.lineasSolidas[i].tipo;
     if (tipo === 0) {
-      //console.log("Dibujando Solida:");
       return (
         <Line
           points={[
@@ -141,7 +143,6 @@ class Canvas extends React.Component {
         />
       );
     } else if (tipo === 3 || tipo === 4) {
-      //console.log("Dibujando Solida:");
       var fill = "blue";
       if (tipo === 3) {
         fill = "black";
@@ -171,7 +172,6 @@ class Canvas extends React.Component {
   };
 
   encontrarPuntosMasCercanos = (fig1, fig2) => {
-    //console.log("encontrar puntos");
     let ancho1 = this.props.figuras[fig1.id].ancho;
     let alto1 = this.props.figuras[fig1.id].alto;
     let ancho2 = this.props.figuras[fig2.id].ancho;
@@ -206,7 +206,7 @@ class Canvas extends React.Component {
    * nroClick = 1 es el segundo click que define el fin de la linea.
    * @param e
    */
-  definirLinea = (e) => {
+  definirLinea = (e, isActor) => {
     let fig1 = {
       x: 0,
       y: 0,
@@ -252,7 +252,6 @@ class Canvas extends React.Component {
           etiqueta: "",
           tipo: this.props.tipo,
         });
-        //console.log("listaNuevaS: " + lineasSolidas.length);
         this.props.guardarFlecha(lineasSolidas);
       } else {
         var lineasPunteadas = this.props.lineasPunteadas;
@@ -282,16 +281,145 @@ class Canvas extends React.Component {
           });
         }
         if (this.props.figura1.id !== this.props.figura2.id) {
-          console.log("listaNuevaP: " + lineasPunteadas.length);
           this.props.guardarFlecha(lineasPunteadas);
         }
       }
     }
   };
+
+  dibujarActor() {
+    return (
+      <>
+        <Line points={[0, -20, 0, 10]} tension={1} closed stroke="black" />
+        <Line points={[0, 10, -10, 35]} tension={1} closed stroke="black" />
+        <Line points={[0, 10, 10, 35]} tension={1} closed stroke="black" />
+        <Line points={[0, -5, -15, 10]} tension={1} closed stroke="black" />
+        <Line points={[0, -5, 15, 10]} tension={1} closed stroke="black" />
+        <Circle x={0} y={-20} radius={10} fill="white" stroke="black" />
+        <Text
+          x={-15}
+          y={60}
+          fontSize={20}
+          text="actor"
+          wrap="char"
+          align="center"
+          onClick={() => {
+            this.setState({ modal: true });
+          }}
+        />
+      </>
+    );
+  }
+
+  /**
+   * Función que se encarga de desplegar el rectángulo que representa al sujeto, junto a su texto
+   * respectivo, dandele la opción de reajustar su tamano
+   */
+  mostrarRectangulo = () => {
+    const sujeto = this.props.sujeto;
+    return (
+      <Layer key={"sujeto"} id={10000} x={300} y={300} draggable>
+        <Rectangle
+          key={"sujeto"}
+          {...sujeto}
+          onTransform={(newProps) => {
+            this.handleRectChange(newProps);
+          }}
+        />
+
+        <TransformerComponent
+          selectedShapeName={this.state.selectedShapeName}
+        />
+        <Text
+          x={sujeto.x + (sujeto.width / 2 - 30)}
+          y={sujeto.y + 5}
+          fontSize={20}
+          text={sujeto.name}
+          wrap="char"
+          align="center"
+        />
+      </Layer>
+    );
+  };
+
+  /**
+   * Función que se encarga de setear el nombre de la figura que se está seleccionando,
+   * en este caso solo cambia el nombre del sujeto, ya que solo se utiliza en éste,
+   * Además detecta si es que se está haciendo click sobre el transformador (puntos que agrandan
+   * al sujeto)
+   * @param {evento} e
+   */
+  handleStageMouseDown = (e) => {
+    if (e.target === e.target.getStage()) {
+      this.setState({
+        selectedShapeName: "",
+      });
+      return;
+    }
+
+    const clickedOnTransformer =
+      e.target.getParent().className === "Transformer";
+    if (clickedOnTransformer) {
+      return;
+    }
+    const name = e.target.name();
+    const rect = this.props.sujeto.name === name;
+    if (rect) {
+      this.setState({
+        selectedShapeName: name,
+      });
+    } else {
+      this.setState({
+        selectedShapeName: "",
+      });
+    }
+  };
+
+  /**
+   * Función que se encarga de guardar los datos del sujeto, cuando este se mueve o
+   * se le ajusta el tamano
+   * @param {propiedades del nuevo sujeto} newProps
+   */
+  handleRectChange = (newProps) => {
+    let sujeto = newProps;
+    this.props.actualizarSujeto({ sujeto });
+  };
+  dibujarSujeto = () => {
+    if (this.props.sujeto.id === 10000) {
+      return <this.mostrarRectangulo />;
+    }
+  };
+
   render() {
     return (
       <div>
-        <Stage width={window.innerWidth} height={window.innerHeight}>
+        <Stage
+          width={window.innerWidth}
+          height={window.innerHeight}
+          onMouseDown={this.handleStageMouseDown}
+        >
+          {this.dibujarSujeto()}
+
+          {/** Ciclo para dibujar actores*/}
+          {[...Array(this.props.actores.length)].map((_, i) => (
+            <Layer
+              key={i}
+              draggable
+              id={this.props.actores[i].id}
+              x={this.props.actores[i].x}
+              y={this.props.actores[i].y}
+              onClick={(e) => {
+                if (this.props.dibujarLinea) {
+                  this.definirLinea(e, true);
+                }
+              }}
+              onDragEnd={(e) => this.props.actualizarCoordenadasActores(e)}
+            >
+              {/** Linea individual, obtenido desde el arreglo de flechas*/}
+              {this.dibujarActor()}
+            </Layer>
+          ))}
+
           {/** Ciclo para dibujar lineas normales */}
 
           {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
@@ -319,7 +447,7 @@ class Canvas extends React.Component {
               onDragEnd={(e) => this.props.actualizarCoordenadas(e)}
               onClick={(e) => {
                 if (this.props.dibujarLinea) {
-                  this.definirLinea(e);
+                  this.definirLinea(e, false);
                 }
               }}
             >
