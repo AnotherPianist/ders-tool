@@ -30,13 +30,7 @@ class CasoDeUso extends Component {
       lineasSolidas: [],
       //lineasPunteadas contiene las flechas punteadas de extend e include
       lineasPunteadas: [],
-      /*
-      flechas: [{
-        id:0,
-        fig1: {x:0,y:0,id:0},
-        fig2: {x:0,y:0,id:0}
-      }],
-      */
+
       figuras: [
         // {
         //   id:,
@@ -63,9 +57,6 @@ class CasoDeUso extends Component {
       ],
       dibujarLinea: false,
       tipo: 0,
-      tipoLinea: 0,
-      nroClick: 0,
-      resetClick: false,
       figura1: {},
       figura2: {},
       sujeto: {},
@@ -214,14 +205,6 @@ class CasoDeUso extends Component {
     this.setState({ figura2 });
   };
 
-  handleResetClick = (resetClick) => {
-    this.setState({ resetClick });
-  };
-
-  handleNroClick = (nroClick) => {
-    this.setState({ nroClick });
-  };
-
   handleDibujarLinea = (dibujarLinea) => {
     this.setState({ dibujarLinea });
   };
@@ -323,12 +306,8 @@ class CasoDeUso extends Component {
               actualizarCoordenadasActores={this.actualizarCoordenadasActores}
               actualizarSujeto={this.actualizarSujeto}
               setFiguras={this.handleFiguras}
-              nroClick={this.state.nroClick}
-              setNroClick={this.handleNroClick}
               setFigura1={this.handleFigura1}
               setFigura2={this.handleFigura2}
-              setResetClick={this.handleResetClick}
-              resetClick={this.state.resetClick}
               setDibujarLinea={this.handleDibujarLinea}
               tipo={this.state.tipo}
               setTipo={this.handleTipo}
