@@ -33,7 +33,7 @@ class CrearRS extends React.Component {
     if (!(value == null)) {
       this.props.crearRequisitoSistema("Invocar a " + (value.ru ? "RU" : "RS") + value.id + ": " + value.nombre, value.tipo, this.props.refRU, value.key);
       this.setState({nombre: ""});
-      e.target.value = "";    
+      e.target.value = "";
     }
   }
 
