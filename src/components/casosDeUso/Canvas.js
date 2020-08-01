@@ -1,14 +1,21 @@
 import React from "react";
 import { Stage, Layer, Text, Line, Ellipse, Arrow } from "react-konva";
 import calculateSize from "calculate-size";
+import Rectangle from "./Rectangle";
+import TransformerComponent from "./TransformerComponent";
 
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { selectedShapeName: "" };
   }
 
+  /**
+  *Se encarga de inicializar el ancho que tendrá la elipse, 
+  *adaptandose
+  al tamaño del texto según la fuente y su tamaño
+  */
   componentDidMount() {
     let figuras = this.props.figuras;
     let ancho;
@@ -288,10 +295,94 @@ class Canvas extends React.Component {
       }
     }
   };
+
+  /**
+   * Función que se encarga de desplegar el rectángulo que representa al sujeto, junto a su texto
+   * respectivo, dandele la opción de reajustar su tamano
+   */
+  mostrarRectangulo = () => {
+    const sujeto = this.props.sujeto;
+    return (
+      <Layer key={"sujeto"} id={10000} x={300} y={300} draggable>
+        <Rectangle
+          key={"sujeto"}
+          {...sujeto}
+          onTransform={(newProps) => {
+            this.handleRectChange(newProps);
+          }}
+        />
+
+        <TransformerComponent
+          selectedShapeName={this.state.selectedShapeName}
+        />
+        <Text
+          x={sujeto.x + (sujeto.width / 2 - 30)}
+          y={sujeto.y + 5}
+          fontSize={20}
+          text={sujeto.name}
+          wrap="char"
+          align="center"
+        />
+      </Layer>
+    );
+  };
+
+  /**
+   * Función que se encarga de setear el nombre de la figura que se está seleccionando,
+   * en este caso solo cambia el nombre del sujeto, ya que solo se utiliza en éste,
+   * Además detecta si es que se está haciendo click sobre el transformador (puntos que agrandan
+   * al sujeto)
+   * @param {evento} e
+   */
+  handleStageMouseDown = (e) => {
+    if (e.target === e.target.getStage()) {
+      this.setState({
+        selectedShapeName: "",
+      });
+      return;
+    }
+
+    const clickedOnTransformer =
+      e.target.getParent().className === "Transformer";
+    if (clickedOnTransformer) {
+      return;
+    }
+    const name = e.target.name();
+    const rect = this.props.sujeto.name === name;
+    if (rect) {
+      this.setState({
+        selectedShapeName: name,
+      });
+    } else {
+      this.setState({
+        selectedShapeName: "",
+      });
+    }
+  };
+
+  /**
+   * Función que se encarga de guardar los datos del sujeto, cuando este se mueve o
+   * se le ajusta el tamano
+   * @param {propiedades del nuevo sujeto} newProps
+   */
+  handleRectChange = (newProps) => {
+    let sujeto = newProps;
+    this.props.actualizarSujeto({ sujeto });
+  };
+
   render() {
     return (
       <div>
-        <Stage width={window.innerWidth} height={window.innerHeight}>
+        <Stage
+          width={window.innerWidth}
+          height={window.innerHeight}
+          onMouseDown={this.handleStageMouseDown}
+        >
+          {this.props.sujeto.id === 10000 ? (
+            <this.mostrarRectangulo />
+          ) : (
+            console.log("No hay sujeto")
+          )}
           {/** Ciclo para dibujar lineas normales */}
 
           {[...Array(this.props.lineasSolidas.length)].map((_, i) => (

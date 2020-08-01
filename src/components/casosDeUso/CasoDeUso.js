@@ -60,6 +60,7 @@ class CasoDeUso extends Component {
       resetClick: false,
       figura1: {},
       figura2: {},
+      sujeto: {},
     };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
@@ -203,7 +204,23 @@ class CasoDeUso extends Component {
         this.setState({ figuras: figuras });
         this.buscarFlecha(figuras[index], e);
       }
+
+      if (this.state.sujeto.id === e.currentTarget.attrs.id) {
+        var sujeto = this.state.sujeto;
+        sujeto.x = e.currentTarget.attrs.x;
+        sujeto.y = e.currentTarget.attrs.y;
+        //sujeto.ancho = e.target.children[0].textWidth + 100;
+        this.setState({ sujeto: sujeto });
+      }
     }
+  };
+
+  /**
+   * Se encarga de guardar las nuevas props del sujeto.
+   * @param {props del sujeto} e
+   */
+  actualizarSujeto = (e) => {
+    this.setState({ sujeto: e.sujeto });
   };
 
   crearFigura = (props) => {
@@ -299,7 +316,20 @@ class CasoDeUso extends Component {
   };
 
   handleSujeto = () => {
-    console.log("sujeto");
+    if (!this.state.sujeto.id) {
+      const sujeto = {
+        id: 10000,
+        x: 0,
+        y: 0,
+        name: "Sujeto",
+        width: 200,
+        height: 200,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
+      };
+      this.setState({ sujeto: sujeto });
+    }
   };
 
   render() {
@@ -329,6 +359,7 @@ class CasoDeUso extends Component {
               lineasSolidas={this.state.lineasSolidas}
               guardarFlecha={this.guardarFlecha}
               actualizarCoordenadas={this.actualizarCoordenadas}
+              actualizarSujeto={this.actualizarSujeto}
               setFiguras={this.handleFiguras}
               nroClick={this.state.nroClick}
               setNroClick={this.handleNroClick}
@@ -342,6 +373,7 @@ class CasoDeUso extends Component {
               figura1={this.state.figura1}
               figura2={this.state.figura2}
               dibujarLinea={this.state.dibujarLinea}
+              sujeto={this.state.sujeto}
             />
           </Box>
         </Box>
