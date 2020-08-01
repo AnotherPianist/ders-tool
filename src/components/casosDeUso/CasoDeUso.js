@@ -88,6 +88,15 @@ class CasoDeUso extends Component {
         if (flechaActualizada !== null) {
           flechaActualizada.fig1.x = e.currentTarget.attrs.x;
           flechaActualizada.fig1.y = e.currentTarget.attrs.y;
+
+          this.setState({
+            figura1: flechaActualizada.fig1,
+            figura2: flechaActualizada.fig2,
+          });
+          let figuras = this.encontrarPuntosMasCercanos();
+          flechaActualizada.fig1 = figuras.fig1;
+          //flechaActualizada.fig2 = figuras.fig2;
+
           arrayFlechas.splice(j, flechaActualizada);
           this.setState({ lineasSolidas: arrayFlechas });
         }
@@ -95,6 +104,13 @@ class CasoDeUso extends Component {
         if (figuraActualizada.id === this.state.lineasSolidas[j].fig2.id) {
           flechaActualizada.fig2.x = e.currentTarget.attrs.x;
           flechaActualizada.fig2.y = e.currentTarget.attrs.y;
+          this.setState({
+            figura1: flechaActualizada.fig1,
+            figura2: flechaActualizada.fig2,
+          });
+          let figuras = this.encontrarPuntosMasCercanos();
+          flechaActualizada.fig2 = figuras.fig2;
+          //flechaActualizada.fig1 = figuras.fig1;
           arrayFlechas.splice(j, flechaActualizada);
           this.setState({ lineasSolidas: arrayFlechas });
         }
@@ -107,17 +123,31 @@ class CasoDeUso extends Component {
         if (flechaActualizada !== null) {
           flechaActualizada.fig1.x = e.currentTarget.attrs.x;
           flechaActualizada.fig1.y = e.currentTarget.attrs.y;
+          this.setState({
+            figura1: flechaActualizada.fig1,
+            figura2: flechaActualizada.fig2,
+          });
+          let figuras = this.encontrarPuntosMasCercanos();
+          flechaActualizada.fig1 = figuras.fig1;
+
           arrayFlechas.splice(i, flechaActualizada);
+
           this.setState({ lineasPunteadas: arrayFlechas });
         }
       } else {
         if (figuraActualizada.id === this.state.lineasPunteadas[i].fig2.id) {
           flechaActualizada.fig2.x = e.currentTarget.attrs.x;
           flechaActualizada.fig2.y = e.currentTarget.attrs.y;
-          arrayFlechas.splice(i, flechaActualizada);
-          this.setState({ lineasPunteadas: arrayFlechas });
-        } else {
+          this.setState({
+            figura1: flechaActualizada.fig1,
+            figura2: flechaActualizada.fig2,
+          });
+          let figuras = this.encontrarPuntosMasCercanos();
+          flechaActualizada.fig2 = figuras.fig2;
         }
+
+        arrayFlechas.splice(i, flechaActualizada);
+        this.setState({ lineasPunteadas: arrayFlechas });
       }
     }
   }
@@ -161,6 +191,89 @@ class CasoDeUso extends Component {
       }
     }
   };
+  calcularDistanciaDosPuntos = (x1, y1, x2, y2) => {
+    let x = Math.pow(x2 - x1, 2);
+
+    let y = Math.pow(y2 - y1, 2);
+
+    let result = x + y;
+
+    return Math.sqrt(result);
+  };
+  encontrarIndex = (id) => {
+    for (let index = 0; index < this.state.figuras.length; index++) {
+      if (this.state.figuras[index].id === id) {
+        return index;
+      }
+    }
+  };
+  encontrarPuntosMasCercanos = () => {
+    let fig1 = this.state.figura1;
+    let fig2 = this.state.figura2;
+    let ancho1;
+    let alto1;
+    let ancho2;
+    let alto2;
+
+    if (fig1.tipo === "requisito") {
+      ancho1 = this.state.figuras[this.encontrarIndex(fig1.id)].ancho + 5;
+      alto1 = this.state.figuras[this.encontrarIndex(fig1.id)].alto + 5;
+    } else {
+      ancho1 = 15;
+      alto1 = 35;
+    }
+    if (fig2.tipo === "requisito") {
+      ancho2 = this.state.figuras[this.encontrarIndex(fig2.id)].ancho + 5;
+      alto2 = this.state.figuras[this.encontrarIndex(fig2.id)].alto + 5;
+    } else {
+      ancho2 = 15;
+      alto2 = 35;
+    }
+    let id1 = fig1.id;
+    let id2 = fig2.id;
+    let tipo1 = fig1.tipo;
+    let tipo2 = fig2.tipo;
+
+    let x1 = fig1.x;
+    let y1 = fig1.y;
+    let x2 = fig2.x;
+    let y2 = fig2.y;
+
+    let p1 = [
+      { x: x1, y: y1 - alto1, id: id1, tipo: tipo1 },
+      { x: x1, y: y1 + alto1, id: id1, tipo: tipo1 },
+      { x: x1 - ancho1, y: y1, id: id1, tipo: tipo1 },
+      { x: x1 + ancho1, y: y1, id: id1, tipo: tipo1 },
+    ];
+    let p2 = [
+      { x: x2, y: y2 - alto2, id: id2, tipo: tipo2 },
+      { x: x2, y: y2 + alto2, id: id2, tipo: tipo2 },
+      { x: x2 - ancho2, y: y2, id: id2, tipo: tipo2 },
+      { x: x2 + ancho2, y: y2, id: id2, tipo: tipo2 },
+    ];
+    let p1Menor = { p: p1[0] };
+    let p2Menor = { p: p2[0] };
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (
+          this.calcularDistanciaDosPuntos(p1[i].x, p1[i].y, p2[j].x, p2[j].y) <
+          this.calcularDistanciaDosPuntos(
+            p1Menor.p.x,
+            p1Menor.p.y,
+            p2Menor.p.x,
+            p2Menor.p.y
+          )
+        ) {
+          p1Menor.p = p1[i];
+          p2Menor.p = p2[j];
+        }
+      }
+    }
+    //this.setState({ figura1: p1Menor.p, figura2: p2Menor.p });
+    return { fig1: p1Menor.p, fig2: p2Menor.p };
+    //this.props.setFigura1(p1Menor.p);
+    //this.props.setFigura2(p2Menor.p);
+  };
   /**
    * Se encarga de guardar las nuevas props del sujeto.
    * @param {props del sujeto} e
@@ -183,7 +296,7 @@ class CasoDeUso extends Component {
       x: x,
       y: 100,
       name: req,
-      alto: 100,
+      alto: 25,
       ancho: ancho.width,
     };
     count++;
@@ -220,6 +333,8 @@ class CasoDeUso extends Component {
       nombre: "ingrese nombre",
       x: 100,
       y: 100,
+      alto: 0,
+      ancho: 0,
     };
     count++;
     this.setState({ count });
@@ -304,6 +419,7 @@ class CasoDeUso extends Component {
               guardarFlecha={this.guardarFlecha}
               actualizarCoordenadas={this.actualizarCoordenadas}
               actualizarCoordenadasActores={this.actualizarCoordenadasActores}
+              encontrarPuntosMasCercanos={this.encontrarPuntosMasCercanos}
               actualizarSujeto={this.actualizarSujeto}
               setFiguras={this.handleFiguras}
               setFigura1={this.handleFigura1}
