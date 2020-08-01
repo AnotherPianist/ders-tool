@@ -9,7 +9,20 @@ class RequisitoSistema extends React.Component {
         nombre: this.props.nombre,
         tipo: this.props.tipo
     };
+    this.onChangeNombre = this.onChangeNombre.bind(this);
+    this.onChangeTipo = this.onChangeTipo.bind(this);
     this.eliminarReq = this.eliminarReq.bind(this);
+  }
+
+  onChangeNombre(e) {
+    this.props.actualizarRequisito(this.props.id, e.target.value, this.state.tipo);
+    this.setState({nombre: e.target.value});
+  }
+
+
+  onChangeTipo(e) {
+    this.props.actualizarRequisito(this.props.id, this.state.nombre, e.target.value);
+    this.setState({tipo: e.target.value});
   }
   
   eliminarReq() {
@@ -31,10 +44,10 @@ class RequisitoSistema extends React.Component {
           <TextField value={"RS" + this.props.id} InputProps={{readOnly: true}}/>
         </Grid>
         <Grid item xs={8} style={{padding: "15px"}}>
-          <TextField fullWidth defaultValue={this.props.nombre} disabled={(this.props.invoca === -1) ? false : true} onChange={this.onChangeNombre}/>
+          <TextField fullWidth value={this.props.nombre} disabled={(this.props.invoca === -1) ? false : true} onChange={this.onChangeNombre}/>
         </Grid>
         <Grid item xs={2}>
-          <Select defaultValue={this.props.tipo} fullWidth onChange={this.onChangeTipo}>
+          <Select value={this.props.tipo} fullWidth onChange={this.onChangeTipo}>
             {tiposReq}
           </Select>
         </Grid>
