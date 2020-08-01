@@ -7,7 +7,7 @@ class RequisitoSistema extends React.Component {
     super(props);
     this.state = {
         nombre: this.props.nombre,
-        tipo: this.props.tipo,
+        tipo: this.props.tipo
     };
     this.eliminarReq = this.eliminarReq.bind(this);
   }
@@ -31,7 +31,7 @@ class RequisitoSistema extends React.Component {
           <TextField value={"RS" + this.props.id} InputProps={{readOnly: true}}/>
         </Grid>
         <Grid item xs={8} style={{padding: "15px"}}>
-          <TextField fullWidth defaultValue={this.props.nombre} onChange={this.onChangeNombre}/>
+          <TextField fullWidth defaultValue={this.props.nombre} disabled={(this.props.invoca === -1) ? false : true} onChange={this.onChangeNombre}/>
         </Grid>
         <Grid item xs={2}>
           <Select defaultValue={this.props.tipo} fullWidth onChange={this.onChangeTipo}>

@@ -7,7 +7,7 @@ class CrearRS extends React.Component {
     super(props);
     this.state = {
       nombre: "",
-      tipo: "Funcional",
+      tipo: "Funcional"
     }
     this.onChangeNombre = this.onChangeNombre.bind(this);
     this.onChangeTipo = this.onChangeTipo.bind(this);
@@ -25,7 +25,7 @@ class CrearRS extends React.Component {
     if (e.key === "Enter" && this.state.nombre.length !== 0) {
       this.props.crearRequisitoSistema(this.state.nombre, this.state.tipo, this.props.refRU, -1);
       this.setState({nombre: ""});
-      e.target.value = "";    
+      e.target.value = "";   
     }   
   }
 

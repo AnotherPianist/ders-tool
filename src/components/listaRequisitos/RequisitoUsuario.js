@@ -11,22 +11,18 @@ class RequisitoUsuario extends React.Component {
     };
     this.onChangeNombre = this.onChangeNombre.bind(this);
     this.onChangeTipo = this.onChangeTipo.bind(this);
-    this.actualizarReq = this.actualizarReq.bind(this);
     this.eliminarReq = this.eliminarReq.bind(this);
   }
 
   onChangeNombre(e) {
+    this.props.actualizarRequisito(this.props.id, e.target.value, this.state.tipo);
     this.setState({nombre: e.target.value});
-    this.actualizarReq();
   }
+
 
   onChangeTipo(e) {
+    this.props.actualizarRequisito(this.props.id, this.state.nombre, e.target.value);
     this.setState({tipo: e.target.value});
-    this.actualizarReq();
-  }
-
-  actualizarReq() {
-    this.props.actualizarRequisito(this.props.id, this.state.nombre, this.state.tipo);
   }
 
   eliminarReq() {
