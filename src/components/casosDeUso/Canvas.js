@@ -223,7 +223,7 @@ class Canvas extends React.Component {
         });
         console.log("listaNuevaS: " + lineasSolidas.length);
         this.props.guardarFlecha(lineasSolidas);
-      } else {
+      } else if (this.props.figura1.id !== this.props.figura2.id) {
         var lineasPunteadas = this.props.lineasPunteadas;
         if (this.props.tipo === 1) {
           lineasPunteadas.push({
@@ -264,7 +264,7 @@ class Canvas extends React.Component {
           {/** Ciclo para dibujar lineas normales */}
 
           {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
-            <Layer key={i} draggable>
+            <Layer key={i}>
               {/** Linea individual, obtenido desde el arreglo de flechas*/}
               {this.dibujarLineaNormal(i)}
             </Layer>
@@ -272,7 +272,7 @@ class Canvas extends React.Component {
 
           {/** Ciclo para dibujar lineas punteadas include y extend */}
           {[...Array(this.props.lineasPunteadas.length)].map((_, i) => (
-            <Layer key={i} draggable>
+            <Layer key={i}>
               {/** Linea individual, obtenido desde el arreglo de flechas*/}
               {this.dibujarFlechaPunt(i)}
             </Layer>

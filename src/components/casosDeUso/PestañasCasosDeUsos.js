@@ -1,37 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
+import CasoDeUso from "./CasoDeUso";
+import AlertDialog from "./AlertDialog";
+import TabPanel from "./TabPanel";
 
 function a11yProps(index) {
   return {
@@ -43,8 +18,8 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    borderTop: 100,
-    width: "95%",
+    marginLeft: "1rem",
+    width: "100%",
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -56,9 +31,12 @@ const dataDefault = [
 
 export default function PestañasCasosDeUsos(props) {
   const classes = useStyles();
-  const [pestanias, setPestanias] = React.useState(dataDefault);
-  const [countPestanias, setCountPestanias] = React.useState(1);
-  const [value, setValue] = React.useState(0);
+  const [pestanias, setPestanias] = useState(dataDefault);
+  const [countPestanias, setCountPestanias] = useState(1);
+  const [value, setValue] = useState(0);
+  const [alerta, setAlerta] = useState(false);
+  const [cerrarPestania, setCerrarPestania] = useState(false);
+  const [pestaniaActual, setpestaniaActual] = useState(0);
 
   const handleChange = (event, newValue) => {
     var copiaPestanias = [];
@@ -76,22 +54,50 @@ export default function PestañasCasosDeUsos(props) {
       setCountPestanias(countPestanias + 1);
     }
     setValue(newValue);
+    setpestaniaActual(newValue);
   };
 
-  const handleClose = (event, indiceTab) => {
+  const handleClose = async (event, indiceTab) => {
     var copiaPestanias = [];
-    pestanias.forEach((value, index) => {
-      if (index === pestanias.length - 1) {
-        copiaPestanias.push({ title: "Nueva Pestaña", id: "" });
-      } else if (index !== indiceTab) {
-        copiaPestanias.push(value);
+
+    /**
+     * Cierra una ventana
+     */
+    const cerrar = async () => {
+      if (cerrarPestania) {
+        pestanias.forEach((value, index) => {
+          if (index === pestanias.length - 1) {
+            copiaPestanias.push({ title: "Nueva Pestaña", id: "" });
+          } else if (index !== indiceTab) {
+            copiaPestanias.push(value);
+          }
+        });
+        setPestanias(copiaPestanias);
+        setCerrarPestania(false); // resetea al valor de cerrar pestaña
+        setAlerta(false); // cierra la alerta
       }
-    });
-    setPestanias(copiaPestanias);
+    };
+
+    setpestaniaActual(indiceTab);
+    setAlerta(true); // abre la alerta
+    cerrar(); // cierra la pestaña si presiono aceptar en la alerta.
   };
+
+  useEffect(() => {
+    if (cerrarPestania) handleClose(() => {}, pestaniaActual);
+  }, [cerrarPestania]);
 
   return (
     <div className={classes.root}>
+      <AlertDialog
+        open={alerta}
+        setOpen={setAlerta}
+        title={"¿Desea cerrar la pestaña actual?"}
+        description={
+          "Si cierra la ventana y no a guardado los cambios, estos serán perdidos."
+        }
+        setOption={setCerrarPestania}
+      />
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -115,10 +121,17 @@ export default function PestañasCasosDeUsos(props) {
         </Tabs>
       </AppBar>
       {pestanias.map((pestania, index) => (
-        <TabPanel key={pestania.id} value={value} index={index}>
-          {pestania.title + " " + pestania.id}
+        <TabPanel
+          key={pestania.id}
+          value={value}
+          index={index}
+          length={pestanias.length - 1}
+        >
+          <CasoDeUso />
         </TabPanel>
       ))}
     </div>
   );
 }
+
+PestañasCasosDeUsos.propTypes = {};
