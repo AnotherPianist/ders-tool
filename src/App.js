@@ -27,8 +27,7 @@ class App extends React.Component {
         }
       ],
       textoDers: [],
-      requisitosUsuario: [],
-      requisitosSistema: [],
+      requisitos: [],
       puntosFuncion: {
         entradas: [0, 0, 0],
         salidas: [0, 0, 0],
@@ -53,12 +52,8 @@ class App extends React.Component {
     this.setState({tiposRequisitos: listaTipos})
   }
 
-  actualizarRequisitosUsuario = listaRequisitos => {
-    this.setState({requisitosUsuario: listaRequisitos});
-  }
-
-  actualizarRequisitosSistema = listaRequisitos => {
-    this.setState({requisitosSistema: listaRequisitos});
+  actualizarRequisitos = async listaRequisitos => {
+    await this.setState({requisitos: listaRequisitos});
   }
 
   actualizarPuntosFuncion = pf => {
@@ -89,11 +84,9 @@ class App extends React.Component {
             </Route>
             <Route path="/requisitos" >
               <ListaRequisitos
-                requisitosUsuario={this.state.requisitosUsuario}
-                requisitosSistema={this.state.requisitosSistema}
+                requisitos={this.state.requisitos}
                 tiposRequisitos={this.state.tiposRequisitos}
-                actualizarRequisitosUsuario={this.actualizarRequisitosUsuario}
-                actualizarRequisitosSistema={this.actualizarRequisitosSistema}
+                actualizar={this.actualizarRequisitos}
               />
             </Route>
             <Route path="/tablas" >

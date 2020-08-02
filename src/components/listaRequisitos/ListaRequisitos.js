@@ -8,153 +8,175 @@ import { Container, Typography } from '@material-ui/core';
 class ListaRequisitos extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      contadorRU: 0,
-      contadorRS: 0
-    };
+    this.state = {keyCounter: 0};
   }
 
-  crearRequisitoUsuario = (n, t) => {
-    let nuevoRequisito = {
-      key: this.state.contadorRU,
-      id: this.props.requisitosUsuario.length + 1,
+  crearRU = (n, t) => {
+    const requisitos = [];
+    let idCounter = 1;
+    for (const r of this.props.requisitos) {
+      requisitos.push(r);
+      if (r.isRU)
+        idCounter++;
+    }
+    requisitos.push({
+      key: this.state.keyCounter,
+      isRU: true,
+      id: idCounter,
       nombre: n,
       tipo: t,
-    };
-    const listaReq = this.props.requisitosUsuario.slice();
-    listaReq.push(nuevoRequisito);
-    this.setState({contadorRU: this.state.contadorRU + 1});
-    this.props.actualizarRequisitosUsuario(listaReq);
+    });
+    this.setState({keyCounter: this.state.keyCounter + 1});
+    this.props.actualizar(requisitos);
   }
 
-  crearRequisitoSistema = (n, t, r) => {
-    let nuevoRequisito = {
-      key: this.state.contadorRS,
-      refRU: r,
-      id: this.props.requisitosSistema.length + 1,
-      nombre: n,
-      tipo: t
-    };
-    const listaReq = this.props.requisitosSistema.slice();
-    listaReq.push(nuevoRequisito);
-    this.setState({contadorRS: this.state.contadorRS + 1});
-    this.props.actualizarRequisitosSistema(listaReq);
-  }
-
-  actualizarRequisitoUsuario = (id, n, t) => {
-    const listaReq = this.props.requisitosUsuario.slice();
-    for (const requisito of listaReq) {
-      if (requisito.id === id) {
-        requisito.nombre = n;
-        requisito.tipo = t;
+  crearRS = (nombre, tipo, ru, invocaA) => {
+    const requisitos = [];
+    let idCounter = 1;
+    let pushed = false;
+    for (const r of this.props.requisitos) {
+      if (r.isRU) {
+        if (!pushed && r.id > ru.id) {
+          requisitos.push({
+            key: this.state.keyCounter,
+            refRU: ru.id,
+            id: idCounter++,
+            nombre:
+              !invocaA ? nombre :
+                `Invocar a R${invocaA.isRU ? "U" : "S"}${invocaA.id}: ${invocaA.nombre}`,
+            tipo: tipo,
+            invocaA: invocaA
+          });
+          pushed = true;
+        }
+        requisitos.push(r);
+      } else {
+        idCounter++;
+        requisitos.push(r.refRU <= ru.id ? r : {...r, id: r.id + 1});
       }
     }
-    this.props.actualizarRequisitosUsuario(listaReq);
+    if (!pushed)
+      requisitos.push({
+        key: this.state.keyCounter,
+        refRU: ru.id,
+        id: idCounter++,
+        nombre:
+          !invocaA ? nombre :
+            `Invocar a R${invocaA.isRU ? "U" : "S"}${invocaA.id}: ${invocaA.nombre}`,
+        tipo: tipo,
+        invocaA: invocaA
+      });
+    this.setState({keyCounter: this.state.keyCounter + 1});
+    this.props.actualizar(requisitos);
   }
 
-  eliminarRequisitoUsuario = (id) => {  
-    const listaReq = [];
-    let i = 1;
-    for (const requisito of this.props.requisitosUsuario) {   
-      if (requisito.id !== id) {
-        const req = {
-          key: requisito.key,
-          id: i++,
-          nombre: requisito.nombre,
-          tipo: requisito.tipo
-        };
-        listaReq.push(req);
+  editarRU = (req, nombre, tipo) => {
+    const requisitos = this.props.requisitos.slice();
+    for (const r of requisitos) {
+      if (r.key === req.key) {
+        r.nombre = nombre;
+        r.tipo = tipo;
+      } else if (r.invocaA && r.invocaA.key === req.key) {
+        r.nombre = `Invocar a R${req.isRU ? "U" : "S"}${req.id}: ${nombre}`;
+        r.tipo = tipo;
       }
-      else
-        this.eliminarRequisitosSistemaRU(requisito.id);
     }
-    this.props.actualizarRequisitosUsuario(listaReq);
+    this.props.actualizar(requisitos);
   }
 
-  eliminarRequisitoSistema = (id) => {
-    const listaReq = [];
-    let i = 1;
-    for (const requisito of this.props.requisitosSistema) {
-      if (requisito.id !== id) {
-        const req = {
-          key: requisito.key,
-          id: i++,
-          nombre: requisito.nombre,
-          tipo: requisito.tipo,
-          refRU: requisito.refRU
-        };
-        listaReq.push(req);
-      }
+  eliminarRU = (req) => {  
+    const requisitos = [];
+    let rsCounter = 1;
+    for (const r of this.props.requisitos) {
+      if (r.isRU && r.key !== req.key)
+        requisitos.push(r.id < req.id ? r : {...r, id: r.id - 1});
+      else if (!r.isRU && r.refRU !== req.id && (!r.invocaA || r.invocaA.key !== req.key))
+        requisitos.push(r.refRU < req.id ? {...r, id: rsCounter++} : {...r, id: rsCounter++, refRU: r.refRU - 1});
     }
-    this.props.actualizarRequisitosSistema(listaReq);
+    this.props.actualizar(requisitos);
   }
- 
-  getRequisitosSistema = (idRU) => {
-    const reqsSistema = this.props.requisitosSistema.map((req) => {
-      if (req.refRU === idRU)
-        return <RequisitoSistema
-                  key={req.key}
-                  id={req.id}
-                  nombre={req.nombre}
-                  tipo={req.tipo}
-                  eliminarRequisitoSistema={this.eliminarRequisitoSistema}
-                  tiposRequisitos={this.props.tiposRequisitos}
-                />
+
+  eliminarRS = (req) => {
+    const requisitos = [];
+    let rsCounter = 1;
+    for (const r of this.props.requisitos) {
+      if (r.isRU)
+        requisitos.push(r);
+      else if (!r.isRU && r.key !== req.key && (!r.invocaA || r.invocaA.key !== req.key))
+        if (r.invocaA || r.invocaA.key !== req.key)
+          requisitos.push({...r, id: rsCounter++});
+    }
+    console.log(requisitos);
+    this.props.actualizar(requisitos);
+  }
+
+  obtenerRequisitosSistema = (ru) => {
+    const requisitos = this.props.requisitos.map((r) => {
+      if (!r.isRU && r.refRU === ru.id)
+        return (
+          <RequisitoSistema
+            key={r.key}
+            rs={r}
+            tiposRequisitos={this.props.tiposRequisitos}
+            eliminar={this.eliminarRS}
+          />
+        );
       return null;
     });
-    return reqsSistema;
+    return requisitos;
   }
 
-  eliminarRequisitosSistemaRU = (idRU) => {
-    const listaReq = [];
-    let i = 1;
-    for (const requisitoSistema of this.props.requisitosSistema) {
-      if (requisitoSistema.refRU !== idRU) {
-        const req = {
-          key: requisitoSistema.key,
-          id: i++,
-          nombre: requisitoSistema.nombre,
-          tipo: requisitoSistema.tipo,        
-          refRU: (requisitoSistema.refRU > idRU) ? requisitoSistema.refRU - 1 : requisitoSistema.refRU
-        };
-        listaReq.push(req);
-      }
+  obtenerRequisitosParaInvocar = (req) => {
+    const requisitos = [];
+    for (const r of this.props.requisitos) {
+      if (r.isRU && r.key !== req.key) {
+        let canPush = true;
+        for (const _r of this.props.requisitos) {
+          if (!_r.isRU && _r.invocaA && _r.refRU === req.id && _r.invocaA.id === r.id) {
+            canPush = false;
+            break;
+          }
+        }
+        if (canPush)
+          requisitos.push(r);
+      } else if (!r.isRU && r.refRU !== req.id && !r.invocaA)
+        requisitos.push(r);
     }
-    this.props.actualizarRequisitosSistema(listaReq);  
+    return requisitos;
   }
 
   render() {
-    const reqsUsuario = this.props.requisitosUsuario.map((req) => {
-      return (
-        <>
-          <RequisitoUsuario 
-            key={req.key} 
-            id={req.id} 
-            nombre={req.nombre}
-            tipo={req.tipo} 
-            actualizarRequisito={this.actualizarRequisitoUsuario} 
-            eliminarRequisitoUsuario={this.eliminarRequisitoUsuario} 
-            tiposRequisitos={this.props.tiposRequisitos}
-          />
-          {this.getRequisitosSistema(req.id)}
-          <CrearRS 
-            key={"crear" + req.key} 
-            refRU={req.id} 
-            crearRequisitoSistema={this.crearRequisitoSistema} 
-            tiposRequisitos={this.props.tiposRequisitos}
-          />
-        </>
+    const reqsUsuario = this.props.requisitos.map((r) => {
+      if (r.isRU)
+        return (
+          <>
+            <RequisitoUsuario
+              key={r.key}
+              ru={r}
+              editar={this.editarRU}
+              eliminar={this.eliminarRU}
+              tiposRequisitos={this.props.tiposRequisitos}
+            />
+            {this.obtenerRequisitosSistema(r)}
+            <CrearRS
+              key={`crear${r.key}`}
+              ru={r}
+              crear={this.crearRS}
+              tiposRequisitos={this.props.tiposRequisitos}
+              requisitosInvocar={this.obtenerRequisitosParaInvocar(r)}
+              invocarRequisito={this.invocarRequisito}
+            />
+          </>
       );
+      else
+        return null;
     });
 
-    return(
+    return (
       <Container>
         <Typography variant="h4" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
-        <CrearRU 
-          crearRequisitoUsuario={this.crearRequisitoUsuario} 
-          tiposRequisitos={this.props.tiposRequisitos}
-        />
+        <CrearRU crear={this.crearRU} tiposRequisitos={this.props.tiposRequisitos}/>
       </Container>
     );
   }
