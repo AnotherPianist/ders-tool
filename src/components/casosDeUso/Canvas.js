@@ -319,28 +319,40 @@ class Canvas extends React.Component {
    * Función que se encarga de desplegar el rectángulo que representa al sujeto, junto a su texto
    * respectivo, dandele la opción de reajustar su tamano
    */
-  mostrarRectangulo = () => {
-    const sujeto = this.props.sujeto;
-    return (
-      <Layer key={"sujeto"} id={10000} x={300} y={300} draggable>
-        <Rectangle
-          key={"sujeto"}
-          {...sujeto}
-          onTransform={(newProps) => {
-            this.handleRectChange(newProps);
-          }}
-        />
+  dibujarSujeto = () => {
+    console.log(this.props.sujetos[0]);
 
+    return (
+      <Layer key={10000}>
+        {this.props.sujetos.map((sujeto, i) => (
+          <>
+            <Rectangle
+              key={i}
+              {...sujeto}
+              onTransform={(newProps) => {
+                this.handleRectChange(newProps, i);
+              }}
+            />
+            <Text
+              x={
+                sujeto.x +
+                sujeto.ancho / 2 -
+                calculateSize(sujeto.name, {
+                  font: "Arial",
+                  fontSize: "20px",
+                }).width /
+                  2
+              }
+              y={sujeto.y + 5}
+              fontSize={20}
+              text={sujeto.name}
+              wrap="char"
+              align="center"
+            />
+          </>
+        ))}
         <TransformerComponent
           selectedShapeName={this.state.selectedShapeName}
-        />
-        <Text
-          x={sujeto.x + (sujeto.width / 2 - 30)}
-          y={sujeto.y + 5}
-          fontSize={20}
-          text={sujeto.name}
-          wrap="char"
-          align="center"
         />
       </Layer>
     );
@@ -367,7 +379,7 @@ class Canvas extends React.Component {
       return;
     }
     const name = e.target.name();
-    const rect = this.props.sujeto.name === name;
+    const rect = this.props.sujetos.find((r) => r.name === name);
     if (rect) {
       this.setState({
         selectedShapeName: name,
@@ -384,14 +396,10 @@ class Canvas extends React.Component {
    * se le ajusta el tamano
    * @param {propiedades del nuevo sujeto} newProps
    */
-  handleRectChange = (newProps) => {
+  handleRectChange = (newProps, i) => {
     let sujeto = newProps;
-    this.props.actualizarSujeto({ sujeto });
-  };
-  dibujarSujeto = () => {
-    if (this.props.sujeto.id === 10000) {
-      return <this.mostrarRectangulo />;
-    }
+
+    this.props.actualizarSujeto({ sujeto, i });
   };
 
   render() {
@@ -402,7 +410,7 @@ class Canvas extends React.Component {
           height={window.innerHeight}
           onMouseDown={this.handleStageMouseDown}
         >
-          {this.dibujarSujeto()}
+          <this.dibujarSujeto />
 
           {/** Ciclo para dibujar actores*/}
           {[...Array(this.props.actores.length)].map((_, i) => (

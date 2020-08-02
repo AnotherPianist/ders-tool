@@ -59,7 +59,7 @@ class CasoDeUso extends Component {
       tipo: 0,
       figura1: {},
       figura2: {},
-      sujeto: {},
+      sujetos: [],
     };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
@@ -165,13 +165,17 @@ class CasoDeUso extends Component {
         this.setState({ figuras: figuras });
         this.buscarFlecha(figuras[index], e);
       }
+    }
+  };
 
-      if (this.state.sujeto.id === e.currentTarget.attrs.id) {
-        var sujeto = this.state.sujeto;
-        sujeto.x = e.currentTarget.attrs.x;
-        sujeto.y = e.currentTarget.attrs.y;
+  actualizarCoordenadasSujetos = (e) => {
+    for (let i = 0; i < this.state.sujetos.length; i++) {
+      if (this.state.sujetos[i].id === e.currentTarget.attrs.id) {
+        var sujetos = this.state.sujetos;
+        sujetos[i].x = e.currentTarget.attrs.x;
+        sujetos[i].y = e.currentTarget.attrs.y;
         //sujeto.ancho = e.target.children[0].textWidth + 100;
-        this.setState({ sujeto: sujeto });
+        this.setState({ sujetos: sujetos });
       }
     }
   };
@@ -279,7 +283,9 @@ class CasoDeUso extends Component {
    * @param {props del sujeto} e
    */
   actualizarSujeto = (e) => {
-    this.setState({ sujeto: e.sujeto });
+    var sujetos = this.state.sujetos;
+    sujetos[e.i] = e.sujeto;
+    this.setState({ sujetos: sujetos });
   };
 
   crearFigura = (props) => {
@@ -374,20 +380,28 @@ class CasoDeUso extends Component {
   };
 
   handleSujeto = () => {
-    if (!this.state.sujeto.id) {
-      const sujeto = {
-        id: 10000,
-        x: 0,
-        y: 0,
-        name: "Sujeto",
-        width: 200,
-        height: 200,
-        rotation: 0,
-        scaleX: 1,
-        scaleY: 1,
-      };
-      this.setState({ sujeto: sujeto });
-    }
+    let count = this.state.count;
+    const nombre = "sujeto";
+    const ancho = calculateSize(nombre, {
+      font: "Arial",
+      fontSize: "20px",
+    });
+    const sujeto = {
+      id: count,
+      x: 0,
+      y: 0,
+      name: nombre.concat(count),
+      ancho: ancho.width + 200,
+      alto: 200,
+      rotation: 0,
+      scaleX: 1,
+      scaleY: 1,
+    };
+    count++;
+    this.setState({ count });
+    let sujetos = [...this.state.sujetos];
+    sujetos.push(sujeto);
+    this.setState({ sujetos });
   };
 
   render() {
@@ -419,6 +433,7 @@ class CasoDeUso extends Component {
               guardarFlecha={this.guardarFlecha}
               actualizarCoordenadas={this.actualizarCoordenadas}
               actualizarCoordenadasActores={this.actualizarCoordenadasActores}
+              actualizarCoordenadasSujetos={this.actualizarCoordenadasSujetos}
               encontrarPuntosMasCercanos={this.encontrarPuntosMasCercanos}
               actualizarSujeto={this.actualizarSujeto}
               setFiguras={this.handleFiguras}
@@ -430,7 +445,7 @@ class CasoDeUso extends Component {
               figura1={this.state.figura1}
               figura2={this.state.figura2}
               dibujarLinea={this.state.dibujarLinea}
-              sujeto={this.state.sujeto}
+              sujetos={this.state.sujetos}
             />
           </Box>
         </Box>
