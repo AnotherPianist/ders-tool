@@ -7,24 +7,38 @@
     overflow-x: hidden;
     padding-top: 20px;
   }
-  
-  /* Control the left side */
+
+  /* color anterior: E0E0E0*/
   .left {
     left: 0;
-    background-color: #E0E0E0;
+    background-color: #fff;
   }
-  
-  /* Control the right side */
+
+  /* color anterior: C0C0C0*/
   .right {
     right: 0;
-    background-color: #C0C0C0;
+    background-color: #fff;
   }
   
-  /* If you want the content centered horizontally and vertically */
   .centered {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+  }
+
+  .visorpdf {
+    -webkit-box-shadow: 0px 0px 13px 3px rgba(0,0,0,0.43);
+    -moz-box-shadow: 0px 0px 13px 3px rgba(0,0,0,0.43);
+    box-shadow: 0px 0px 13px 3px rgba(0,0,0,0.43);
+  }
+
+  .cpdf {
+    padding: 50px 20px 20px 20px;
+  }
+
+  .espacio {
+    height: 100px;
+    width: 100%;
   }

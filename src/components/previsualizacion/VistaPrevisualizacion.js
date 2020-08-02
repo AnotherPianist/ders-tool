@@ -1,6 +1,8 @@
 import React from 'react';
 import BarraPDF from './BarraPDF';
+import Visorpdf2 from './Visorpdf';
 import './estilosvp.css';
+import samplePDF from "./prueba.pdf";
 
 class VistaPrevisualizacion extends React.Component {
   constructor(props) {
@@ -21,8 +23,12 @@ class VistaPrevisualizacion extends React.Component {
         </div>
 
         <div class="split right">
-          <div class="centered">
-            <h4>Previsualización de PDF</h4>
+          <div class="cpdf">
+            <div>
+              <h3>Documento</h3>
+              
+            </div>
+            <Visorpdf2 pdf={samplePDF} />
           </div>
         </div>
 
