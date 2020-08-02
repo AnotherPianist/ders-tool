@@ -22,8 +22,7 @@ class VistaPrevisualizacion extends React.Component {
 
         <div class="split right">
           <div class="centered">
-            <h2>PDF</h2>
-            <p>Aquí irá el previsualizador de pdf</p>
+            <h4>Previsualización de PDF</h4>
           </div>
         </div>
 
