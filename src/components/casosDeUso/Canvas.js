@@ -176,34 +176,6 @@ class Canvas extends React.Component {
     return (pto1 + pto2) / 2;
   };
 
-  encontrarPuntosMasCercanos = (fig1, fig2) => {
-    let ancho1 = this.props.figuras[fig1.id].ancho;
-    let alto1 = this.props.figuras[fig1.id].alto;
-    let ancho2 = this.props.figuras[fig2.id].ancho;
-    let alto2 = this.props.figuras[fig2.id].alto;
-    let id1 = fig1.id;
-    let id2 = fig2.id;
-
-    let x1 = fig1.x;
-    let y1 = fig1.y;
-    let x2 = fig2.x;
-    let y2 = fig2.y;
-
-    let p1 = [
-      { x: x1, y: y1 - alto1, id: id1 },
-      { x: x1, y: y1 + alto1, id: id1 },
-      { x: x1 - ancho1, y: y1, id: id1 },
-      { x: x1 + ancho1, y: y1, id: id1 },
-    ];
-    let p2 = [
-      { x: x2, y: y2 - alto2, id: id2 },
-      { x: x2, y: y2 + alto2, id: id2 },
-      { x: x2 - ancho2, y: y2, id: id2 },
-      { x: x2 + ancho2, y: y2, id: id2 },
-    ];
-    this.setState({ fig1Aux: p1[2] });
-    this.setState({ fig2Aux: p2[2] });
-  };
   nuevaLinea = () => {
     return {
       fig1: this.props.figura1,
@@ -223,7 +195,7 @@ class Canvas extends React.Component {
     fig1.y = e.currentTarget.attrs.y;
     fig1.id = e.currentTarget.attrs.id;
     this.props.setFigura1(fig1);
-    console.log(this.props.figura1);
+
     this.setState({ nroClick: this.state.nroClick + 1 });
   };
   procesarSegundoClick = (e, tipoFigura) => {
@@ -237,7 +209,10 @@ class Canvas extends React.Component {
     fig2.y = e.currentTarget.attrs.y;
     fig2.id = e.currentTarget.attrs.id;
     this.props.setFigura2(fig2);
-    console.log(this.props.figura2);
+
+    let figuras = this.props.encontrarPuntosMasCercanos();
+    this.props.setFigura1(figuras.fig1);
+    this.props.setFigura2(figuras.fig2);
   };
   /**
    * Funcion que es verdadera cuando las figuras comparadas son diferentes,
@@ -255,7 +230,6 @@ class Canvas extends React.Component {
       (this.props.figura1.tipo === "actor") &
       (this.props.figura2.tipo === "actor")
     ) {
-      console.log("Son actores ambos");
       return true;
     } else {
       return false;
@@ -266,7 +240,6 @@ class Canvas extends React.Component {
       (this.props.figura1.tipo === "requisito") &
       (this.props.figura2.tipo === "requisito")
     ) {
-      console.log("Son requisitos ambos");
       return true;
     } else {
       return false;
@@ -328,10 +301,10 @@ class Canvas extends React.Component {
         <Line points={[0, -5, 15, 10]} tension={1} closed stroke="black" />
         <Circle x={0} y={-20} radius={10} fill="white" stroke="black" />
         <Text
-          x={-15}
-          y={60}
+          x={-23}
+          y={40}
           fontSize={20}
-          text="actor"
+          text="Actor"
           wrap="char"
           align="center"
           onClick={() => {
