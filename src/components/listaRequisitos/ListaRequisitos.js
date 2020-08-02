@@ -102,9 +102,8 @@ class ListaRequisitos extends React.Component {
     for (const r of this.props.requisitos) {
       if (r.isRU)
         requisitos.push(r);
-      else if (!r.isRU && r.key !== req.key && (!r.invocaA || r.invocaA.key !== req.key))
-        if (r.invocaA || r.invocaA.key !== req.key)
-          requisitos.push({...r, id: rsCounter++});
+      else if (r.key !== req.key && (!r.invocaA || r.invocaA.key !== req.key))
+        requisitos.push({...r, id: rsCounter++});
     }
     console.log(requisitos);
     this.props.actualizar(requisitos);
