@@ -24,10 +24,6 @@ class VistaPrevisualizacion extends React.Component {
 
         <div class="split right">
           <div class="cpdf">
-            <div>
-              <h3>Documento</h3>
-              
-            </div>
             <Visorpdf2 pdf={samplePDF} />
           </div>
         </div>

@@ -50,6 +50,14 @@ export default function SinglePage(props) {
           Siguiente
         </button>
       </div>
+      <div>
+        <button
+          type="button"
+          class="botonGuardar"
+        >
+          Guardar
+        </button>
+      </div>
     </>
   );
 }
