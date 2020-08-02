@@ -73,6 +73,7 @@ class Estructura extends React.Component {
               <MenuItem onClick={this.closeEditar} component={Link} to="/ajustes" >Ajustes</MenuItem>
             </Menu>
             <Button style={{padding: "1rem"}}>Previsualizar</Button>
+            <Button style={{padding: "1rem"}}  onClick= {this.props.toPDF}>Download PDF</Button>
           </Toolbar>
         </AppBar>
         <Drawer classes={{ paper: classes.drawerPaper }} anchor="left" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
