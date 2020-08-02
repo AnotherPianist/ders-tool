@@ -94,7 +94,7 @@ export default function PestañasCasosDeUsos(props) {
         setOpen={setAlerta}
         title={"¿Desea cerrar la pestaña actual?"}
         description={
-          "Si cierra la ventana y no a guardado los cambios, estos serán perdidos."
+          "Si cierra la ventana y no ha guardado los cambios, estos serán perdidos."
         }
         setOption={setCerrarPestania}
       />

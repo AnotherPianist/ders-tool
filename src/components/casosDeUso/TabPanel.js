@@ -15,10 +15,8 @@ const TabPanel = (props) => {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Container>
-            {index !== length ? children : <div>Agrega Nuevas Pestañas...</div>}
-          </Container>
+        <Box p={1}>
+          {index !== length ? children : <div>Agrega Nuevas Pestañas...</div>}
         </Box>
       )}
     </div>

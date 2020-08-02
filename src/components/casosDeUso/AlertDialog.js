@@ -18,7 +18,7 @@ export default function AlertDialog(props) {
     setOpen(false);
   };
 
-  const acept = () => {
+  const accept = () => {
     setOption(true);
     setOpen(false);
   };
@@ -41,7 +41,7 @@ export default function AlertDialog(props) {
           <Button onClick={() => cancel()} color="primary" autoFocus>
             Cancelar
           </Button>
-          <Button onClick={() => acept()} color="primary">
+          <Button onClick={() => accept()} color="primary">
             Aceptar
           </Button>
         </DialogActions>

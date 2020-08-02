@@ -393,9 +393,9 @@ class CasoDeUso extends Component {
   render() {
     return (
       <div style={{ width: "100%" }}>
-        <Box display="flex" p={1} bgcolor="background.paper">
-          <Box p={1} width="100%" borderRight="outset" bgcolor="white">
-            <Box p={1} width={250}>
+        <Box display="flex" p={0} bgcolor="background.paper">
+          <Box p={0} width="100%" borderRight="outset" bgcolor="white">
+            <Box p={0} width={250}>
               <BarraHerramientaCasosDeUso
                 requisitos={this.state.requisitos}
                 onClickRequisito={this.crearFigura}
