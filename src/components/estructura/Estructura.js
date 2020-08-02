@@ -234,6 +234,8 @@ class Estructura extends React.Component {
             <ListItem
               button
               className={classes.whiteIcons}
+              component={Link}
+              to="/analisisRepago"
               onClick={this.toggleDrawer}
             >
               <ListItemIcon className={classes.whiteIcons}>

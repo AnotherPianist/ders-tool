@@ -8,6 +8,7 @@ import ListaRequisitos from "./components/listaRequisitos/ListaRequisitos";
 import PuntosFuncion from "./components/puntosFuncion/PuntosFuncion";
 import Ders from "./components/ders/Ders";
 import PestañasCasosDeUsos from "./components/casosDeUso/PestañasCasosDeUsos";
+import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
 
 class App extends React.Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class App extends React.Component {
         ie: [0, 0, 0],
         ali: [0, 0, 0],
       },
+      tablaAnalisisRepago: [],
     };
   }
 
@@ -66,6 +68,10 @@ class App extends React.Component {
 
   actualizarTextoDers = (infoDers) => {
     this.setState({ textoDers: infoDers });
+  };
+
+  actualizarTablaAnalisisRepago = (tabla) => {
+    this.setState({ tablaAnalisisRepago: tabla });
   };
 
   render() {
@@ -120,6 +126,12 @@ class App extends React.Component {
               <PuntosFuncion
                 puntos={this.state.puntosFuncion}
                 actualizar={this.actualizarPuntosFuncion}
+              />
+            </Route>
+            <Route path="/analisisRepago">
+              <AnalisisRepago
+                tablaAnalisisRepago={this.state.tablaAnalisisRepago}
+                actualizar={this.actualizarTablaAnalisisRepago}
               />
             </Route>
           </Switch>
