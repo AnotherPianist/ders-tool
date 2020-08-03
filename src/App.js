@@ -9,6 +9,7 @@ import PuntosFuncion from "./components/puntosFuncion/PuntosFuncion";
 import Ders from "./components/ders/Ders";
 import PestanasCasosDeUsos from "./components/casosDeUso/PestanasCasosDeUsos";
 import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
+import VistaPrevisualizacion from './components/previsualizacion/VistaPrevisualizacion';
 
 class App extends React.Component {
   constructor(props) {
@@ -112,6 +113,9 @@ class App extends React.Component {
                 tiposRequisitos={this.state.tiposRequisitos}
                 actualizarTipos={this.actualizarTiposRequisitos}
               />
+            </Route>
+            <Route path="/previsualizar">
+              <VistaPrevisualizacion/>
             </Route>
             <Route path="/puntosFuncion">
               <PuntosFuncion

@@ -114,7 +114,7 @@ class Estructura extends React.Component {
                 Ajustes
               </MenuItem>
             </Menu>
-            <Button style={{ padding: "1rem" }}>Previsualizar</Button>
+            <Button style={{padding: "1rem"}} component={Link} to="/previsualizar">Previsualizar</Button>
           </Toolbar>
         </AppBar>
         <Drawer
