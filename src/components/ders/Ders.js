@@ -29,7 +29,7 @@ const Ders = (props) => {
 
   return (
     <Container>
-      <Typography variant="h2" style={{margin: "2rem"}}>Documento de Especifición de Requisitos</Typography>
+      <Typography variant="h2" style={{margin: "3rem"}}>Documento de Especifición de Requisitos</Typography>
       {props.textoDers.map((info, index) => (
         <Card key={index} style={{marginLeft: "5rem", marginRight: "5rem", marginBottom: "2rem"}}>
           <CardContent>

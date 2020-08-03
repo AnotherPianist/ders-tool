@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell, TextField, Container } from '@material-ui/core'
+import { Typography, TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell, TextField } from '@material-ui/core'
 
 class PuntosFuncion extends React.Component {
   constructor(props) {
@@ -130,13 +130,11 @@ class PuntosFuncion extends React.Component {
     
   render() {
     return (
-      <Container style={{ margin: "40px" }}>
-        <TableContainer component={Paper}>
+      <>
+        <Typography variant="h2" style={{margin: "3rem"}}>Puntos de Función</Typography>
+        <TableContainer component={Paper} style={{margin: "3rem"}}>
           <Table aria-label="simple table">
             <TableHead>
-              <Typography variant="h6">Puntos de Función</Typography>
-            </TableHead>
-            <TableBody>
               <TableRow>
                 <TableCell></TableCell>
                 <TableCell align="right">Cantidad</TableCell>
@@ -145,6 +143,8 @@ class PuntosFuncion extends React.Component {
                 <TableCell align="right">Compleja</TableCell>
                 <TableCell align="right">Total</TableCell>
               </TableRow>
+            </TableHead>
+            <TableBody>
               <TableRow>
                 <TableCell>Entradas</TableCell>
                 <TableCell align="right"><TextField id="e-Ca" type="number" inputProps={{ min: "0" }} value={this.state.entradas[0]}  /></TableCell>
@@ -196,7 +196,7 @@ class PuntosFuncion extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
-      </Container>
+      </>
     );
   }
 }

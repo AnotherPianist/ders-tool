@@ -174,7 +174,7 @@ class ListaRequisitos extends React.Component {
 
     return (
       <Container>
-        <Typography variant="h3" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
+        <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
         <CrearRU crear={this.crearRU} tiposRequisitos={this.props.tiposRequisitos}/>
       </Container>

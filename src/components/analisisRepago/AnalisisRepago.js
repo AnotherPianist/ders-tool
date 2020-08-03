@@ -11,7 +11,7 @@ const AnalisisRepago = (props) => {
 
   return(
     <>
-      <Typography variant="h2" style={{margin: "3rem"}}>Tabla de análisis de repago</Typography>
+      <Typography variant="h2" style={{margin: "3rem"}}>Análisis de Repago</Typography>
         <Accordion style={{width: "90%", marginTop: "3rem"}}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
