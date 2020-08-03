@@ -7,7 +7,7 @@ import Ajustes from "./components/ajustes/Ajustes";
 import ListaRequisitos from "./components/listaRequisitos/ListaRequisitos";
 import PuntosFuncion from "./components/puntosFuncion/PuntosFuncion";
 import Ders from "./components/ders/Ders";
-import PestañasCasosDeUsos from "./components/casosDeUso/PestañasCasosDeUsos";
+import PestanasCasosDeUsos from "./components/casosDeUso/PestanasCasosDeUsos";
 import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
 
 class App extends React.Component {
@@ -94,7 +94,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/casos">
-              <PestañasCasosDeUsos
+              <PestanasCasosDeUsos
                 requisitos={this.state.requisitos}
                 actualizarRequisitos={this.actualizarRequisitos}
               />
