@@ -3,7 +3,7 @@ import RequisitoUsuario from './RequisitoUsuario';
 import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
-import { Container, Typography, Card } from '@material-ui/core';
+import { Container, Typography, Card, CardContent } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
   constructor(props) {
@@ -157,15 +157,17 @@ class ListaRequisitos extends React.Component {
               eliminar={this.eliminarRU}
               tiposRequisitos={this.props.tiposRequisitos}
             />
-            {this.obtenerRequisitosSistema(r)}
-            <CrearRS
-              key={`crear${r.key}`}
-              ru={r}
-              crear={this.crearRS}
-              tiposRequisitos={this.props.tiposRequisitos}
-              requisitosInvocar={this.obtenerRequisitosParaInvocar(r)}
-              invocarRequisito={this.invocarRequisito}
-            />
+            <CardContent>
+              {this.obtenerRequisitosSistema(r)}
+              <CrearRS
+                key={`crear${r.key}`}
+                ru={r}
+                crear={this.crearRS}
+                tiposRequisitos={this.props.tiposRequisitos}
+                requisitosInvocar={this.obtenerRequisitosParaInvocar(r)}
+                invocarRequisito={this.invocarRequisito}
+              />
+            </CardContent>
           </Card>
       );
       else
@@ -173,7 +175,7 @@ class ListaRequisitos extends React.Component {
     });
 
     return (
-      <Container>
+      <Container style={{margin: "3rem"}}>
         <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
         <CrearRU crear={this.crearRU} tiposRequisitos={this.props.tiposRequisitos}/>

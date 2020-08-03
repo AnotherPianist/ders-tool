@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Select, MenuItem, IconButton, Tooltip } from '@material-ui/core';
+import { Grid, TextField, Select, MenuItem, IconButton, Tooltip, Typography } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 class RequisitoSistema extends React.Component {
@@ -33,30 +33,26 @@ class RequisitoSistema extends React.Component {
 
     return (
       <Grid container style={{paddingLeft: "1rem"}}>
-        <Grid item xs={1} style={{padding: "1rem"}}>
-          <TextField value={"RS" + this.props.rs.id} InputProps={{readOnly: true}}/>
+        <Grid item xs={1} style={{paddingTop: "1rem"}}>
+          <Typography variant="subtitle1">{"RS" + this.props.rs.id}</Typography>
         </Grid>
-        <Grid item xs={8} style={{padding: "1rem"}}>
-          <TextField
-            fullWidth
-            readOnly={this.props.rs.invocaA === undefined ? false : true}
-            value={this.props.rs.nombre}
-            onChange={this.onChangeNombre}
-          />
+        <Grid item xs={8} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
+          {
+            this.props.rs.invocaA ? 
+            <Typography variant="subtitle1">{this.props.rs.nombre}</Typography> :
+            <TextField fullWidth value={this.props.rs.nombre} onChange={this.onChangeNombre}/>
+          }
         </Grid>
         <Grid item xs={2}>
-          <Select
-            fullWidth
-            readOnly={this.props.rs.invocaA === undefined ? false : true}
-            value={this.props.rs.tipo}
-            onChange={this.onChangeTipo}
-          >
-            {tiposReq}
-          </Select>
+          {
+            this.props.rs.invocaA ?
+            <Typography variant="subtitle1" style={{paddingTop: "1rem"}}>{this.props.rs.tipo}</Typography> :
+            <Select fullWidth value={this.props.rs.tipo} onChange={this.onChangeTipo}>{tiposReq}</Select>
+          }
         </Grid>
-        <Grid item xs={1} style={{paddingTop: "8px", paddingLeft: "1rem"}}>
+        <Grid item xs={1}>
           <IconButton color="secondary" onClick={this.eliminarReq}>
-              <HighlightOffIcon/>
+            <HighlightOffIcon/>
           </IconButton>
         </Grid>
       </Grid>
