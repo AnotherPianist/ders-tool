@@ -6,6 +6,7 @@ import {Container, List, ListItem, ListItemIcon, Checkbox, ListItemText} from '@
 class BarraPDF extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       DERS: false,
       ListadeRequisitos: false,
@@ -14,8 +15,6 @@ class BarraPDF extends React.Component {
       AjustesAmbientales: false,
       PuntosdeFunción: false,
       AnálisisdeRepago: false
-
-
     };
   };
 
@@ -26,8 +25,16 @@ class BarraPDF extends React.Component {
         this.setState({[value]: true});
       else
         this.setState({[value]: false});
+      
   }
 
+  onChangeCheckBox(e) {
+    
+    this.props.recibirEstados( this.state.DERS, this.state.ListadeRequisitos, this.state.TarjetasdeVolere, this.state.Casosdeuso, this.state.AjustesAmbientales, this.state.PuntosdeFunción, this.state.AnálisisdeRepago);
+
+  }
+
+  
   render() {
 
     return (
@@ -44,6 +51,7 @@ class BarraPDF extends React.Component {
                   edge="start"
                   tabIndex={-1}
                   disableRipple
+                  onChange={this.onChangeCheckBox}
                 />
               </ListItemIcon >
               <ListItemText primary={value}/>

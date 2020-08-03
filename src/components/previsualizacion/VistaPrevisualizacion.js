@@ -7,6 +7,26 @@ import samplePDF from "./prueba.pdf";
 class VistaPrevisualizacion extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      DERS: false,
+      ListadeRequisitos: false,
+      TarjetasdeVolere: false,
+      Casosdeuso: false,
+      AjustesAmbientales: false,
+      PuntosdeFunción: false,
+      AnálisisdeRepago: false
+    };
+  }
+
+  recibirEstados = () => (datoUno, ListadeRequisitos, TarjetasdeVolere, Casosdeuso, AjustesAmbientales, PuntosdeFunción, AnálisisdeRepago) =>  {
+    
+    this.setState({DERS: datoUno});
+    this.setState({ListadeRequisitos: ListadeRequisitos});
+    this.setState({TarjetasdeVolere: TarjetasdeVolere});
+    this.setState({Casosdeuso: Casosdeuso});
+    this.setState({AjustesAmbientales: AjustesAmbientales});
+    this.setState({PuntosdeFunción: PuntosdeFunción});
+    this.setState({AnálisisdeRepago: AnálisisdeRepago});
   }
 
   render() {
@@ -18,7 +38,7 @@ class VistaPrevisualizacion extends React.Component {
 
         <div class="split left">
           <div class="centered">
-            <BarraPDF />
+            <BarraPDF recibirEstados={this.recibirEstados}/> 
           </div>
         </div>
 
