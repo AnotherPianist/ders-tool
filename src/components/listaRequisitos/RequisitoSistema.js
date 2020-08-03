@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Select, MenuItem, IconButton, Paper, Tooltip } from '@material-ui/core';
+import { Grid, TextField, Select, MenuItem, IconButton, Tooltip } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 class RequisitoSistema extends React.Component {
@@ -7,7 +7,17 @@ class RequisitoSistema extends React.Component {
     super(props);
     this.state = {nombre: this.props.rs.nombre, tipo: this.props.rs.tipo};
   }
-  
+
+  onChangeNombre = (e) => {
+    this.setState({nombre: e.target.value});
+    this.props.editar(this.props.rs, e.target.value, this.state.tipo);
+  }
+
+  onChangeTipo = (e) => {
+    this.setState({tipo: e.target.value});
+    this.props.editar(this.props.rs, this.state.nombre, e.target.value);
+  }
+
   eliminarReq = () => {
     this.props.eliminar(this.props.rs);
   }
@@ -22,11 +32,11 @@ class RequisitoSistema extends React.Component {
     });
 
     return (
-      <Grid container component={Paper} style={{margin: "8px", marginLeft: "15px"}}>
-        <Grid item xs={1} style={{padding: "15px"}}>
+      <Grid container style={{paddingLeft: "1rem"}}>
+        <Grid item xs={1} style={{padding: "1rem"}}>
           <TextField value={"RS" + this.props.rs.id} InputProps={{readOnly: true}}/>
         </Grid>
-        <Grid item xs={8} style={{padding: "15px"}}>
+        <Grid item xs={8} style={{padding: "1rem"}}>
           <TextField
             fullWidth
             readOnly={this.props.rs.invocaA === undefined ? false : true}

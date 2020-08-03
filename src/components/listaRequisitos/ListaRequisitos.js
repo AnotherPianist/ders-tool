@@ -3,7 +3,7 @@ import RequisitoUsuario from './RequisitoUsuario';
 import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography, Card } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
   constructor(props) {
@@ -70,7 +70,7 @@ class ListaRequisitos extends React.Component {
     this.props.actualizar(requisitos);
   }
 
-  editarRU = (req, nombre, tipo) => {
+  editarRequisito = (req, nombre, tipo) => {
     const requisitos = this.props.requisitos.slice();
     for (const r of requisitos) {
       if (r.key === req.key) {
@@ -117,6 +117,7 @@ class ListaRequisitos extends React.Component {
             key={r.key}
             rs={r}
             tiposRequisitos={this.props.tiposRequisitos}
+            editar={this.editarRequisito}
             eliminar={this.eliminarRS}
           />
         );
@@ -148,11 +149,11 @@ class ListaRequisitos extends React.Component {
     const reqsUsuario = this.props.requisitos.map((r) => {
       if (r.isRU)
         return (
-          <>
+          <Card style={{marginTop: "1rem", padding: "1rem"}}>
             <RequisitoUsuario
               key={r.key}
               ru={r}
-              editar={this.editarRU}
+              editar={this.editarRequisito}
               eliminar={this.eliminarRU}
               tiposRequisitos={this.props.tiposRequisitos}
             />
@@ -165,7 +166,7 @@ class ListaRequisitos extends React.Component {
               requisitosInvocar={this.obtenerRequisitosParaInvocar(r)}
               invocarRequisito={this.invocarRequisito}
             />
-          </>
+          </Card>
       );
       else
         return null;
@@ -173,7 +174,7 @@ class ListaRequisitos extends React.Component {
 
     return (
       <Container>
-        <Typography variant="h4" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
+        <Typography variant="h3" style={{margin: "1rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
         <CrearRU crear={this.crearRU} tiposRequisitos={this.props.tiposRequisitos}/>
       </Container>

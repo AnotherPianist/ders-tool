@@ -33,8 +33,8 @@ class CrearRU extends React.Component {
     })
 
     return (
-      <Grid container>
-        <Grid item xs={10} style={{padding: "16px"}}>
+      <Grid container style={{marginTop: "1rem", marginBottom: "2rem"}}>
+        <Grid item xs={10} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
           <TextField
             id="nombreForm"
             fullWidth placeholder="Nombre requisito usuario"
