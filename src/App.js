@@ -1,13 +1,14 @@
-import React from 'react';
-import './App.css';
-import Estructura from './components/estructura/Estructura.js';
-import { Switch, Route } from 'react-router-dom';
-import { CssBaseline } from '@material-ui/core';
-import Ajustes from './components/ajustes/Ajustes';
-import ListaRequisitos from './components/listaRequisitos/ListaRequisitos';
-import PuntosFuncion from './components/puntosFuncion/PuntosFuncion';
-import Ders from './components/ders/Ders';
-import AnalisisRepago from './components/analisisRepago/AnalisisRepago';
+import React from "react";
+import "./App.css";
+import Estructura from "./components/estructura/Estructura.js";
+import { Switch, Route } from "react-router-dom";
+import { CssBaseline } from "@material-ui/core";
+import Ajustes from "./components/ajustes/Ajustes";
+import ListaRequisitos from "./components/listaRequisitos/ListaRequisitos";
+import PuntosFuncion from "./components/puntosFuncion/PuntosFuncion";
+import Ders from "./components/ders/Ders";
+import PestañasCasosDeUsos from "./components/casosDeUso/PestañasCasosDeUsos";
+import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
 
 class App extends React.Component {
   constructor(props) {
@@ -18,13 +19,13 @@ class App extends React.Component {
         {
           id: 0,
           nombre: "Funcional",
-          descripcion: "Define una función del sistema"
+          descripcion: "Define una función del sistema",
         },
         {
           id: 1,
           nombre: "No Funcional",
-          descripcion: "Define una característica del sistema"
-        }
+          descripcion: "Define una característica del sistema",
+        },
       ],
       textoDers: [],
       requisitos: [],
@@ -41,68 +42,85 @@ class App extends React.Component {
 
   componentDidMount = () => {
     document.title = this.state.nombreProyecto + " - Plantilla de DERS";
-  }
+  };
 
-  actualizarNombreProyecto = async nombre => {
-    await this.setState({nombreProyecto: nombre});
+  actualizarNombreProyecto = async (nombre) => {
+    await this.setState({ nombreProyecto: nombre });
     document.title = this.state.nombreProyecto + " - Plantilla de DERS";
-  }
+  };
 
-  actualizarTiposRequisitos = listaTipos => {
-    this.setState({tiposRequisitos: listaTipos})
-  }
+  actualizarTiposRequisitos = (listaTipos) => {
+    this.setState({ tiposRequisitos: listaTipos });
+  };
 
   actualizarRequisitos = async listaRequisitos => {
     await this.setState({requisitos: listaRequisitos});
   }
 
-  actualizarPuntosFuncion = pf => {
-    this.setState({puntosFuncion: pf});
-  }
+  actualizarPuntosFuncion = (pf) => {
+    this.setState({ puntosFuncion: pf });
+  };
 
-  actualizarTextoDers = infoDers => {
-    this.setState({textoDers: infoDers});
-  }
+  actualizarTextoDers = (infoDers) => {
+    this.setState({ textoDers: infoDers });
+  };
 
-  actualizarTablaAnalisisRepago = tabla => {
-    this.setState({tablaAnalisisRepago: tabla});
-  }
+  actualizarTablaAnalisisRepago = (tabla) => {
+    this.setState({ tablaAnalisisRepago: tabla });
+  };
 
   render() {
     return (
       <div className="App">
         <CssBaseline />
-        <Estructura nombreProyecto={this.state.nombreProyecto} actualizarNombreProyecto={this.actualizarNombreProyecto}/>
+        <Estructura
+          nombreProyecto={this.state.nombreProyecto}
+          actualizarNombreProyecto={this.actualizarNombreProyecto}
+        />
         <main className="App-main">
           <Switch>
             {/* Ejemplos de uso de Route path: */}
             <Route path="/ders">
-              <Ders 
+              <Ders
                 textoDers={this.state.textoDers}
                 actualizarInfoDers={this.actualizarTextoDers}
               />
             </Route>
-            <Route path="/requisitos" >
+            <Route path="/requisitos">
               <ListaRequisitos
                 requisitos={this.state.requisitos}
                 tiposRequisitos={this.state.tiposRequisitos}
                 actualizar={this.actualizarRequisitos}
               />
             </Route>
-            <Route path="/tablas" >
+            <Route path="/casos">
+              <PestañasCasosDeUsos
+                requisitos={this.state.requisitos}
+                actualizarRequisitos={this.actualizarRequisitos}
+              />
+            </Route>
+            <Route path="/tablas">
               {/* Acá iría el componente de tablas y calculos, aunque no sé si eso deba ser un componente */}
-              <div><p>Tablas</p></div> {/* Reemplazable! */}
+              <div>
+                <p>Tablas</p>
+              </div>{" "}
+              {/* Reemplazable! */}
               {/* Sus hijos deberían serlo, y esos deben llevar un path distinto */}
             </Route>
             <Route path="/ajustes">
-              <Ajustes tiposRequisitos={this.state.tiposRequisitos} actualizarTipos={this.actualizarTiposRequisitos}
+              <Ajustes
+                tiposRequisitos={this.state.tiposRequisitos}
+                actualizarTipos={this.actualizarTiposRequisitos}
               />
             </Route>
             <Route path="/puntosFuncion">
-              <PuntosFuncion puntos={this.state.puntosFuncion} actualizar={this.actualizarPuntosFuncion}/>
+              <PuntosFuncion
+                puntos={this.state.puntosFuncion}
+                actualizar={this.actualizarPuntosFuncion}
+              />
             </Route>
             <Route path="/analisisRepago">
-              <AnalisisRepago 
+              <AnalisisRepago
                 tablaAnalisisRepago={this.state.tablaAnalisisRepago}
                 actualizar={this.actualizarTablaAnalisisRepago}
               />
