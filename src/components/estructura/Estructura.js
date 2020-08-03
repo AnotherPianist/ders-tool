@@ -41,6 +41,7 @@ class Estructura extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      nombreProyecto: this.props.nombreProyecto,
       isDrawerOpen: false,
       anchorArchivo: null,
       anchorEditar: null,
@@ -52,6 +53,7 @@ class Estructura extends React.Component {
   };
 
   editarNombre = (e) => {
+    this.setState({nombreProyecto: e.target.value})
     this.props.actualizarNombreProyecto(e.target.value);
   };
 
@@ -85,7 +87,10 @@ class Estructura extends React.Component {
               id="nombreProyecto"
               placeholder="Nombre del proyecto"
               style={{ padding: "1rem" }}
+              value={this.props.nombreProyecto}
               onChange={this.editarNombre}
+              error={this.state.nombreProyecto === ""}
+              helperText={this.state.nombreProyecto === "" ? "Nombre vacío" : ""}
             />
             <Button onClick={this.openArchivo} style={{ padding: "1rem" }}>
               Archivo
