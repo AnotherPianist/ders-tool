@@ -1,5 +1,5 @@
 import React from "react";
-import { Accordion } from "@material-ui/core";
+import { Accordion, Container } from "@material-ui/core";
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +12,8 @@ const AnalisisRepago = (props) => {
   return(
     <>
       <Typography variant="h2" style={{margin: "3rem"}}>Análisis de Repago</Typography>
-        <Accordion style={{width: "90%", marginTop: "3rem"}}>
+      <Container>
+        <Accordion>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
@@ -20,7 +21,7 @@ const AnalisisRepago = (props) => {
           >
             <Typography variant="h5">Información</Typography>
           </AccordionSummary>
-          <AccordionDetails  ccordionDetails>
+          <AccordionDetails>
             <TextField
               id="outlined-multiline-static"
               fullWidth
@@ -31,6 +32,7 @@ const AnalisisRepago = (props) => {
             />
           </AccordionDetails>
         </Accordion>
+      </Container>
       <TablaAnalisisRepago 
         tablaAnalisisRepago={props.tablaAnalisisRepago} 
         actualizar={props.actualizar}
