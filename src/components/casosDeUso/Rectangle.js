@@ -37,8 +37,8 @@ class Rectangle extends React.Component {
           }).width + 200
         }
         height={200}
-        scaleX={1}
-        scaleY={1}
+        scaleX={this.props.scaleX}
+        scaleY={this.props.scaleY}
         fill="white"
         stroke="black"
         strokeScaleEnabled={false}

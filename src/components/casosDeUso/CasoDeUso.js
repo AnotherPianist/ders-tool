@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import BarraHerramientaCasosDeUso from "./BarraHerramientasCasosDeUso";
 import Canvas from "./Canvas";
 import calculateSize from "calculate-size";
+import { isEmpty } from "lodash";
 
 /*
 Este componente es la pantalla de casos de uso.
@@ -12,46 +13,51 @@ Renderiza el canvas y la barra lateral de herramientas en la pantalla de casos d
 class CasoDeUso extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0, //número de figuras ya dibujadas
+    console.log(props.casoDeUso);
+    this.state = !isEmpty(props.casoDeUso)
+      ? props.casoDeUso
+      : {
+          count: 0, //número de figuras ya dibujadas
 
-      requisitos: props.requisitos.filter(requisito => requisito.tipo === "Funcional"),
-      
-      //lineasSolidas contiene las flechas con lineas normales
-      lineasSolidas: [],
-      //lineasPunteadas contiene las flechas punteadas de extend e include
-      lineasPunteadas: [],
+          requisitos: props.requisitos.filter(
+            (requisito) => requisito.tipo === "Funcional"
+          ),
 
-      figuras: [
-        // {
-        //   id:,
-        //   x:,
-        //   y:,
-        //   name:,
-        //   alto:,
-        //   ancho:,
-        // },
-      ],
+          //lineasSolidas contiene las flechas con lineas normales
+          lineasSolidas: [],
+          //lineasPunteadas contiene las flechas punteadas de extend e include
+          lineasPunteadas: [],
 
-      //Arreglo de los puntos iniciales y finales de una linea
-      posLinea: [
-        { id1: 0, id2: 0 },
-        { x: 0, y: 0 },
-        { x: 0, y: 0 },
-      ],
-      actores: [
-        //{
-        //nombre: "actor",
-        //x: 150,
-        //y: 150,
-        //},
-      ],
-      dibujarLinea: false,
-      tipo: 0,
-      figura1: {},
-      figura2: {},
-      sujetos: [],
-    };
+          figuras: [
+            // {
+            //   id:,
+            //   x:,
+            //   y:,
+            //   name:,
+            //   alto:,
+            //   ancho:,
+            // },
+          ],
+
+          //Arreglo de los puntos iniciales y finales de una linea
+          posLinea: [
+            { id1: 0, id2: 0 },
+            { x: 0, y: 0 },
+            { x: 0, y: 0 },
+          ],
+          actores: [
+            //{
+            //nombre: "actor",
+            //x: 150,
+            //y: 150,
+            //},
+          ],
+          dibujarLinea: false,
+          tipo: 0,
+          figura1: {},
+          figura2: {},
+          sujetos: [],
+        };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
   }
@@ -280,6 +286,7 @@ class CasoDeUso extends Component {
   actualizarSujeto = (e) => {
     var sujetos = this.state.sujetos;
     sujetos[e.i] = e.sujeto;
+    console.log(sujetos[e.i]);
     this.setState({ sujetos: sujetos });
   };
 
@@ -398,6 +405,10 @@ class CasoDeUso extends Component {
     sujetos.push(sujeto);
     this.setState({ sujetos });
   };
+
+  componentDidUpdate() {
+    this.props.subirEstados(this.state);
+  }
 
   render() {
     return (
