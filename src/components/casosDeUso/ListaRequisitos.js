@@ -14,7 +14,10 @@ class ListaRequisitos extends React.Component {
       return (
         <Fragment key={req}>
           <ListItem onClick={() => this.props.onClickRequisito({ req })} button>
-            <ListItemText primary={req.nombre} />
+            <ListItemText
+              primary={req.isRU ? `RU${req.id} ${req.nombre}` : ""}
+              secondary={req.isRU ? "" : `RS${req.id} ${req.nombre}`}
+            />
           </ListItem>
           <Divider />
         </Fragment>

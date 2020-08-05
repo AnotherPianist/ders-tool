@@ -316,7 +316,7 @@ class CasoDeUso extends Component {
   };
 
   removerRequisitoDeLista = (req) => {
-    const nuevaLista = this.state.requisitos.filter((r) => r.id !== req.id);
+    const nuevaLista = this.state.requisitos.filter((r) => r !== req);
     this.setState({ requisitos: nuevaLista });
   };
 
