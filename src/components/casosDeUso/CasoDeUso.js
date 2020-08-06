@@ -312,6 +312,12 @@ class CasoDeUso extends Component {
     let figuras = [...this.state.figuras];
     figuras.push(figura);
     this.setState({ figuras });
+    this.removerRequisitoDeLista(req);
+  };
+
+  removerRequisitoDeLista = (req) => {
+    const nuevaLista = this.state.requisitos.filter((r) => r !== req);
+    this.setState({ requisitos: nuevaLista });
   };
 
   handleFiguras = (figuras) => {
