@@ -4,7 +4,6 @@ import Box from "@material-ui/core/Box";
 import BarraHerramientaCasosDeUso from "./BarraHerramientasCasosDeUso";
 import Canvas from "./Canvas";
 import calculateSize from "calculate-size";
-
 /*
 Este componente es la pantalla de casos de uso.
 Renderiza el canvas y la barra lateral de herramientas en la pantalla de casos de uso
@@ -15,8 +14,10 @@ class CasoDeUso extends Component {
     this.state = {
       count: 0, //número de figuras ya dibujadas
 
-      requisitos: props.requisitos.filter(requisito => requisito.tipo === "Funcional"),
-      
+      requisitos: props.requisitos.filter(
+        (requisito) => requisito.tipo === "Funcional"
+      ),
+
       //lineasSolidas contiene las flechas con lineas normales
       lineasSolidas: [],
       //lineasPunteadas contiene las flechas punteadas de extend e include

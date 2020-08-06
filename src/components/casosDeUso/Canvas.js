@@ -3,6 +3,8 @@ import { Stage, Layer, Text, Line, Ellipse, Arrow, Circle } from "react-konva";
 import calculateSize from "calculate-size";
 import Rectangle from "./Rectangle";
 import TransformerComponent from "./TransformerComponent";
+import AlertaError from "../alertas/Alertas";
+import { ToastContainer, Slide } from "react-toastify";
 
 class Canvas extends React.Component {
   constructor(props) {
@@ -13,7 +15,6 @@ class Canvas extends React.Component {
       nroClick: 0,
     };
   }
-
   /**
   *Se encarga de inicializar el ancho que tendrá la elipse, 
   *adaptandose
@@ -245,6 +246,7 @@ class Canvas extends React.Component {
       return false;
     }
   };
+
   /**
    * Funcion que define la linea entre dos figuras. Se procesaran 2 click consecutivos sobre las figuras que indicaran inicio y final de la linea.
    * nroClick = 0 es el primer click que define el inicio de la linea,
@@ -263,15 +265,21 @@ class Canvas extends React.Component {
         let lineasSolidas = this.props.lineasSolidas;
         lineasSolidas.push(this.nuevaLinea());
         this.props.guardarFlecha(lineasSolidas);
-
-        //linea de tipo generalizacion, se dibuja solo entre actores
-      } else if ((tipoLinea === 4) & this.entreActores()) {
-        let lineasSolidas = this.props.lineasSolidas;
-        lineasSolidas.push(this.nuevaLinea());
-        this.props.guardarFlecha(lineasSolidas);
-
-        //lineas de tipo dependencia, include y extend. Se dibujan solo entre requisitos
-      } else if (tipoLinea === 1 || tipoLinea === 2 || tipoLinea === 5) {
+      }
+      //linea de tipo generalizacion, se dibuja solo entre actores
+      if (tipoLinea === 4) {
+        if (this.entreActores()) {
+          let lineasSolidas = this.props.lineasSolidas;
+          lineasSolidas.push(this.nuevaLinea());
+          this.props.guardarFlecha(lineasSolidas);
+        } else {
+          AlertaError(
+            "Error de asociacion. Generalizacion solo se admite entre actores"
+          );
+        }
+      }
+      //lineas de tipo dependencia, include y extend. Se dibujan solo entre requisitos
+      if (tipoLinea === 1 || tipoLinea === 2 || tipoLinea === 5) {
         if (this.entreRequisitos()) {
           let lineasPunteadas = this.props.lineasPunteadas;
           const linea = this.nuevaLinea();
@@ -286,6 +294,22 @@ class Canvas extends React.Component {
           }
           lineasPunteadas.push(linea);
           this.props.guardarFlecha(lineasPunteadas);
+        } else {
+          if (tipoLinea === 1) {
+            AlertaError(
+              "Error de asociacion. Include solo se admite entre requisitos"
+            );
+          }
+          if (tipoLinea === 2) {
+            AlertaError(
+              "Error de asociacion. Extend solo se admite entre requisitos"
+            );
+          }
+          if (tipoLinea === 5) {
+            AlertaError(
+              "Error de asociacion. Dependencia solo se admite entre requisitos"
+            );
+          }
         }
       }
     }
@@ -405,13 +429,13 @@ class Canvas extends React.Component {
   render() {
     return (
       <div>
+        <ToastContainer transition={Slide} />
         <Stage
           width={window.innerWidth}
           height={window.innerHeight}
           onMouseDown={this.handleStageMouseDown}
         >
           <this.dibujarSujeto />
-
           {/** Ciclo para dibujar actores*/}
           {[...Array(this.props.actores.length)].map((_, i) => (
             <Layer

@@ -9,7 +9,7 @@ import PuntosFuncion from "./components/puntosFuncion/PuntosFuncion";
 import Ders from "./components/ders/Ders";
 import PestanasCasosDeUsos from "./components/casosDeUso/PestanasCasosDeUsos";
 import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
-import VistaPrevisualizacion from './components/previsualizacion/VistaPrevisualizacion';
+import VistaPrevisualizacion from "./components/previsualizacion/VistaPrevisualizacion";
 
 class App extends React.Component {
   constructor(props) {
@@ -54,9 +54,9 @@ class App extends React.Component {
     this.setState({ tiposRequisitos: listaTipos });
   };
 
-  actualizarRequisitos = async listaRequisitos => {
-    await this.setState({requisitos: listaRequisitos});
-  }
+  actualizarRequisitos = async (listaRequisitos) => {
+    await this.setState({ requisitos: listaRequisitos });
+  };
 
   actualizarPuntosFuncion = (pf) => {
     this.setState({ puntosFuncion: pf });
@@ -115,7 +115,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/previsualizar">
-              <VistaPrevisualizacion/>
+              <VistaPrevisualizacion />
             </Route>
             <Route path="/puntosFuncion">
               <PuntosFuncion
