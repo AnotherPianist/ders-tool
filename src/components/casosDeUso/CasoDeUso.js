@@ -417,7 +417,9 @@ class CasoDeUso extends Component {
           <Box p={0} width="100%" borderRight="outset" bgcolor="white">
             <Box p={0} width={250}>
               <BarraHerramientaCasosDeUso
-                requisitos={this.state.requisitos}
+                requisitos={this.props.requisitos.filter(
+                  (requisito) => requisito.tipo === "Funcional"
+                )}
                 onClickRequisito={this.crearFigura}
                 onClickActor={this.handleActor}
                 onClickAsocDir={this.handleAsociacionDirigida}

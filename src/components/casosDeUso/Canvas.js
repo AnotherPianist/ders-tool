@@ -320,8 +320,6 @@ class Canvas extends React.Component {
    * respectivo, dandele la opción de reajustar su tamano
    */
   dibujarSujeto = () => {
-    console.log(this.props.sujetos[0]);
-
     return (
       <Layer key={10000}>
         {this.props.sujetos.map((sujeto, i) => (

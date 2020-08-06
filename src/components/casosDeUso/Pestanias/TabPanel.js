@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 
 const TabPanel = (props) => {
-  const { children, value, index, length, ...other } = props;
+  const { children, value, index, ...other } = props;
 
   return (
     <div
@@ -13,11 +13,7 @@ const TabPanel = (props) => {
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={1}>
-          {index !== length ? children : <div>Agrega Nuevas Pestañas...</div>}
-        </Box>
-      )}
+      {value === index && <Box p={1}>{children}</Box>}
     </div>
   );
 };
