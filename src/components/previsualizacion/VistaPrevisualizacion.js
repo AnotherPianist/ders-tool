@@ -3,6 +3,8 @@ import BarraPDF from './BarraPDF';
 import './estilosvp.css';
 import prueba from './prueba.pdf';
 import { Container } from '@material-ui/core';
+import draftToHtml from 'draftjs-to-html';
+import jsPDF from 'jspdf';
 
 class VistaPrevisualizacion extends React.Component {
   constructor(props) {
@@ -28,6 +30,105 @@ class VistaPrevisualizacion extends React.Component {
       PuntosdeFunción: PuntosdeFunción,
       AnalisisdeRepago: AnalisisdeRepago
     });
+  }
+
+  dersToHTML = () =>
+  {
+    const data = this.props.state.textoDers;
+    let htmlContent = "<h3>DERS</h3>";
+    for(const d of data)
+      htmlContent += "<div> <h3>" + d.title + "</h3>" + draftToHtml(d.description) + "</div>";
+    return htmlContent;
+  }
+
+  requisitosToHTML = () =>
+  {
+    const requisitos = this.props.state.requisitos;
+    let htmlContent = "<h3> Requisitos </h3>\n<dl>\n";
+    for(const requisito of requisitos)
+    {
+      if (requisito.isRU)
+        htmlContent += `\t<dt>RU${requisito.id}: ${requisito.nombre} (${requisito.tipo})</dt>\n`;
+      else
+        htmlContent += `\t\t<dd>RS${requisito.id}: ${requisito.nombre} (${requisito.tipo})</dd>\n`;
+    }
+    htmlContent += "</dl>\n";
+    console.log(htmlContent);
+    return htmlContent
+  }
+
+  puntosFuncionToHTML = () =>
+  {
+    const puntos = this.props.state.puntosFuncion;
+    /*
+    entradas: [0, 0, 0],
+    salidas: [0, 0, 0],
+    consultas: [0, 0, 0],
+    ie: [0, 0, 0],
+    ali: [0, 0, 0],
+    */
+    let htmlContent = "<h3>Puntos de Función</h3>\n<table>\n\t<tr>\n\t\t<th> </th>\n\n\t\t<th>Simple</th>\n\t\t<th>Media</th>\n\t\t<th>Compleja</th>\n\t</tr>\n";
+    htmlContent += `\t<tr>\n\t\t<th>Entradas</th>\n\t\t<th>${puntos.entradas[0]}</th>\n\t\t<th>${puntos.entradas[1]}</th>\n\t\t<th>${puntos.entradas[2]}</th>\n\t</tr>\n`;
+    htmlContent += `\t<tr>\n\t\t<th>Salidas</th>\n\t\t<th>${puntos.salidas[0]}</th>\n\t\t<th>${puntos.salidas[1]}</th>\n\t\t<th>${puntos.salidas[2]}</th>\n\t</tr>\n`;
+    htmlContent += `\t<tr>\n\t\t<th>Consultas</th>\n\t\t<th>${puntos.consultas[0]}</th>\n\t\t<th>${puntos.consultas[1]}</th>\n\t\t<th>${puntos.consultas[2]}</th>\n\t</tr>\n`;
+    htmlContent += `\t<tr>\n\t\t<th>Interfaces Externas</th>\n\t\t<th>${puntos.ie[0]}</th>\n\t\t<th>${puntos.ie[1]}</th>\n\t\t<th>${puntos.ie[2]}</th>\n\t</tr>\n`;
+    htmlContent += `\t<tr>\n\t\t<th>Archivos Lógicos Internos</th>\n\t\t<th>${puntos.ali[0]}</th>\n\t\t<th>${puntos.ali[1]}</th>\n\t\t<th>${puntos.ali[2]}</th>\n\t</tr>\n</table>`;
+    console.log(htmlContent);
+    return htmlContent;
+  }
+
+  repagoToHTML = () =>
+  {
+    //{ id: 0, texto: "Año " + 0, valores: generarValores() },
+    const repago = this.props.state.tablaAnalisisRepago;
+    let htmlContent = "<h3>Análisis de Repago</h3>\n<table>\n\t<tr>\n";
+  
+    for(const r of repago) 
+      htmlContent += `\t\t<th>${r.texto}</th>\n`;
+    
+    htmlContent+= "\t</tr>\n";
+
+    for(let i =0; i<repago[0].valores.length; i++)
+    {
+      htmlContent += "\t<tr>\n";
+      for(const r of repago)
+        htmlContent += `\t\t<th>${r.valores[i]}</th>\n`;
+      htmlContent += "\t</tr>\n";
+    }
+    return htmlContent;
+  }
+
+  toPDF = () =>
+  {
+    var doc = new jsPDF("p", "mm", "a4", true, "smart");
+    doc.fromHTML
+    ( this.requisitosToHTML(),
+      15,
+      5,
+      {  'width': 170,}
+    );
+    doc.addPage();
+    doc.fromHTML
+    ( this.puntosFuncionToHTML(),
+      15,
+      5,
+      {  'width': 170,}
+    );
+    doc.addPage();
+    doc.fromHTML
+    ( this.repagoToHTML(),
+      15,
+      5,
+      {  'width': 170,}
+    );
+    doc.addPage();
+    doc.fromHTML
+    ( this.dersToHTML(),
+      15,
+      5,
+      {  'width': 170,}
+    );
+    doc.save(this.props.nombreProyecto + ".pdf");
   }
 
   render() {
