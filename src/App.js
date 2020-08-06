@@ -10,6 +10,7 @@ import Ders from "./components/ders/Ders";
 import PestanasCasosDeUsos from "./components/casosDeUso/PestanasCasosDeUsos";
 import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
 import VistaPrevisualizacion from './components/previsualizacion/VistaPrevisualizacion';
+import CartaGantt from "./components/cartaGantt/cartaGantt";
 
 class App extends React.Component {
   constructor(props) {
@@ -127,6 +128,11 @@ class App extends React.Component {
               <AnalisisRepago
                 tablaAnalisisRepago={this.state.tablaAnalisisRepago}
                 actualizar={this.actualizarTablaAnalisisRepago}
+              />
+            </Route>
+            <Route path="/cartaGantt">
+              <CartaGantt
+                requisitos = {this.state.requisitos}
               />
             </Route>
           </Switch>
