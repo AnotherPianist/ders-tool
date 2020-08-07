@@ -3,8 +3,7 @@ import RequisitoUsuario from './RequisitoUsuario';
 import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
-import Actor from './Actor';
-import VistaActores from './VistaActores';
+import VistaActores from './actores/VistaActores';
 import { Container, Typography, Card, CardContent } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
@@ -177,6 +176,18 @@ class ListaRequisitos extends React.Component {
     });
 
     return (
+      /*
+      <Container style={{margin: "3rem"}}>
+        <Typography variant="h2" style={{margin: "3rem"}}>Actores</Typography>
+        <VistaActores actores={this.props.actores} editar={this.props.editar}/>
+      </Container>  
+      <Container style={{margin: "3rem"}}>
+        <Typography variant="h2" style={{margin: "3rem"}}>Suposiciones</Typography>
+        <Grid item xs={8} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
+          <TextField fullWidth defaultValue={this.props.suposicion.descripcion} onChange={this.onChangeDescripcion}/>
+        </Grid>
+      </Container> 
+      */ 
       <Container style={{margin: "3rem"}}>
         <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
