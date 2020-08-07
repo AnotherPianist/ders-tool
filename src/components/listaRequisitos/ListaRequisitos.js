@@ -3,6 +3,8 @@ import RequisitoUsuario from './RequisitoUsuario';
 import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
+import Actor from './Actor';
+import VistaActores from './VistaActores';
 import { Container, Typography, Card, CardContent } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
