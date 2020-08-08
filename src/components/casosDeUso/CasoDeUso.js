@@ -220,18 +220,18 @@ class CasoDeUso extends Component {
     let alto2;
 
     if (fig1.tipo === "requisito") {
-      ancho1 = this.state.figuras[this.encontrarIndex(fig1.id)].ancho + 5;
+      ancho1 = this.state.figuras[this.encontrarIndex(fig1.id)].ancho / 2 + 55;
       alto1 = this.state.figuras[this.encontrarIndex(fig1.id)].alto + 5;
     } else {
-      ancho1 = 15;
-      alto1 = 35;
+      ancho1 = 25;
+      alto1 = 50;
     }
     if (fig2.tipo === "requisito") {
-      ancho2 = this.state.figuras[this.encontrarIndex(fig2.id)].ancho + 5;
+      ancho2 = this.state.figuras[this.encontrarIndex(fig2.id)].ancho / 2 + 55;
       alto2 = this.state.figuras[this.encontrarIndex(fig2.id)].alto + 5;
     } else {
-      ancho2 = 15;
-      alto2 = 35;
+      ancho2 = 25;
+      alto2 = 50;
     }
     let id1 = fig1.id;
     let id2 = fig2.id;

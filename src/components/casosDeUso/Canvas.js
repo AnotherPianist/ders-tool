@@ -294,27 +294,26 @@ class Canvas extends React.Component {
   dibujarActor() {
     return (
       <>
-        <Line points={[0, -20, 0, 10]} tension={1} closed stroke="black" />
-        <Line points={[0, 10, -10, 35]} tension={1} closed stroke="black" />
-        <Line points={[0, 10, 10, 35]} tension={1} closed stroke="black" />
-        <Line points={[0, -5, -15, 10]} tension={1} closed stroke="black" />
-        <Line points={[0, -5, 15, 10]} tension={1} closed stroke="black" />
-        <Circle x={0} y={-20} radius={10} fill="white" stroke="black" />
+        <Line points={[0, -30, 0, 0]} tension={1} closed stroke="black" />
+        <Line points={[0, 0, -10, 25]} tension={1} closed stroke="black" />
+        <Line points={[0, 0, 10, 25]} tension={1} closed stroke="black" />
+        <Line points={[0, -15, -15, 0]} tension={1} closed stroke="black" />
+        <Line points={[0, -15, 15, 0]} tension={1} closed stroke="black" />
+        <Circle x={0} y={-30} radius={10} fill="white" stroke="black" />
         <Text
           x={-23}
-          y={40}
+          y={30}
           fontSize={20}
           text="Actor"
           wrap="char"
           align="center"
           onClick={() => {
-            this.setState({ modal: true });
+            this.ExporBase64();
           }}
         />
       </>
     );
   }
-
   /**
    * Función que se encarga de desplegar el rectángulo que representa al sujeto, junto a su texto
    * respectivo, dandele la opción de reajustar su tamano
@@ -399,7 +398,10 @@ class Canvas extends React.Component {
 
     this.props.actualizarSujeto({ sujeto, i });
   };
-
+  ExporBase64 = () => {
+    console.log(this.stageRef.getStage().toDataURL());
+    return this.stageRef.getStage().toDataURL();
+  };
   render() {
     return (
       <div>
@@ -407,6 +409,9 @@ class Canvas extends React.Component {
           width={window.innerWidth}
           height={window.innerHeight}
           onMouseDown={this.handleStageMouseDown}
+          ref={(node) => {
+            this.stageRef = node;
+          }}
         >
           <this.dibujarSujeto />
 
