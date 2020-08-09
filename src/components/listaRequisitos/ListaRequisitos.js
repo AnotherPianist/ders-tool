@@ -67,10 +67,10 @@ class ListaRequisitos extends React.Component {
         invocaA: invocaA
       });
     this.setState({keyCounter: this.state.keyCounter + 1});
-    this.props.actualizar(requisitos);
+    this.props.actualizar(this.actualizarNombreInvocaciones(requisitos));
   }
 
-  editarRU = (req, nombre, tipo) => {
+  editarR = (req, nombre, tipo) => {
     const requisitos = this.props.requisitos.slice();
     for (const r of requisitos) {
       if (r.key === req.key) {
@@ -90,10 +90,10 @@ class ListaRequisitos extends React.Component {
     for (const r of this.props.requisitos) {
       if (r.isRU && r.key !== req.key)
         requisitos.push(r.id < req.id ? r : {...r, id: r.id - 1});
-      else if (!r.isRU && r.refRU !== req.id && (!r.invocaA || r.invocaA.key !== req.key))
+      else if (!r.isRU && r.refRU !== req.id && (!r.invocaA || r.invocaA.key !== req.key)) 
         requisitos.push(r.refRU < req.id ? {...r, id: rsCounter++} : {...r, id: rsCounter++, refRU: r.refRU - 1});
     }
-    this.props.actualizar(requisitos);
+    this.props.actualizar(this.actualizarNombreInvocaciones(requisitos));
   }
 
   eliminarRS = (req) => {
@@ -102,12 +102,16 @@ class ListaRequisitos extends React.Component {
     for (const r of this.props.requisitos) {
       if (r.isRU)
         requisitos.push(r);
-      else if (!r.isRU && r.key !== req.key && (!r.invocaA || r.invocaA.key !== req.key))
-        if (r.invocaA || r.invocaA.key !== req.key)
-          requisitos.push({...r, id: rsCounter++});
+      else if (r.key !== req.key && (!r.invocaA || r.invocaA.key !== req.key))
+        requisitos.push({...r, id: rsCounter++});
     }
-    console.log(requisitos);
-    this.props.actualizar(requisitos);
+    for (const r of requisitos) {
+      if(r.invocaA && requisitos.find(requisito => requisito.key === r.invocaA.key)){
+        const req = requisitos.find(requisito => requisito.key === r.invocaA.key);
+        r.nombre = `Invocar a R${req.isRU ? "U" : "S"}${req.id}: ${req.nombre}`;
+      }
+    }
+    this.props.actualizar(this.actualizarNombreInvocaciones(requisitos));
   }
 
   obtenerRequisitosSistema = (ru) => {
@@ -118,6 +122,7 @@ class ListaRequisitos extends React.Component {
             key={r.key}
             rs={r}
             tiposRequisitos={this.props.tiposRequisitos}
+            editar={this.editarR}
             eliminar={this.eliminarRS}
           />
         );
@@ -144,6 +149,17 @@ class ListaRequisitos extends React.Component {
     }
     return requisitos;
   }
+  
+  actualizarNombreInvocaciones = (requisitos) => {
+    const reqs = requisitos.slice();
+    for (const r of reqs) {
+      if(r.invocaA && reqs.find(requisito => requisito.key === r.invocaA.key)){
+        const req = reqs.find(requisito => requisito.key === r.invocaA.key);
+        r.nombre = `Invocar a R${req.isRU ? "U" : "S"}${req.id}: ${req.nombre}`;
+      }
+    }
+    return reqs;
+  }
 
   render() {
     const reqsUsuario = this.props.requisitos.map((r) => {
@@ -153,7 +169,7 @@ class ListaRequisitos extends React.Component {
             <RequisitoUsuario
               key={r.key}
               ru={r}
-              editar={this.editarRU}
+              editar={this.editarR}
               eliminar={this.eliminarRU}
               tiposRequisitos={this.props.tiposRequisitos}
             />

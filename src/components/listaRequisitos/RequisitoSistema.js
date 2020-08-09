@@ -7,6 +7,16 @@ class RequisitoSistema extends React.Component {
     super(props);
     this.state = {nombre: this.props.rs.nombre, tipo: this.props.rs.tipo};
   }
+
+  onChangeNombre = (e) => {
+    this.setState({nombre: e.target.value});
+    this.props.editar(this.props.rs, e.target.value, this.state.tipo);
+  }
+
+  onChangeTipo = (e) => {
+    this.setState({tipo: e.target.value});
+    this.props.editar(this.props.rs, this.state.nombre, e.target.value);
+  }
   
   eliminarReq = () => {
     this.props.eliminar(this.props.rs);
@@ -31,7 +41,7 @@ class RequisitoSistema extends React.Component {
             fullWidth
             readOnly={this.props.rs.invocaA === undefined ? false : true}
             value={this.props.rs.nombre}
-            onChange={this.onChangeNombre}
+            onChange={this.props.rs.invocaA === undefined ? this.onChangeNombre : () => {}} 
           />
         </Grid>
         <Grid item xs={2}>
@@ -39,7 +49,7 @@ class RequisitoSistema extends React.Component {
             fullWidth
             readOnly={this.props.rs.invocaA === undefined ? false : true}
             value={this.props.rs.tipo}
-            onChange={this.onChangeTipo}
+            onChange={this.props.rs.invocaA === undefined ? this.onChangeTipo : () => {}} 
           >
             {tiposReq}
           </Select>
