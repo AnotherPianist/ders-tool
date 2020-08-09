@@ -70,6 +70,15 @@ class App extends React.Component {
     this.setState({ tablaAnalisisRepago: tabla });
   };
 
+  entregarJson = async () => {
+    const element = document.createElement("a");
+    const file = new Blob([JSON.stringify(this.state)], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "ders.txt";
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
   render() {
     return (
       <div className="App">
@@ -77,6 +86,7 @@ class App extends React.Component {
         <Estructura
           nombreProyecto={this.state.nombreProyecto}
           actualizarNombreProyecto={this.actualizarNombreProyecto}
+          entregarJson={this.entregarJson}
         />
         <main className="App-main">
           <Switch>

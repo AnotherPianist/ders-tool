@@ -42,6 +42,7 @@ class Estructura extends React.Component {
     super(props);
     this.state = {
       nombreProyecto: this.props.nombreProyecto,
+      textoJson: this.props.textoJson,
       isDrawerOpen: false,
       anchorArchivo: null,
       anchorEditar: null,
@@ -73,6 +74,10 @@ class Estructura extends React.Component {
     this.setState({ anchorEditar: null });
   };
 
+  abrirProyecto = () => {
+    console.log("abrir")
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -100,8 +105,8 @@ class Estructura extends React.Component {
               onClose={this.closeArchivo}
               anchorEl={this.state.anchorArchivo}
             >
-              <MenuItem onClick={this.closeArchivo}>Abrir</MenuItem>
-              <MenuItem onClick={this.closeArchivo}>Guardar</MenuItem>
+              <MenuItem onClick={this.abrirProyecto}>Abrir</MenuItem>
+              <MenuItem onClick={this.props.entregarJson}>Guardar</MenuItem>
             </Menu>
             <Button onClick={this.openEditar} style={{ padding: "1rem" }}>
               Editar
