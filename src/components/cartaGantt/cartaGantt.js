@@ -12,8 +12,9 @@ class CartaGantt extends React.Component {
 
     }
 
-    componentDidMount = () => {
-        this.updateCarta();
+    componentDidMount = async () => {
+        await this.updateCarta();
+        this.state.data.filter(item => item.isRU).forEach(parent => this.updateParentTaskDate(parent));
     };
 
     getEndDate() {
@@ -73,7 +74,7 @@ class CartaGantt extends React.Component {
         return (task.name !== req.nombre) || (task.refRU !== req.refRU) || (task.reqId !== req.id);
     }
 
-    updateCarta = () => {
+    updateCarta = async () => {
         let { requisitos } = this.props;
         let { data, links } = this.props.cartaGantt;
 
@@ -85,7 +86,7 @@ class CartaGantt extends React.Component {
         });
 
         let newLinks = links.filter(link => this.filterLink(newData, link));
-        this.setState({ data: newData, links: newLinks });
+        await this.setState({ data: newData, links: newLinks });
     };
 
     getParentTask = (task) => {
@@ -97,7 +98,8 @@ class CartaGantt extends React.Component {
     }
 
     updateParentTaskDate = task => {
-        let parentTask = this.getParentTask(task);
+        let parentTask = (task.isRU) ? task : this.getParentTask(task);
+        console.log(parentTask);
         let children = this.getChildrenTask(parentTask);
         let dates = [];
         children.forEach(child => dates.push(child.start, child.end));
