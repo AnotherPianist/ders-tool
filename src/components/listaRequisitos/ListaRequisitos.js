@@ -9,7 +9,7 @@ import { Container, Typography, Card, CardContent, TextField, Grid } from '@mate
 class ListaRequisitos extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {keyCounter: 0};
+    this.state = {keyCounter: 0, actores: [], suposicion: ""};
   }
 
   crearRU = (n, t) => {
@@ -31,16 +31,12 @@ class ListaRequisitos extends React.Component {
     this.props.actualizar(requisitos);
   }
 
-  crearSuposicion = (n) => {
-    const suposiciones = [];
-    for (const r of this.props.suposiciones) {
-      suposiciones.push(r);
-    }
-    this.props.actualizar(suposiciones);
+  onChangeSuposicion = (n) => {
+    this.setState({suposicion: n.target.value});
   }
 
-  onChangeDescripcion = (e) => {
-    this.props.editar(e.target.value);
+  actualizarActores = (listaActores) => {
+    this.setState({actores: listaActores});
   }
 
   crearRS = (nombre, tipo, ru, invocaA) => {
@@ -190,7 +186,7 @@ class ListaRequisitos extends React.Component {
     return (
       <Container style={{margin: "3rem"}}>
         <Typography variant="h2" style={{margin: "3rem"}}>Actores</Typography>
-        
+        <VistaActores actores={this.state.actores} actualizar={this.actualizarActores}/>
         <Typography variant="h2" style={{margin: "3rem"}}>Suposiciones</Typography>
         <Grid item xs={13} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
           <TextField id="outlined-multiline-static"
@@ -198,8 +194,10 @@ class ListaRequisitos extends React.Component {
               margin="normal"
               multiline
               rows={3}
-              defaultValue={this.state.requisitos}
-              variant="outlined"/>
+              variant="outlined"
+              onChange={this.onChangeSuposicion}
+              error={this.state.suposicion === ""}
+              helperText={this.state.suposicion === "" ? "Suposicion vacía" : ""}/>
         </Grid>
         <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}

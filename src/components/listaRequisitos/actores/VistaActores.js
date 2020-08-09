@@ -75,10 +75,27 @@ class VistaActores extends React.Component {
             {actores}
             <TableRow>
               <TableCell>
-                <TextField id="nombre" label="Nombre" value={this.state.nuevoNombre} onChange={this.onChangeNombre} onKeyDown={this.crear}/>
+                <TextField id="nombre" 
+                          label="Nombre"
+                          fullWidth 
+                          value={this.state.nuevoNombre} 
+                          onChange={this.onChangeNombre} 
+                          onKeyDown={this.crear}
+                          error={this.state.nuevoNombre === ""}
+                          helperText={this.state.nuevoNombre === "" ? "Nombre vacío" : ""}/>
               </TableCell>
               <TableCell>
-                <TextField multiline rowsMax={3} id="descripcion" label="Descripción" value={this.state.nuevaDescripcion} onChange={this.onChangeDescripcion} onKeyDown={this.crear}/>
+                <TextField multiline
+                          fullWidth
+                          rows={3}
+                          variant="outlined" 
+                          id="descripcion" 
+                          label="Descripción" 
+                          value={this.state.nuevaDescripcion} 
+                          onChange={this.onChangeDescripcion} 
+                          onKeyDown={this.crear} 
+                          error={this.state.nuevaDescripcion === ""}
+                          helperText={this.state.nuevaDescripcion === "" ? "Descripcion vacía" : ""}/>
               </TableCell>
             </TableRow>
           </TableBody>
