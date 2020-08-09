@@ -62,10 +62,15 @@ class CasoDeUso extends Component {
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
   }
+  /**
+   * funcion que se encarga de setear imagen recivida desde el canvas
+   * @param {*} imagen imagen en base 64
+   */
   guardarImagen = (imagen) => {
     this.setState({ imagen: imagen });
-    console.log(this.state.imagen);
+    console.log("actualizar imagen");
   };
+
   guardarFlecha(flecha) {
     let ultimaPosicion = flecha.length - 1;
     if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id) {
@@ -473,6 +478,7 @@ class CasoDeUso extends Component {
               encontrarPuntosMasCercanos={this.encontrarPuntosMasCercanos}
               actualizarSujeto={this.actualizarSujeto}
               actualizarActor={this.actualizarActor}
+              count={this.state.count}
               setFiguras={this.handleFiguras}
               setFigura1={this.handleFigura1}
               setFigura2={this.handleFigura2}

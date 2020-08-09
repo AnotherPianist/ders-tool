@@ -22,6 +22,9 @@ class Canvas extends React.Component {
       textEditVisible: false,
       selectedShapeName: "",
       nroClick: 0,
+      cont: 0,
+      contFlechasPunteadas: 0,
+      contFlechasNormales: 0,
     };
   }
 
@@ -318,9 +321,6 @@ class Canvas extends React.Component {
           text={actor.name}
           wrap="char"
           align="center"
-          onClick={() => {
-            this.ExporBase64();
-          }}
           onDblClick={(e) => this.handleTextDblClick(e, actor)}
         />
       </>
@@ -499,11 +499,31 @@ class Canvas extends React.Component {
 
     this.props.actualizarSujeto({ sujeto, i });
   };
-  ExporBase64 = () => {
-    console.log(this.stageRef.getStage().toDataURL());
-    return this.stageRef.getStage().toDataURL();
-  };
+  /**
+   * funcion que se encarga de actualizar la imagen del canvas al momento de agregar algun elemento en el canvas
+   */
 
+  actualizarImagen = () => {
+    let cont = this.state.cont;
+    if (cont !== this.props.count) {
+      cont++;
+      this.setState({ cont: cont });
+      this.props.guardarImagen(this.stageRef.getStage().toDataURL());
+    }
+    let contFlechasNormales = this.state.contFlechasNormales;
+
+    if (contFlechasNormales !== this.props.lineasSolidas.length) {
+      contFlechasNormales++;
+      this.setState({ contFlechasNormales: contFlechasNormales });
+      this.props.guardarImagen(this.stageRef.getStage().toDataURL());
+    }
+    let contFlechasPunteadas = this.state.contFlechasPunteadas;
+    if (contFlechasPunteadas !== this.props.lineasPunteadas.length) {
+      contFlechasPunteadas++;
+      this.setState({ contFlechasPunteadas: contFlechasPunteadas });
+      this.props.guardarImagen(this.stageRef.getStage().toDataURL());
+    }
+  };
   /**
    *
    * Función que se encarga de editar el texto del sujeto o el actor, para esto toma los atributos de estos
@@ -570,6 +590,7 @@ class Canvas extends React.Component {
           height={window.innerHeight}
           onMouseDown={this.handleStageMouseDown}
           ref={(node) => {
+            this.actualizarImagen();
             this.stageRef = node;
           }}
         >
@@ -600,7 +621,7 @@ class Canvas extends React.Component {
                 }}
               >
                 {/** Linea individual, obtenido desde el arreglo de flechas*/}
-                {this.dibujarActor()}
+                {this.dibujarActor(this.props.actores[i])}
               </Group>
             ))}
 
