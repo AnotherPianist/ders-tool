@@ -297,7 +297,7 @@ class CasoDeUso extends Component {
   actualizarSujeto = (e) => {
     var sujetos = this.state.sujetos;
     sujetos[e.i] = e.sujeto;
-    console.log(sujetos[e.i]);
+    //console.log(sujetos[e.i]);
     this.setState({ sujetos: sujetos });
   };
 
