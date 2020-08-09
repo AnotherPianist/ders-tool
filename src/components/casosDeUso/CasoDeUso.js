@@ -19,10 +19,9 @@ class CasoDeUso extends Component {
       : {
           count: 0, //número de figuras ya dibujadas
 
-          requisitos: props.requisitos.filter(
-            (requisito) => requisito.tipo === "Funcional"
-          ),
+          requisitos: [],
 
+          requisitosSeleccionados: [],
           //lineasSolidas contiene las flechas con lineas normales
           lineasSolidas: [],
           //lineasPunteadas contiene las flechas punteadas de extend e include
@@ -443,6 +442,10 @@ class CasoDeUso extends Component {
     this.props.subirEstados(this.state);
   }
 
+  setRequisitos = (requisitos) => {
+    this.setState({ requisitosSeleccionados: requisitos });
+  };
+
   render() {
     return (
       <div style={{ width: "100%" }}>
@@ -450,9 +453,15 @@ class CasoDeUso extends Component {
           <Box p={0} width="100%" borderRight="outset" bgcolor="white">
             <Box p={0} width={250}>
               <BarraHerramientaCasosDeUso
-                requisitos={this.props.requisitos.filter(
-                  (requisito) => requisito.tipo === "Funcional"
-                )}
+                setRequisitos={this.setRequisitos}
+                requisitos={
+                  this.state.requisitos.length !== 0
+                    ? this.state.requisitos
+                    : this.props.requisitos.filter(
+                        (requisito) => requisito.tipo === "Funcional"
+                      )
+                }
+                requisitosSeleccionados={this.state.requisitosSeleccionados}
                 onClickRequisito={this.crearFigura}
                 onClickActor={this.handleActor}
                 onClickAsocDir={this.handleAsociacionDirigida}
