@@ -282,6 +282,7 @@ class CasoDeUso extends Component {
     //this.props.setFigura1(p1Menor.p);
     //this.props.setFigura2(p2Menor.p);
   };
+
   /**
    * Se encarga de guardar las nuevas props del sujeto.
    * @param {props del sujeto} e
@@ -292,6 +293,16 @@ class CasoDeUso extends Component {
     sujetos[e.i] = e.sujeto;
     console.log(sujetos[e.i]);
     this.setState({ sujetos: sujetos });
+  };
+
+  /**
+   * Se encarga de guardar las nuevas props del actor.
+   * @param {props del sujeto, esta contiene el indice del actor y el actor} e
+   */
+  actualizarActor = (e) => {
+    var actores = this.state.actores;
+    actores[e.i] = e.sujeto;
+    this.setState({ actores: actores });
   };
 
   crearFigura = (props) => {
@@ -346,13 +357,18 @@ class CasoDeUso extends Component {
 
   handleActor = () => {
     let count = this.state.count;
+    const nombre = "ingrese nombre";
+    const ancho = calculateSize(nombre, {
+      font: "Arial",
+      fontSize: "20px",
+    });
     const actor = {
       id: count,
-      nombre: "ingrese nombre",
+      name: "ingrese nombre",
       x: 100,
       y: 100,
-      alto: 0,
-      ancho: 0,
+      alto: ancho.height,
+      ancho: ancho.width,
     };
     count++;
     this.setState({ count });
@@ -403,6 +419,7 @@ class CasoDeUso extends Component {
       x: 0,
       y: 0,
       name: nombre.concat(count),
+      nameAux: nombre.concat(count),
       ancho: ancho.width + 200,
       alto: 200,
       rotation: 0,
@@ -455,6 +472,7 @@ class CasoDeUso extends Component {
               actualizarCoordenadasSujetos={this.actualizarCoordenadasSujetos}
               encontrarPuntosMasCercanos={this.encontrarPuntosMasCercanos}
               actualizarSujeto={this.actualizarSujeto}
+              actualizarActor={this.actualizarActor}
               setFiguras={this.handleFiguras}
               setFigura1={this.handleFigura1}
               setFigura2={this.handleFigura2}
