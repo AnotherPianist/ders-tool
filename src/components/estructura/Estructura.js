@@ -74,8 +74,14 @@ class Estructura extends React.Component {
     this.setState({ anchorEditar: null });
   };
 
-  abrirProyecto = () => {
-    console.log("abrir")
+  abrirProyecto = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onloadend = () => {
+      this.props.cargar(JSON.parse(reader.result));
+    };
+    this.closeArchivo();
   };
 
   render() {
@@ -105,8 +111,11 @@ class Estructura extends React.Component {
               onClose={this.closeArchivo}
               anchorEl={this.state.anchorArchivo}
             >
-              <MenuItem onClick={this.abrirProyecto}>Abrir</MenuItem>
-              <MenuItem onClick={this.props.entregarJson}>Guardar</MenuItem>
+              <input id="open-button" accept=".data" type="file" style={{display: "none"}} onChange={this.abrirProyecto}/>
+              <label htmlFor="open-button">
+                <MenuItem>Abrir</MenuItem>
+              </label>
+              <MenuItem onClick={this.props.guardar}>Guardar</MenuItem>
             </Menu>
             <Button onClick={this.openEditar} style={{ padding: "1rem" }}>
               Editar
