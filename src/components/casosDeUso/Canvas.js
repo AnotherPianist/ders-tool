@@ -591,8 +591,8 @@ class Canvas extends React.Component {
           height={window.innerHeight}
           onMouseDown={this.handleStageMouseDown}
           ref={(node) => {
-            this.actualizarImagen();
             this.stageRef = node;
+            this.actualizarImagen();
           }}
         >
           <this.dibujarSujeto />
