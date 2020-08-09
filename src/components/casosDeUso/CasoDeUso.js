@@ -57,11 +57,15 @@ class CasoDeUso extends Component {
           figura1: {},
           figura2: {},
           sujetos: [],
+          imagen: "",
         };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
   }
-
+  guardarImagen = (imagen) => {
+    this.setState({ imagen: imagen });
+    console.log(this.state.imagen);
+  };
   guardarFlecha(flecha) {
     let ultimaPosicion = flecha.length - 1;
     if (flecha[ultimaPosicion].fig1.id !== flecha[ultimaPosicion].fig2.id) {
@@ -445,6 +449,7 @@ class CasoDeUso extends Component {
               lineasPunteadas={this.state.lineasPunteadas}
               lineasSolidas={this.state.lineasSolidas}
               guardarFlecha={this.guardarFlecha}
+              guardarImagen={this.guardarImagen}
               actualizarCoordenadas={this.actualizarCoordenadas}
               actualizarCoordenadasActores={this.actualizarCoordenadasActores}
               actualizarCoordenadasSujetos={this.actualizarCoordenadasSujetos}

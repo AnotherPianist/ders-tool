@@ -1,5 +1,14 @@
 import React from "react";
-import { Stage, Layer, Text, Line, Ellipse, Arrow, Circle } from "react-konva";
+import {
+  Stage,
+  Layer,
+  Text,
+  Line,
+  Ellipse,
+  Arrow,
+  Circle,
+  Group,
+} from "react-konva";
 import calculateSize from "calculate-size";
 import Rectangle from "./Rectangle";
 import TransformerComponent from "./TransformerComponent";
@@ -398,10 +407,7 @@ class Canvas extends React.Component {
 
     this.props.actualizarSujeto({ sujeto, i });
   };
-  ExporBase64 = () => {
-    console.log(this.stageRef.getStage().toDataURL());
-    return this.stageRef.getStage().toDataURL();
-  };
+
   render() {
     return (
       <div>
@@ -413,77 +419,87 @@ class Canvas extends React.Component {
             this.stageRef = node;
           }}
         >
-          <this.dibujarSujeto />
-
-          {/** Ciclo para dibujar actores*/}
-          {[...Array(this.props.actores.length)].map((_, i) => (
-            <Layer
-              key={i}
-              draggable
-              id={this.props.actores[i].id}
-              x={this.props.actores[i].x}
-              y={this.props.actores[i].y}
-              onClick={(e) => {
-                if (this.props.dibujarLinea) {
-                  if (this.state.nroClick === 0) {
-                    this.procesarPrimerClick(e, "actor");
-                  } else if (this.state.nroClick === 1) {
-                    this.procesarSegundoClick(e, "actor");
-                    this.definirLinea(e);
+          <Layer>
+            {/** Ciclo para dibujar actores*/}
+            {[...Array(this.props.actores.length)].map((_, i) => (
+              <Group
+                key={i}
+                draggable
+                id={this.props.actores[i].id}
+                x={this.props.actores[i].x}
+                y={this.props.actores[i].y}
+                onClick={(e) => {
+                  if (this.props.dibujarLinea) {
+                    if (this.state.nroClick === 0) {
+                      this.procesarPrimerClick(e, "actor");
+                    } else if (this.state.nroClick === 1) {
+                      this.procesarSegundoClick(e, "actor");
+                      this.definirLinea(e);
+                    }
                   }
-                }
-              }}
-              onDragEnd={(e) => this.props.actualizarCoordenadasActores(e)}
-            >
-              {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarActor()}
-            </Layer>
-          ))}
+                }}
+                onDragEnd={(e) => {
+                  this.props.actualizarCoordenadasActores(e);
+                  this.props.guardarImagen(
+                    this.stageRef.getStage().toDataURL()
+                  );
+                }}
+              >
+                {/** Linea individual, obtenido desde el arreglo de flechas*/}
+                {this.dibujarActor()}
+              </Group>
+            ))}
 
-          {/** Ciclo para dibujar lineas normales */}
+            {/** Ciclo para dibujar lineas normales */}
 
-          {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
-            <Layer key={i}>
-              {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarLineaNormal(i)}
-            </Layer>
-          ))}
+            {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
+              <Group key={i}>
+                {/** Linea individual, obtenido desde el arreglo de flechas*/}
+                {this.dibujarLineaNormal(i)}
+              </Group>
+            ))}
 
-          {/** Ciclo para dibujar lineas punteadas include y extend */}
-          {[...Array(this.props.lineasPunteadas.length)].map((_, i) => (
-            <Layer key={i}>
-              {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarFlechaPunt(i)}
-            </Layer>
-          ))}
+            {/** Ciclo para dibujar lineas punteadas include y extend */}
+            {[...Array(this.props.lineasPunteadas.length)].map((_, i) => (
+              <Group key={i}>
+                {/** Linea individual, obtenido desde el arreglo de flechas*/}
+                {this.dibujarFlechaPunt(i)}
+              </Group>
+            ))}
 
-          {[...Array(this.props.figuras.length)].map((_, i) => (
-            <Layer
-              key={i}
-              id={this.props.figuras[i].id}
-              x={this.props.figuras[i].x}
-              y={this.props.figuras[i].y}
-              draggable
-              onDragEnd={(e) => this.props.actualizarCoordenadas(e)}
-              onClick={(e) => {
-                if (this.props.dibujarLinea) {
-                  if (this.state.nroClick === 0) {
-                    this.procesarPrimerClick(e, "requisito");
-                  } else if (this.state.nroClick === 1) {
-                    this.procesarSegundoClick(e, "requisito");
-                    this.definirLinea(e);
+            {[...Array(this.props.figuras.length)].map((_, i) => (
+              <Group
+                key={i}
+                id={this.props.figuras[i].id}
+                x={this.props.figuras[i].x}
+                y={this.props.figuras[i].y}
+                draggable
+                onDragEnd={(e) => {
+                  this.props.actualizarCoordenadas(e);
+                  this.props.guardarImagen(
+                    this.stageRef.getStage().toDataURL()
+                  );
+                }}
+                onClick={(e) => {
+                  if (this.props.dibujarLinea) {
+                    if (this.state.nroClick === 0) {
+                      this.procesarPrimerClick(e, "requisito");
+                    } else if (this.state.nroClick === 1) {
+                      this.procesarSegundoClick(e, "requisito");
+                      this.definirLinea(e);
+                    }
                   }
-                }
-              }}
-            >
-              {/* El texto se debería dibujar después de la elipse para que se 
+                }}
+              >
+                {/* El texto se debería dibujar después de la elipse para que se 
               muestre encima de ella, pero si no lo dibujo antes también, no funciona bien,
               no sé por qué */}
-              {this.dibujarTextoRequisito(i)}
-              {this.dibujarElipse(i)}
-              {this.dibujarTextoRequisito(i)}
-            </Layer>
-          ))}
+                {this.dibujarTextoRequisito(i)}
+                {this.dibujarElipse(i)}
+                {this.dibujarTextoRequisito(i)}
+              </Group>
+            ))}
+          </Layer>
         </Stage>
       </div>
     );
