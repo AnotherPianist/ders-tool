@@ -68,7 +68,8 @@ class CasoDeUso extends Component {
    */
   guardarImagen = (imagen) => {
     this.setState({ imagen: imagen });
-    console.log("actualizar imagen");
+    //console.log("actualizar imagen");
+    //console.log(this.state.imagen);
   };
 
   guardarFlecha(flecha) {

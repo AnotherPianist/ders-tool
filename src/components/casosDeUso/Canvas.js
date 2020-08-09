@@ -558,6 +558,7 @@ class Canvas extends React.Component {
           fontSize: "20px",
         }).width + 25;
     }
+
     return (
       <input
         fontSize={20}
@@ -594,8 +595,10 @@ class Canvas extends React.Component {
             this.stageRef = node;
           }}
         >
+          <this.dibujarSujeto />
           <Layer>
             {/** Ciclo para dibujar actores*/}
+
             {[...Array(this.props.actores.length)].map((_, i) => (
               <Group
                 key={i}
