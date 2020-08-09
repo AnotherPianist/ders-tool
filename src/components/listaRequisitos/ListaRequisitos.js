@@ -190,7 +190,7 @@ class ListaRequisitos extends React.Component {
     return (
       <Container style={{margin: "3rem"}}>
         <Typography variant="h2" style={{margin: "3rem"}}>Actores</Typography>
-
+        
         <Typography variant="h2" style={{margin: "3rem"}}>Suposiciones</Typography>
         <Grid item xs={13} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
           <TextField id="outlined-multiline-static"
@@ -198,6 +198,7 @@ class ListaRequisitos extends React.Component {
               margin="normal"
               multiline
               rows={3}
+              defaultValue={this.state.requisitos}
               variant="outlined"/>
         </Grid>
         <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
