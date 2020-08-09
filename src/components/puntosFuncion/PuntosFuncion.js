@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell, TextField } from '@material-ui/core'
+import AjusteAmbiental from "./AjusteAmbiental";
 
 class PuntosFuncion extends React.Component {
   constructor(props) {
@@ -131,6 +132,10 @@ class PuntosFuncion extends React.Component {
   render() {
     return (
       <>
+        <Typography variant="h2" style={{margin: "3rem"}}>Ajuste Ambiental</Typography>
+        <AjusteAmbiental 
+          ajusteAmbiental
+        />
         <Typography variant="h2" style={{margin: "3rem"}}>Puntos de Función</Typography>
         <TableContainer component={Paper} style={{margin: "3rem"}}>
           <Table aria-label="simple table">
