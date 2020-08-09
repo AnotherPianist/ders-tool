@@ -6,7 +6,7 @@ class VistaActores extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 2,
+      id: 1,
       nuevoNombre: "", 
       nuevaDescripcion: "",
     };
@@ -55,12 +55,11 @@ class VistaActores extends React.Component {
   }
 
   render() {
-    const lista = this.props.actores.map((actor) => {
+    const actores = this.props.actores.map((actor) => {
       return (
         <Actor key={actor.id} id={actor.id} nombre={actor.nombre} descripcion={actor.descripcion} editar={this.editar} eliminar={this.eliminar}/>
       );
     });
-
     return(
       <Container>
         <Typography variant="h5" style={{float: "left"}} gutterBottom>Actores</Typography>
@@ -73,13 +72,13 @@ class VistaActores extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {lista}
+            {actores}
             <TableRow>
               <TableCell>
                 <TextField id="nombre" label="Nombre" value={this.state.nuevoNombre} onChange={this.onChangeNombre} onKeyDown={this.crear}/>
               </TableCell>
               <TableCell>
-                <TextField id="descripcion" label="Descripción" value={this.state.nuevaDescripcion} fullWidth onChange={this.onChangeDescripcion} onKeyDown={this.crear}/>
+                <TextField multiline rowsMax={3} id="descripcion" label="Descripción" value={this.state.nuevaDescripcion} onChange={this.onChangeDescripcion} onKeyDown={this.crear}/>
               </TableCell>
             </TableRow>
           </TableBody>

@@ -4,7 +4,7 @@ import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
 import VistaActores from './actores/VistaActores';
-import { Container, Typography, Card, CardContent } from '@material-ui/core';
+import { Container, Typography, Card, CardContent, TextField, Grid } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
   constructor(props) {
@@ -29,6 +29,18 @@ class ListaRequisitos extends React.Component {
     });
     this.setState({keyCounter: this.state.keyCounter + 1});
     this.props.actualizar(requisitos);
+  }
+
+  crearSuposicion = (n) => {
+    const suposiciones = [];
+    for (const r of this.props.suposiciones) {
+      suposiciones.push(r);
+    }
+    this.props.actualizar(suposiciones);
+  }
+
+  onChangeDescripcion = (e) => {
+    this.props.editar(e.target.value);
   }
 
   crearRS = (nombre, tipo, ru, invocaA) => {
@@ -176,19 +188,18 @@ class ListaRequisitos extends React.Component {
     });
 
     return (
-      /*
       <Container style={{margin: "3rem"}}>
         <Typography variant="h2" style={{margin: "3rem"}}>Actores</Typography>
-        <VistaActores actores={this.props.actores} editar={this.props.editar}/>
-      </Container>  
-      <Container style={{margin: "3rem"}}>
+
         <Typography variant="h2" style={{margin: "3rem"}}>Suposiciones</Typography>
-        <Grid item xs={8} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
-          <TextField fullWidth defaultValue={this.props.suposicion.descripcion} onChange={this.onChangeDescripcion}/>
+        <Grid item xs={13} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
+          <TextField id="outlined-multiline-static"
+              fullWidth
+              margin="normal"
+              multiline
+              rows={3}
+              variant="outlined"/>
         </Grid>
-      </Container> 
-      */ 
-      <Container style={{margin: "3rem"}}>
         <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
         <CrearRU crear={this.crearRU} tiposRequisitos={this.props.tiposRequisitos}/>
