@@ -1,7 +1,6 @@
 import React from 'react';
 import BarraPDF from './BarraPDF';
 import './estilosvp.css';
-import prueba from './prueba.pdf';
 import { Container } from '@material-ui/core';
 import draftToHtml from 'draftjs-to-html';
 import jsPDF from 'jspdf';
@@ -16,7 +15,8 @@ class VistaPrevisualizacion extends React.Component {
       Casosdeuso: true,
       AjustesAmbientales: true,
       PuntosdeFunción: true,
-      AnalisisdeRepago: true
+      AnalisisdeRepago: true,
+      pdfUrl : this.toPDF(true,true,true,true,true,true,true)
     };
   }
 
@@ -28,7 +28,8 @@ class VistaPrevisualizacion extends React.Component {
       Casosdeuso: Casosdeuso,
       AjustesAmbientales: AjustesAmbientales,
       PuntosdeFunción: PuntosdeFunción,
-      AnalisisdeRepago: AnalisisdeRepago
+      AnalisisdeRepago: AnalisisdeRepago,
+      pdfUrl : this.toPDF(datoUno, ListadeRequisitos,TarjetasdeVolere,Casosdeuso,AjustesAmbientales,PuntosdeFunción,AnalisisdeRepago)
     });
   }
 
@@ -37,7 +38,8 @@ class VistaPrevisualizacion extends React.Component {
     const data = this.props.state.textoDers;
     let htmlContent = "<h3>DERS</h3>";
     for(const d of data)
-      htmlContent += "<div> <h3>" + d.title + "</h3>" + draftToHtml(d.description) + "</div>";
+      htmlContent += "<div>\n<h3>" + d.title + "</h3>\n\t" + draftToHtml(d.description) + "</div>\n";
+    console.log(htmlContent);
     return htmlContent;
   }
 
@@ -53,7 +55,7 @@ class VistaPrevisualizacion extends React.Component {
         htmlContent += `\t\t<dd>RS${requisito.id}: ${requisito.nombre} (${requisito.tipo})</dd>\n`;
     }
     htmlContent += "</dl>\n";
-    console.log(htmlContent);
+    //console.log(htmlContent);
     return htmlContent
   }
 
@@ -73,7 +75,7 @@ class VistaPrevisualizacion extends React.Component {
     htmlContent += `\t<tr>\n\t\t<th>Consultas</th>\n\t\t<th>${puntos.consultas[0]}</th>\n\t\t<th>${puntos.consultas[1]}</th>\n\t\t<th>${puntos.consultas[2]}</th>\n\t</tr>\n`;
     htmlContent += `\t<tr>\n\t\t<th>Interfaces Externas</th>\n\t\t<th>${puntos.ie[0]}</th>\n\t\t<th>${puntos.ie[1]}</th>\n\t\t<th>${puntos.ie[2]}</th>\n\t</tr>\n`;
     htmlContent += `\t<tr>\n\t\t<th>Archivos Lógicos Internos</th>\n\t\t<th>${puntos.ali[0]}</th>\n\t\t<th>${puntos.ali[1]}</th>\n\t\t<th>${puntos.ali[2]}</th>\n\t</tr>\n</table>`;
-    console.log(htmlContent);
+    //console.log(htmlContent);
     return htmlContent;
   }
 
@@ -98,47 +100,61 @@ class VistaPrevisualizacion extends React.Component {
     return htmlContent;
   }
 
-  toPDF = () =>
+  toPDF = (ders,requisito, volere, casos, ambiental, puntos,analisis, ) =>
   {
     var doc = new jsPDF("p", "mm", "a4", true, "smart");
-    doc.fromHTML
-    ( this.requisitosToHTML(),
-      15,
-      5,
-      {  'width': 170,}
-    );
-    doc.addPage();
-    doc.fromHTML
-    ( this.puntosFuncionToHTML(),
-      15,
-      5,
-      {  'width': 170,}
-    );
-    doc.addPage();
-    doc.fromHTML
-    ( this.repagoToHTML(),
-      15,
-      5,
-      {  'width': 170,}
-    );
-    doc.addPage();
-    doc.fromHTML
-    ( this.dersToHTML(),
-      15,
-      5,
-      {  'width': 170,}
-    );
-    doc.save(this.props.nombreProyecto + ".pdf");
+    if(requisito === true)
+    {
+      doc.fromHTML
+      ( this.requisitosToHTML(),
+        15,
+        5,
+        {  'width': 170,}
+      );
+      doc.addPage();
+    }
+    if(puntos === true)
+    {
+      doc.fromHTML
+      ( this.puntosFuncionToHTML(),
+        15,
+        5,
+        {  'width': 170,}
+      );
+      doc.addPage();
+    }
+    if(analisis === true)
+    {
+      doc.fromHTML
+      ( this.repagoToHTML(),
+        15,
+        5,
+        {  'width': 170,}
+      );
+      doc.addPage();
+    }
+    if(ders === true)
+    {
+      doc.fromHTML
+      ( this.dersToHTML(),
+        15,
+        5,
+        {  'width': 170,}
+      );
+    }
+    //doc.save(this.props.nombreProyecto + ".pdf");
+    var pdfUrl = doc.output('datauristring');
+    return pdfUrl;
   }
 
   render() {
     return (
       <>
         <Container class='left'>
-          <BarraPDF recibirEstados={this.recibirEstados}/> 
+          <BarraPDF recibirEstados={this.recibirEstados()}/> 
         </Container>
         <Container class='right'>
-          <iframe title="pdf" src={prueba} style={{width: "100%", height: "100%"}}/>
+          <iframe title="pdf" src={this.state.pdfUrl} style={{width: "100%", height: "100%"}}/>
         </Container>
       </>
     );
