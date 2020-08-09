@@ -39,6 +39,11 @@ class App extends React.Component {
         ali: [0, 0, 0],
       },
       tablaAnalisisRepago: [],
+      cartaGantt:
+      {
+        data: [],
+        links: []
+      }
     };
   }
 
@@ -56,7 +61,7 @@ class App extends React.Component {
   };
 
   actualizarRequisitos = async listaRequisitos => {
-    await this.setState({requisitos: listaRequisitos});
+    await this.setState({ requisitos: listaRequisitos });
   }
 
   actualizarPuntosFuncion = (pf) => {
@@ -69,6 +74,10 @@ class App extends React.Component {
 
   actualizarTablaAnalisisRepago = (tabla) => {
     this.setState({ tablaAnalisisRepago: tabla });
+  };
+
+  actualizarCartaGantt = carta => {
+    this.setState({ cartaGantt: carta });
   };
 
   render() {
@@ -116,7 +125,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/previsualizar">
-              <VistaPrevisualizacion/>
+              <VistaPrevisualizacion />
             </Route>
             <Route path="/puntosFuncion">
               <PuntosFuncion
@@ -132,7 +141,9 @@ class App extends React.Component {
             </Route>
             <Route path="/cartaGantt">
               <CartaGantt
-                requisitos = {this.state.requisitos}
+                requisitos={this.state.requisitos}
+                cartaGantt={this.state.cartaGantt}
+                actualizar={this.actualizarCartaGantt}
               />
             </Route>
           </Switch>
