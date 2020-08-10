@@ -336,8 +336,10 @@ class CasoDeUso extends Component {
   };
 
   removerRequisitoDeLista = (req) => {
-    const nuevaLista = this.state.requisitos.filter((r) => r !== req);
-    this.setState({ requisitos: nuevaLista });
+    const nuevaLista = this.state.requisitosSeleccionados.filter(
+      (r) => r !== req
+    );
+    this.setState({ requisitosSeleccionados: nuevaLista });
   };
 
   handleFiguras = (figuras) => {
