@@ -41,8 +41,9 @@ class AjusteAmbiental extends React.Component {
         else if (e.target.id === "FdM")
             valoresTabla[13] = parseInt(e.target.value);
         await this.setState({ valores: valoresTabla });
-        this.updateTotal();
+        this.updateTotal();       
         
+         
       }
 
     updateTotal = async () => {
@@ -53,9 +54,10 @@ class AjusteAmbiental extends React.Component {
         })
         totalTabla = (0.65 + totalTabla*(0.01)).toFixed(2);
         await this.setState({total: totalTabla});
-      }
-    
+        this.props.recibirEstados(this.state.total);
+    }    
       
+    
 
     render() {
       return (
