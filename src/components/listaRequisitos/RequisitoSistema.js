@@ -39,14 +39,14 @@ class RequisitoSistema extends React.Component {
         <Grid item xs={8} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
           {
             this.props.rs.invocaA ? 
-            <Typography variant="subtitle1">{this.props.rs.nombre}</Typography> :
+            <Typography variant="subtitle1" align="left" style={{paddingLeft: "1rem"}}>{this.props.rs.nombre}</Typography> :
             <TextField fullWidth value={this.props.rs.nombre} onChange={this.onChangeNombre}/>
           }
         </Grid>
         <Grid item xs={2}>
           {
             this.props.rs.invocaA ?
-            <Typography variant="subtitle1" style={{paddingTop: "1rem"}}>{this.props.rs.tipo}</Typography> :
+            <Typography variant="subtitle1" style={{paddingTop: "1rem", paddingLeft: "1rem"}} align="left">{this.props.rs.tipo}</Typography> :
             <Select fullWidth value={this.props.rs.tipo} onChange={this.onChangeTipo}>{tiposReq}</Select>
           }
         </Grid>
