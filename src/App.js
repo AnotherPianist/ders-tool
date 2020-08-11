@@ -10,6 +10,7 @@ import Ders from "./components/ders/Ders";
 import PestanasCasosDeUsos from "./components/casosDeUso/PestanasCasosDeUsos";
 import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
 import VistaPrevisualizacion from './components/previsualizacion/VistaPrevisualizacion';
+import CartaGantt from "./components/cartaGantt/cartaGantt";
 
 class App extends React.Component {
   constructor(props) {
@@ -38,6 +39,11 @@ class App extends React.Component {
         ali: [0, 0, 0],
       },
       tablaAnalisisRepago: [],
+      cartaGantt:
+      {
+        data: [],
+        links: []
+      }
     };
   }
 
@@ -69,7 +75,7 @@ class App extends React.Component {
   };
 
   actualizarRequisitos = async listaRequisitos => {
-    await this.setState({requisitos: listaRequisitos});
+    await this.setState({ requisitos: listaRequisitos });
   }
 
   actualizarPuntosFuncion = (pf) => {
@@ -82,6 +88,10 @@ class App extends React.Component {
 
   actualizarTablaAnalisisRepago = (tabla) => {
     this.setState({ tablaAnalisisRepago: tabla });
+  };
+
+  actualizarCartaGantt = carta => {
+    this.setState({ cartaGantt: carta });
   };
 
   render() {
@@ -131,7 +141,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/previsualizar">
-              <VistaPrevisualizacion/>
+              <VistaPrevisualizacion />
             </Route>
             <Route path="/puntosFuncion">
               <PuntosFuncion
@@ -143,6 +153,13 @@ class App extends React.Component {
               <AnalisisRepago
                 tablaAnalisisRepago={this.state.tablaAnalisisRepago}
                 actualizar={this.actualizarTablaAnalisisRepago}
+              />
+            </Route>
+            <Route path="/cartaGantt">
+              <CartaGantt
+                requisitos={this.state.requisitos}
+                cartaGantt={this.state.cartaGantt}
+                actualizar={this.actualizarCartaGantt}
               />
             </Route>
           </Switch>

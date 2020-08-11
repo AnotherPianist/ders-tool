@@ -17,6 +17,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import EventNoteIcon from '@material-ui/icons/EventNote';
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import DescriptionIcon from "@material-ui/icons/Description";
 import AccessibilityIcon from "@material-ui/icons/Accessibility";
@@ -260,6 +261,18 @@ class Estructura extends React.Component {
                 <TimelineIcon />
               </ListItemIcon>
               <ListItemText primary="Análisis de Repago" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.whiteIcons}
+              component={Link}
+              to="/cartaGantt"
+              onClick={this.toggleDrawer}
+            >
+              <ListItemIcon className={classes.whiteIcons}>
+                <EventNoteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Carta Gantt" />
             </ListItem>
           </List>
         </Drawer>
