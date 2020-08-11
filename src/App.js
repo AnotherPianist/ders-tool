@@ -7,7 +7,7 @@ import Ajustes from "./components/ajustes/Ajustes";
 import ListaRequisitos from "./components/listaRequisitos/ListaRequisitos";
 import PuntosFuncion from "./components/puntosFuncion/PuntosFuncion";
 import Ders from "./components/ders/Ders";
-import PestanasCasosDeUsos from "./components/casosDeUso/PestanasCasosDeUsos";
+import PestanasCasosDeUsos from "./components/casosDeUso/Pestanias/PestanasCasosDeUsos";
 import AnalisisRepago from "./components/analisisRepago/AnalisisRepago";
 import VistaPrevisualizacion from './components/previsualizacion/VistaPrevisualizacion';
 import CartaGantt from "./components/cartaGantt/cartaGantt";
@@ -31,6 +31,7 @@ class App extends React.Component {
       ],
       textoDers: [],
       requisitos: [],
+      casosDeUso: {},
       puntosFuncion: {
         entradas: [0, 0, 0],
         salidas: [0, 0, 0],
@@ -78,6 +79,10 @@ class App extends React.Component {
 
   actualizarRequisitos = async listaRequisitos => {
     await this.setState({ requisitos: listaRequisitos });
+  }
+
+  actualizarCasosDeUso = (obj) => {
+    this.setState({casosDeUso: {...obj}});
   }
 
   actualizarPuntosFuncion = (pf) => {
@@ -137,7 +142,9 @@ class App extends React.Component {
             <Route path="/casos">
               <PestanasCasosDeUsos
                 requisitos={this.state.requisitos}
+                casosDeUso={this.state.casosDeUso}
                 actualizarRequisitos={this.actualizarRequisitos}
+                actualizarCasosDeUso={this.actualizarCasosDeUso}
               />
             </Route>
             <Route path="/tablas">

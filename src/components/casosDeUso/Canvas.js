@@ -1,19 +1,34 @@
 import React from "react";
-import { Stage, Layer, Text, Line, Ellipse, Arrow, Circle } from "react-konva";
+import {
+  Stage,
+  Layer,
+  Text,
+  Line,
+  Ellipse,
+  Arrow,
+  Circle,
+  Group,
+} from "react-konva";
 import calculateSize from "calculate-size";
 import Rectangle from "./Rectangle";
 import TransformerComponent from "./TransformerComponent";
+import AlertaError from "../alertas/Alertas";
+import { ToastContainer, Slide } from "react-toastify";
 
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      idEditado: -1,
+      textEditVisible: false,
       selectedShapeName: "",
       nroClick: 0,
+      cont: 0,
+      contFlechasPunteadas: 0,
+      contFlechasNormales: 0,
     };
   }
-
   /**
   *Se encarga de inicializar el ancho que tendrá la elipse, 
   *adaptandose
@@ -245,6 +260,7 @@ class Canvas extends React.Component {
       return false;
     }
   };
+
   /**
    * Funcion que define la linea entre dos figuras. Se procesaran 2 click consecutivos sobre las figuras que indicaran inicio y final de la linea.
    * nroClick = 0 es el primer click que define el inicio de la linea,
@@ -263,15 +279,21 @@ class Canvas extends React.Component {
         let lineasSolidas = this.props.lineasSolidas;
         lineasSolidas.push(this.nuevaLinea());
         this.props.guardarFlecha(lineasSolidas);
-
-        //linea de tipo generalizacion, se dibuja solo entre actores
-      } else if ((tipoLinea === 4) & this.entreActores()) {
-        let lineasSolidas = this.props.lineasSolidas;
-        lineasSolidas.push(this.nuevaLinea());
-        this.props.guardarFlecha(lineasSolidas);
-
-        //lineas de tipo dependencia, include y extend. Se dibujan solo entre requisitos
-      } else if (tipoLinea === 1 || tipoLinea === 2 || tipoLinea === 5) {
+      }
+      //linea de tipo generalizacion, se dibuja solo entre actores
+      if (tipoLinea === 4) {
+        if (this.entreActores()) {
+          let lineasSolidas = this.props.lineasSolidas;
+          lineasSolidas.push(this.nuevaLinea());
+          this.props.guardarFlecha(lineasSolidas);
+        } else {
+          AlertaError(
+            "Error de asociacion. Generalizacion solo se admite entre actores"
+          );
+        }
+      }
+      //lineas de tipo dependencia, include y extend. Se dibujan solo entre requisitos
+      if (tipoLinea === 1 || tipoLinea === 2 || tipoLinea === 5) {
         if (this.entreRequisitos()) {
           let lineasPunteadas = this.props.lineasPunteadas;
           const linea = this.nuevaLinea();
@@ -286,42 +308,141 @@ class Canvas extends React.Component {
           }
           lineasPunteadas.push(linea);
           this.props.guardarFlecha(lineasPunteadas);
+        } else {
+          if (tipoLinea === 1) {
+            AlertaError(
+              "Error de asociacion. Include solo se admite entre requisitos"
+            );
+          }
+          if (tipoLinea === 2) {
+            AlertaError(
+              "Error de asociacion. Extend solo se admite entre requisitos"
+            );
+          }
+          if (tipoLinea === 5) {
+            AlertaError(
+              "Error de asociacion. Dependencia solo se admite entre requisitos"
+            );
+          }
         }
       }
     }
   };
 
-  dibujarActor() {
+  dibujarActor(actor) {
     return (
       <>
-        <Line points={[0, -20, 0, 10]} tension={1} closed stroke="black" />
-        <Line points={[0, 10, -10, 35]} tension={1} closed stroke="black" />
-        <Line points={[0, 10, 10, 35]} tension={1} closed stroke="black" />
-        <Line points={[0, -5, -15, 10]} tension={1} closed stroke="black" />
-        <Line points={[0, -5, 15, 10]} tension={1} closed stroke="black" />
-        <Circle x={0} y={-20} radius={10} fill="white" stroke="black" />
+        <Line points={[0, -30, 0, 0]} tension={1} closed stroke="black" />
+        <Line points={[0, 0, -10, 25]} tension={1} closed stroke="black" />
+        <Line points={[0, 0, 10, 25]} tension={1} closed stroke="black" />
+        <Line points={[0, -15, -15, 0]} tension={1} closed stroke="black" />
+        <Line points={[0, -15, 15, 0]} tension={1} closed stroke="black" />
+        <Circle x={0} y={-30} radius={10} fill="white" stroke="black" />
         <Text
-          x={-23}
-          y={40}
+          x={-actor.ancho + actor.ancho / 2}
+          y={actor.alto + 30}
           fontSize={20}
-          text="Actor"
+          text={actor.name}
           wrap="char"
           align="center"
-          onClick={() => {
-            this.setState({ modal: true });
-          }}
+          onDblClick={(e) => this.handleTextDblClick(e, actor)}
         />
       </>
     );
   }
 
   /**
+   * Función que detecta que se haga doble click sobre el texto del sujeto o actor, detectando el id de estos
+   * para saber que elemento se debe editar o no
+   * @param {evento de doble click} e
+   * @param {Es el actor o sujeto al que se le hace doble click} sujeto
+   */
+
+  handleTextDblClick = (e, sujeto) => {
+    this.setState({
+      textEditVisible: true,
+      idEditado: sujeto.id,
+    });
+  };
+
+  /**
+   * Función que se encarga de editar el nombre del sujeto o actor, refrescandolo en la pantalla.
+   * @param {evento} e
+   * @param {Es el sujeto o el actor} sujeto
+   * @param {indice de donde se encuentra el sujeto o actor en el arreglo general} i
+   * @param {Es un string que indice si el tipo de objeto que entra es el sujeto o el actor} tipo
+   */
+  handleTextEdit = (e, sujeto, i, tipo) => {
+    sujeto.name = e.target.value;
+    if (tipo === "sujeto") {
+      sujeto.ancho =
+        calculateSize(e.target.value, {
+          font: "Arial",
+          fontSize: "20px",
+        }).width + 200;
+      this.props.actualizarSujeto({ sujeto, i });
+    } else {
+      sujeto.ancho = calculateSize(e.target.value, {
+        font: "Arial",
+        fontSize: "20px",
+      }).width;
+      this.props.actualizarActor({ sujeto, i });
+    }
+  };
+
+  /**
+   * Función que se encarga de detectar que se apreta "Enter" para desabilibar o dejar de mostrar el input
+   * además verifica si el nombre está vacio o no, en caso de que esté vacio setea el nombre como
+   * "Ingrese nombre"
+   * @param {evento} e
+   * @param {Es el sujeto o el actor} sujeto
+   * @param {indice de donde se encuentra el sujeto o actor en el arreglo general} i
+   * @param {Es un string que indice si el tipo de objeto que entra es el sujeto o el actor} tipo
+   */
+  handleTextareaKeyDown = (e, sujeto, i, tipo) => {
+    if (e.keyCode === 13) {
+      this.setState({
+        textEditVisible: false,
+        idEditado: -1,
+      });
+      if (sujeto.name.trim() === "") {
+        sujeto.name = "Ingrese nombre";
+        if (tipo === "sujeto") {
+          sujeto.ancho =
+            calculateSize(sujeto.name, {
+              font: "Arial",
+              fontSize: "20px",
+            }).width + 200;
+          this.props.actualizarSujeto({ sujeto, i });
+        } else {
+          sujeto.ancho = calculateSize(sujeto.name, {
+            font: "Arial",
+            fontSize: "20px",
+          }).width;
+          this.props.actualizarActor({ sujeto, i });
+        }
+      }
+    }
+  };
+
+  /**
+   * función que se encarga de mostrar o no el input sobre el campo de texto del sujeto
+   * o del actor.
+   * @param {Es el actor o el sujeto que se está editando} ActSuj
+   */
+  editing = (ActSuj) => {
+    if (this.state.textEditVisible && ActSuj.id === this.state.idEditado) {
+      return "block";
+    } else {
+      return "none";
+    }
+  };
+
+  /**
    * Función que se encarga de desplegar el rectángulo que representa al sujeto, junto a su texto
    * respectivo, dandele la opción de reajustar su tamano
    */
   dibujarSujeto = () => {
-    console.log(this.props.sujetos[0]);
-
     return (
       <Layer key={10000}>
         {this.props.sujetos.map((sujeto, i) => (
@@ -348,6 +469,7 @@ class Canvas extends React.Component {
               text={sujeto.name}
               wrap="char"
               align="center"
+              onDblClick={(e) => this.handleTextDblClick(e, sujeto)}
             />
           </>
         ))}
@@ -379,7 +501,7 @@ class Canvas extends React.Component {
       return;
     }
     const name = e.target.name();
-    const rect = this.props.sujetos.find((r) => r.name === name);
+    const rect = this.props.sujetos.find((r) => r.nameAux === name);
     if (rect) {
       this.setState({
         selectedShapeName: name,
@@ -401,87 +523,194 @@ class Canvas extends React.Component {
 
     this.props.actualizarSujeto({ sujeto, i });
   };
+  /**
+   * funcion que se encarga de actualizar la imagen del canvas al momento de agregar algun elemento en el canvas
+   */
+
+  actualizarImagen = () => {
+    let cont = this.state.cont;
+    if (cont !== this.props.count) {
+      cont++;
+      this.setState({ cont: cont });
+      this.props.guardarImagen(this.stageRef.getStage().toDataURL());
+    }
+    let contFlechasNormales = this.state.contFlechasNormales;
+
+    if (contFlechasNormales !== this.props.lineasSolidas.length) {
+      contFlechasNormales++;
+      this.setState({ contFlechasNormales: contFlechasNormales });
+      this.props.guardarImagen(this.stageRef.getStage().toDataURL());
+    }
+    let contFlechasPunteadas = this.state.contFlechasPunteadas;
+    if (contFlechasPunteadas !== this.props.lineasPunteadas.length) {
+      contFlechasPunteadas++;
+      this.setState({ contFlechasPunteadas: contFlechasPunteadas });
+      this.props.guardarImagen(this.stageRef.getStage().toDataURL());
+    }
+  };
+  /**
+   *
+   * Función que se encarga de editar el texto del sujeto o el actor, para esto toma los atributos de estos
+   * y muestra un input sobre el texto ya mostrado.
+   * @param {Actor o Sujeto que se está editando} ActSuj
+   * @param {indice de donde se encuentra el actor o sujeto dentro del arreglo general} i
+   * @param {String que indica si el objeto que entró a la función es un sujeto o actor} tipo
+   */
+  editarTexto = (ActSuj, i, tipo) => {
+    let x, y, ancho;
+    if (tipo === "sujeto") {
+      x =
+        ActSuj.x +
+        ActSuj.ancho / 2 -
+        calculateSize(ActSuj.name, {
+          font: "Arial",
+          fontSize: "20px",
+        }).width /
+          2;
+      y = ActSuj.y + 5;
+      ancho =
+        calculateSize(ActSuj.name, {
+          font: "Arial",
+          fontSize: "20px",
+        }).width + 25;
+    } else {
+      x = ActSuj.x - ActSuj.ancho / 2;
+      y = ActSuj.y + ActSuj.alto + 30;
+      ancho =
+        calculateSize(ActSuj.name, {
+          font: "Arial",
+          fontSize: "20px",
+        }).width + 25;
+    }
+
+    return (
+      <input
+        fontSize={20}
+        align="center"
+        value={ActSuj.name}
+        style={{
+          display: this.editing(ActSuj),
+          position: "absolute",
+          alignItems: "center",
+          top: window.innerHeight * 0.265 + y,
+          left: window.innerWidth * 0.2 + x,
+          width: ancho,
+          height: 30,
+        }}
+        onChange={(e) => {
+          this.handleTextEdit(e, ActSuj, i, tipo);
+        }}
+        onKeyDown={(e) => {
+          this.handleTextareaKeyDown(e, ActSuj, i, tipo);
+        }}
+      />
+    );
+  };
 
   render() {
     return (
       <div>
+        <ToastContainer transition={Slide} />
         <Stage
           width={window.innerWidth}
           height={window.innerHeight}
           onMouseDown={this.handleStageMouseDown}
+          ref={(node) => {
+            this.stageRef = node;
+            this.actualizarImagen();
+          }}
         >
           <this.dibujarSujeto />
+          <Layer>
+            {/** Ciclo para dibujar actores*/}
 
-          {/** Ciclo para dibujar actores*/}
-          {[...Array(this.props.actores.length)].map((_, i) => (
-            <Layer
-              key={i}
-              draggable
-              id={this.props.actores[i].id}
-              x={this.props.actores[i].x}
-              y={this.props.actores[i].y}
-              onClick={(e) => {
-                if (this.props.dibujarLinea) {
-                  if (this.state.nroClick === 0) {
-                    this.procesarPrimerClick(e, "actor");
-                  } else if (this.state.nroClick === 1) {
-                    this.procesarSegundoClick(e, "actor");
-                    this.definirLinea(e);
+            {[...Array(this.props.actores.length)].map((_, i) => (
+              <Group
+                key={i}
+                draggable
+                id={this.props.actores[i].id}
+                x={this.props.actores[i].x}
+                y={this.props.actores[i].y}
+                onClick={(e) => {
+                  if (this.props.dibujarLinea) {
+                    if (this.state.nroClick === 0) {
+                      this.procesarPrimerClick(e, "actor");
+                    } else if (this.state.nroClick === 1) {
+                      this.procesarSegundoClick(e, "actor");
+                      this.definirLinea(e);
+                    }
                   }
-                }
-              }}
-              onDragEnd={(e) => this.props.actualizarCoordenadasActores(e)}
-            >
-              {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarActor()}
-            </Layer>
-          ))}
+                }}
+                onDragEnd={(e) => {
+                  this.props.actualizarCoordenadasActores(e);
+                  this.props.guardarImagen(
+                    this.stageRef.getStage().toDataURL()
+                  );
+                }}
+              >
+                {/** Linea individual, obtenido desde el arreglo de flechas*/}
+                {this.dibujarActor(this.props.actores[i])}
+              </Group>
+            ))}
 
-          {/** Ciclo para dibujar lineas normales */}
+            {/** Ciclo para dibujar lineas normales */}
 
-          {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
-            <Layer key={i}>
-              {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarLineaNormal(i)}
-            </Layer>
-          ))}
+            {[...Array(this.props.lineasSolidas.length)].map((_, i) => (
+              <Group key={i}>
+                {/** Linea individual, obtenido desde el arreglo de flechas*/}
+                {this.dibujarLineaNormal(i)}
+              </Group>
+            ))}
 
-          {/** Ciclo para dibujar lineas punteadas include y extend */}
-          {[...Array(this.props.lineasPunteadas.length)].map((_, i) => (
-            <Layer key={i}>
-              {/** Linea individual, obtenido desde el arreglo de flechas*/}
-              {this.dibujarFlechaPunt(i)}
-            </Layer>
-          ))}
+            {/** Ciclo para dibujar lineas punteadas include y extend */}
+            {[...Array(this.props.lineasPunteadas.length)].map((_, i) => (
+              <Group key={i}>
+                {/** Linea individual, obtenido desde el arreglo de flechas*/}
+                {this.dibujarFlechaPunt(i)}
+              </Group>
+            ))}
 
-          {[...Array(this.props.figuras.length)].map((_, i) => (
-            <Layer
-              key={i}
-              id={this.props.figuras[i].id}
-              x={this.props.figuras[i].x}
-              y={this.props.figuras[i].y}
-              draggable
-              onDragEnd={(e) => this.props.actualizarCoordenadas(e)}
-              onClick={(e) => {
-                if (this.props.dibujarLinea) {
-                  if (this.state.nroClick === 0) {
-                    this.procesarPrimerClick(e, "requisito");
-                  } else if (this.state.nroClick === 1) {
-                    this.procesarSegundoClick(e, "requisito");
-                    this.definirLinea(e);
+            {[...Array(this.props.figuras.length)].map((_, i) => (
+              <Group
+                key={i}
+                id={this.props.figuras[i].id}
+                x={this.props.figuras[i].x}
+                y={this.props.figuras[i].y}
+                draggable
+                onDragEnd={(e) => {
+                  this.props.actualizarCoordenadas(e);
+                  this.props.guardarImagen(
+                    this.stageRef.getStage().toDataURL()
+                  );
+                }}
+                onClick={(e) => {
+                  if (this.props.dibujarLinea) {
+                    if (this.state.nroClick === 0) {
+                      this.procesarPrimerClick(e, "requisito");
+                    } else if (this.state.nroClick === 1) {
+                      this.procesarSegundoClick(e, "requisito");
+                      this.definirLinea(e);
+                    }
                   }
-                }
-              }}
-            >
-              {/* El texto se debería dibujar después de la elipse para que se 
+                }}
+              >
+                {/* El texto se debería dibujar después de la elipse para que se 
               muestre encima de ella, pero si no lo dibujo antes también, no funciona bien,
               no sé por qué */}
-              {this.dibujarTextoRequisito(i)}
-              {this.dibujarElipse(i)}
-              {this.dibujarTextoRequisito(i)}
-            </Layer>
-          ))}
+                {this.dibujarTextoRequisito(i)}
+                {this.dibujarElipse(i)}
+                {this.dibujarTextoRequisito(i)}
+              </Group>
+            ))}
+          </Layer>
         </Stage>
+        {/** Ciclos editar sujetos y actores (si es que se requiere) */}
+        {this.props.sujetos.map((sujeto, i) =>
+          this.editarTexto(sujeto, i, "sujeto")
+        )}
+        {this.props.actores.map((actor, i) =>
+          this.editarTexto(actor, i, "actor")
+        )}
       </div>
     );
   }

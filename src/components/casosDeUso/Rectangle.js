@@ -21,6 +21,7 @@ class Rectangle extends React.Component {
       rotation: shape.rotation(),
       id: this.props.id,
       name: this.props.name,
+      nameAux: this.props.nameAux,
       scaleX: shape.scaleX(),
       scaleY: shape.scaleY(),
     });
@@ -28,6 +29,7 @@ class Rectangle extends React.Component {
   render() {
     return (
       <Rect
+        id={this.props.id}
         x={this.props.x}
         y={this.props.y}
         width={
@@ -37,13 +39,13 @@ class Rectangle extends React.Component {
           }).width + 200
         }
         height={200}
-        scaleX={1}
-        scaleY={1}
+        scaleX={this.props.scaleX}
+        scaleY={this.props.scaleY}
         fill="white"
         stroke="black"
         strokeScaleEnabled={false}
-        name={this.props.name}
-        onDragEnd={this.handleChange}
+        name={this.props.nameAux}
+        onDragMove={this.handleChange}
         onTransformEnd={this.handleChange}
         draggable
       />

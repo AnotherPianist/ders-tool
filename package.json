@@ -17,6 +17,7 @@
     "draftjs-to-html": "^0.9.1",
     "jspdf": "^1.5.3",
     "konva": "^7.0.3",
+    "lodash": "^4.17.19",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",
@@ -25,6 +26,7 @@
     "react-pdf": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
+    "react-toastify": "^6.0.8",
     "react-window": "^1.8.5"
   },
   "scripts": {

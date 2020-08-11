@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import BarraHerramientaCasosDeUso from "./BarraHerramientasCasosDeUso";
 import Canvas from "./Canvas";
 import calculateSize from "calculate-size";
+import { isEmpty } from "lodash";
 
 /*
 Este componente es la pantalla de casos de uso.
@@ -12,49 +13,63 @@ Renderiza el canvas y la barra lateral de herramientas en la pantalla de casos d
 class CasoDeUso extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      count: 0, //número de figuras ya dibujadas
+    console.log(props.casoDeUso);
+    this.state = !isEmpty(props.casoDeUso)
+      ? props.casoDeUso
+      : {
+          count: 0, //número de figuras ya dibujadas
 
-      requisitos: props.requisitos.filter(requisito => requisito.tipo === "Funcional"),
-      
-      //lineasSolidas contiene las flechas con lineas normales
-      lineasSolidas: [],
-      //lineasPunteadas contiene las flechas punteadas de extend e include
-      lineasPunteadas: [],
+          requisitos: [],
 
-      figuras: [
-        // {
-        //   id:,
-        //   x:,
-        //   y:,
-        //   name:,
-        //   alto:,
-        //   ancho:,
-        // },
-      ],
+          requisitosSeleccionados: [],
+          //lineasSolidas contiene las flechas con lineas normales
+          lineasSolidas: [],
+          //lineasPunteadas contiene las flechas punteadas de extend e include
+          lineasPunteadas: [],
 
-      //Arreglo de los puntos iniciales y finales de una linea
-      posLinea: [
-        { id1: 0, id2: 0 },
-        { x: 0, y: 0 },
-        { x: 0, y: 0 },
-      ],
-      actores: [
-        //{
-        //nombre: "actor",
-        //x: 150,
-        //y: 150,
-        //},
-      ],
-      dibujarLinea: false,
-      tipo: 0,
-      figura1: {},
-      figura2: {},
-      sujetos: [],
-    };
+          figuras: [
+            // {
+            //   id:,
+            //   x:,
+            //   y:,
+            //   name:,
+            //   alto:,
+            //   ancho:,
+            // },
+          ],
+
+          //Arreglo de los puntos iniciales y finales de una linea
+          posLinea: [
+            { id1: 0, id2: 0 },
+            { x: 0, y: 0 },
+            { x: 0, y: 0 },
+          ],
+          actores: [
+            //{
+            //nombre: "actor",
+            //x: 150,
+            //y: 150,
+            //},
+          ],
+          dibujarLinea: false,
+          tipo: 0,
+          figura1: {},
+          figura2: {},
+          sujetos: [],
+          imagen: "",
+        };
     this.actualizarCoordenadas = this.actualizarCoordenadas.bind(this);
     this.guardarFlecha = this.guardarFlecha.bind(this);
   }
+  /**
+   * funcion que se encarga de setear imagen recivida desde el canvas
+   * @param {*} imagen imagen en base 64
+   */
+  guardarImagen = (imagen) => {
+    this.setState({ imagen: imagen });
+    //console.log("actualizar imagen");
+    //console.log(this.state.imagen);
+  };
 
   guardarFlecha(flecha) {
     let ultimaPosicion = flecha.length - 1;
@@ -214,18 +229,18 @@ class CasoDeUso extends Component {
     let alto2;
 
     if (fig1.tipo === "requisito") {
-      ancho1 = this.state.figuras[this.encontrarIndex(fig1.id)].ancho + 5;
+      ancho1 = this.state.figuras[this.encontrarIndex(fig1.id)].ancho / 2 + 55;
       alto1 = this.state.figuras[this.encontrarIndex(fig1.id)].alto + 5;
     } else {
-      ancho1 = 15;
-      alto1 = 35;
+      ancho1 = 25;
+      alto1 = 50;
     }
     if (fig2.tipo === "requisito") {
-      ancho2 = this.state.figuras[this.encontrarIndex(fig2.id)].ancho + 5;
+      ancho2 = this.state.figuras[this.encontrarIndex(fig2.id)].ancho / 2 + 55;
       alto2 = this.state.figuras[this.encontrarIndex(fig2.id)].alto + 5;
     } else {
-      ancho2 = 15;
-      alto2 = 35;
+      ancho2 = 25;
+      alto2 = 50;
     }
     let id1 = fig1.id;
     let id2 = fig2.id;
@@ -272,6 +287,7 @@ class CasoDeUso extends Component {
     //this.props.setFigura1(p1Menor.p);
     //this.props.setFigura2(p2Menor.p);
   };
+
   /**
    * Se encarga de guardar las nuevas props del sujeto.
    * @param {props del sujeto} e
@@ -280,7 +296,18 @@ class CasoDeUso extends Component {
   actualizarSujeto = (e) => {
     var sujetos = this.state.sujetos;
     sujetos[e.i] = e.sujeto;
+    //console.log(sujetos[e.i]);
     this.setState({ sujetos: sujetos });
+  };
+
+  /**
+   * Se encarga de guardar las nuevas props del actor.
+   * @param {props del sujeto, esta contiene el indice del actor y el actor} e
+   */
+  actualizarActor = (e) => {
+    var actores = this.state.actores;
+    actores[e.i] = e.sujeto;
+    this.setState({ actores: actores });
   };
 
   crearFigura = (props) => {
@@ -305,6 +332,14 @@ class CasoDeUso extends Component {
     let figuras = [...this.state.figuras];
     figuras.push(figura);
     this.setState({ figuras });
+    this.removerRequisitoDeLista(req);
+  };
+
+  removerRequisitoDeLista = (req) => {
+    const nuevaLista = this.state.requisitosSeleccionados.filter(
+      (r) => r !== req
+    );
+    this.setState({ requisitosSeleccionados: nuevaLista });
   };
 
   handleFiguras = (figuras) => {
@@ -329,13 +364,18 @@ class CasoDeUso extends Component {
 
   handleActor = () => {
     let count = this.state.count;
+    const nombre = "ingrese nombre";
+    const ancho = calculateSize(nombre, {
+      font: "Arial",
+      fontSize: "20px",
+    });
     const actor = {
       id: count,
-      nombre: "ingrese nombre",
+      name: "ingrese nombre",
       x: 100,
       y: 100,
-      alto: 0,
-      ancho: 0,
+      alto: ancho.height,
+      ancho: ancho.width,
     };
     count++;
     this.setState({ count });
@@ -386,6 +426,7 @@ class CasoDeUso extends Component {
       x: 0,
       y: 0,
       name: nombre.concat(count),
+      nameAux: nombre.concat(count),
       ancho: ancho.width + 200,
       alto: 200,
       rotation: 0,
@@ -399,6 +440,14 @@ class CasoDeUso extends Component {
     this.setState({ sujetos });
   };
 
+  componentDidUpdate() {
+    this.props.subirEstados(this.state);
+  }
+
+  setRequisitos = (requisitos) => {
+    this.setState({ requisitosSeleccionados: requisitos });
+  };
+
   render() {
     return (
       <div style={{ width: "100%" }}>
@@ -406,7 +455,15 @@ class CasoDeUso extends Component {
           <Box p={0} width="100%" borderRight="outset" bgcolor="white">
             <Box p={0} width={250}>
               <BarraHerramientaCasosDeUso
-                requisitos={this.state.requisitos}
+                setRequisitos={this.setRequisitos}
+                requisitos={
+                  this.state.requisitos.length !== 0
+                    ? this.state.requisitos
+                    : this.props.requisitos.filter(
+                        (requisito) => requisito.tipo === "Funcional"
+                      )
+                }
+                requisitosSeleccionados={this.state.requisitosSeleccionados}
                 onClickRequisito={this.crearFigura}
                 onClickActor={this.handleActor}
                 onClickAsocDir={this.handleAsociacionDirigida}
@@ -426,11 +483,14 @@ class CasoDeUso extends Component {
               lineasPunteadas={this.state.lineasPunteadas}
               lineasSolidas={this.state.lineasSolidas}
               guardarFlecha={this.guardarFlecha}
+              guardarImagen={this.guardarImagen}
               actualizarCoordenadas={this.actualizarCoordenadas}
               actualizarCoordenadasActores={this.actualizarCoordenadasActores}
               actualizarCoordenadasSujetos={this.actualizarCoordenadasSujetos}
               encontrarPuntosMasCercanos={this.encontrarPuntosMasCercanos}
               actualizarSujeto={this.actualizarSujeto}
+              actualizarActor={this.actualizarActor}
+              count={this.state.count}
               setFiguras={this.handleFiguras}
               setFigura1={this.handleFigura1}
               setFigura2={this.handleFigura2}
