@@ -3,12 +3,13 @@ import RequisitoUsuario from './RequisitoUsuario';
 import RequisitoSistema from './RequisitoSistema';
 import CrearRU from './CrearRU';
 import CrearRS from './CrearRS';
-import { Container, Typography, Card, CardContent } from '@material-ui/core';
+import VistaActores from './actores/VistaActores';
+import { Container, Typography, Card, CardContent, TextField, Grid } from '@material-ui/core';
 
 class ListaRequisitos extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { keyCounter: 0 };
+    this.state = {keyCounter: 0};
   }
 
   crearRU = (n, t) => {
@@ -28,6 +29,14 @@ class ListaRequisitos extends React.Component {
     });
     this.setState({ keyCounter: this.state.keyCounter + 1 });
     this.props.actualizar(requisitos);
+  }
+
+  onChangeSuposicion = (n) => {
+    this.props.actualizarSuposiciones(n.target.value);
+  }
+
+  actualizarActores = (listaActores) => {
+    this.props.actualizarActores(listaActores);
   }
 
   crearRS = (nombre, tipo, ru, invocaA) => {
@@ -193,8 +202,23 @@ class ListaRequisitos extends React.Component {
     });
 
     return (
-      <Container style={{ margin: "3rem" }}>
-        <Typography variant="h2" style={{ margin: "3rem" }}>Lista de Requisitos</Typography>
+      <Container style={{margin: "3rem"}}>
+        <Typography variant="h2" style={{margin: "3rem"}}>Actores</Typography>
+        <VistaActores actores={this.props.actores} actualizar={this.actualizarActores}/>
+        <Typography variant="h2" style={{margin: "3rem"}}>Suposiciones</Typography>
+        <Grid item xs={13} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
+          <TextField id="outlined-multiline-static"
+              fullWidth
+              margin="normal"
+              multiline
+              rows={3}
+              variant="outlined"
+              onChange={this.onChangeSuposicion}
+              error={this.props.suposicion === ""}
+              value={this.props.suposicion}
+              helperText={this.props.suposicion === "" ? "Suposicion vacía" : ""}/>
+        </Grid>
+        <Typography variant="h2" style={{margin: "3rem"}}>Lista de Requisitos</Typography>
         {reqsUsuario}
         <CrearRU crear={this.crearRU} tiposRequisitos={this.props.tiposRequisitos} />
       </Container>

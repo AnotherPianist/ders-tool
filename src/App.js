@@ -43,7 +43,9 @@ class App extends React.Component {
       {
         data: [],
         links: []
-      }
+      },
+      actores: [],
+      suposicion: "",
     };
   }
 
@@ -94,6 +96,14 @@ class App extends React.Component {
     this.setState({ cartaGantt: carta });
   };
 
+  actualizarSuposicion = (text) => {
+    this.setState({suposicion: text});
+  }
+
+  actualizarActores = (listaActores) => {
+    this.setState({actores: listaActores});
+  }
+
   render() {
     return (
       <div className="App">
@@ -118,6 +128,10 @@ class App extends React.Component {
                 requisitos={this.state.requisitos}
                 tiposRequisitos={this.state.tiposRequisitos}
                 actualizar={this.actualizarRequisitos}
+                actualizarSuposiciones={this.actualizarSuposicion}
+                actualizarActores={this.actualizarActores}
+                actores={this.state.actores}
+                suposicion={this.state.suposicion}
               />
             </Route>
             <Route path="/casos">
