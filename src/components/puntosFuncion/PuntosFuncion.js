@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, TableContainer, Paper, Table, TableHead, TableBody, TableRow, TableCell, TextField } from '@material-ui/core'
+import AjusteAmbiental from "./AjusteAmbiental";
 
 class PuntosFuncion extends React.Component {
   constructor(props) {
@@ -10,9 +11,27 @@ class PuntosFuncion extends React.Component {
       consultas: [0, 0, 0, 0, 0],
       ie: [0, 0, 0, 0, 0],
       ali: [0, 0, 0, 0, 0],
-      total: 0
+      total: 0,
+      ajusteAmbiental: 0,
+      ptosAjustados: 0
     };
   };
+
+  recibirEstados = () => (valor) =>  {
+    
+    this.setState({
+      ajusteAmbiental: valor
+    });
+    this.actualizarPtosAjustados();
+  }
+
+  actualizarPtosAjustados = async () =>
+  {
+    var resultado = (this.state.ajusteAmbiental*this.state.total).toFixed(2);
+    await this.setState({
+      ptosAjustados: resultado
+    })
+  }
 
   updateEntradas = async (e) => {
     const valoresEntrada = this.state.entradas.slice();
@@ -87,6 +106,7 @@ class PuntosFuncion extends React.Component {
   updateTotal = async () => {
     await this.setState({total: this.state.entradas[4] + this.state.salidas[4] + this.state.consultas[4] + this.state.ie[4] + this.state.ali[4]});
     this.subirEstado();
+    
   }
 
   subirEstado = () => {
@@ -97,7 +117,9 @@ class PuntosFuncion extends React.Component {
       ie: [this.state.ie[1], this.state.ie[2], this.state.ie[3]],
       ali: [this.state.ali[1], this.state.ali[2], this.state.ali[3]],
     };
+    this.actualizarPtosAjustados();
     this.props.actualizar(estado);
+    
   }
 
   componentDidMount() {
@@ -131,6 +153,8 @@ class PuntosFuncion extends React.Component {
   render() {
     return (
       <>
+        <Typography variant="h2" style={{margin: "3rem"}}>Ajuste Ambiental</Typography>
+        <AjusteAmbiental recibirEstados={this.recibirEstados()}/>
         <Typography variant="h2" style={{margin: "3rem"}}>Puntos de Función</Typography>
         <TableContainer component={Paper} style={{margin: "3rem"}}>
           <Table aria-label="simple table">
@@ -196,6 +220,7 @@ class PuntosFuncion extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
+    <Typography variant="h6" align="left" style={{margin: "3rem"}}>Puntos de función ajustados: {this.state.ptosAjustados}</Typography>
       </>
     );
   }
