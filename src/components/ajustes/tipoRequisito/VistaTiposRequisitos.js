@@ -1,8 +1,6 @@
 import React from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, TextField, Typography } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, TextField, Typography, Paper, Container } from '@material-ui/core';
 import TipoRequisito from './TipoRequisito';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 
 class VistaTiposRequisitos extends React.Component {
   constructor(props) {
@@ -64,31 +62,29 @@ class VistaTiposRequisitos extends React.Component {
     });
 
     return(
-      <Card>
-        <CardContent>
-          <Typography variant="h6" color="textSecondary" style={{float: "left"}} gutterBottom>Tipos de Requisitos</Typography>
-          <Table padding="default">
-            <TableHead>
-              <TableRow>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Descripción</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {lista}
-              <TableRow>
-                <TableCell>
-                  <TextField id="nombre" label="Nombre" value={this.state.nuevoNombre} onChange={this.onChangeNombre} onKeyDown={this.crear}/>
-                </TableCell>
-                <TableCell>
-                  <TextField id="descripcion" label="Descripción" value={this.state.nuevaDescripcion} fullWidth onChange={this.onChangeDescripcion} onKeyDown={this.crear}/>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <Container>
+        <Typography variant="h5" style={{float: "left"}} gutterBottom>Tipos de Requisitos</Typography>
+        <Table component={Paper}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Descripción</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {lista}
+            <TableRow>
+              <TableCell>
+                <TextField id="nombre" label="Nombre" value={this.state.nuevoNombre} onChange={this.onChangeNombre} onKeyDown={this.crear}/>
+              </TableCell>
+              <TableCell>
+                <TextField id="descripcion" label="Descripción" value={this.state.nuevaDescripcion} fullWidth onChange={this.onChangeDescripcion} onKeyDown={this.crear}/>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Container>
     );
   }
 }

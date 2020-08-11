@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, TextField, Select, MenuItem, IconButton, Paper, Tooltip } from '@material-ui/core';
+import { Grid, TextField, Select, MenuItem, IconButton, Tooltip, Typography } from '@material-ui/core';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 class RequisitoUsuario extends React.Component {
@@ -32,11 +32,11 @@ class RequisitoUsuario extends React.Component {
     });
 
     return (
-      <Grid container component={Paper}>
-        <Grid item xs={1} style={{padding: "15px"}}>
-          <TextField value={"RU" + this.props.ru.id} InputProps={{readOnly: true}}/>
+      <Grid container>
+        <Grid item xs={1} style={{paddingTop: "1rem"}}>
+          <Typography variant="subtitle1">{"RU" + this.props.ru.id}</Typography>
         </Grid>
-        <Grid item xs={8} style={{padding: "15px"}}>
+        <Grid item xs={8} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
           <TextField fullWidth defaultValue={this.props.ru.nombre} onChange={this.onChangeNombre}/>
         </Grid>
         <Grid item xs={2}>
@@ -44,7 +44,7 @@ class RequisitoUsuario extends React.Component {
             {tiposReq}
           </Select>
         </Grid>
-        <Grid item xs={1} style={{paddingTop: "8px", paddingLeft: "1rem"}} >
+        <Grid item xs={1}>
           <IconButton color="secondary" onClick={this.eliminarReq}>
             <HighlightOffIcon/>
           </IconButton>

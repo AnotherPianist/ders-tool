@@ -6,7 +6,7 @@ class Ajustes extends React.Component {
   render() {
     return(
       <>
-        <Typography variant="h3" style={{margin: "1rem"}}>Ajustes</Typography>
+        <Typography variant="h2" style={{margin: "3rem"}}>Ajustes</Typography>
         <VistaTiposRequisitos tipos={this.props.tiposRequisitos} actualizar={this.props.actualizarTipos}/>
       </>
     );

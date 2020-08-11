@@ -34,8 +34,8 @@ class CrearRS extends React.Component {
     });
 
     return (
-      <Grid container style={{marginLeft: "15px"}}>
-        <Grid item xs={10} style={{padding: "34px"}}>
+      <Grid container style={{paddingLeft: "2rem", paddingRight: "2rem"}}>
+        <Grid item xs={10} style={{paddingTop: "1rem", paddingRight: "1rem"}}>
           <Autocomplete
             key={this.state.key}
             onChange={this.onChangeAutocomplete}
@@ -62,7 +62,7 @@ class CrearRS extends React.Component {
             }
           />
         </Grid>
-        <Grid item xs={2} style={{padding: "15px"}}>
+        <Grid item xs={2}>
           <Select
             value={this.state.tipo}
             fullWidth size="small"
