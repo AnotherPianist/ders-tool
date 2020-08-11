@@ -164,7 +164,7 @@ class App extends React.Component {
             <Route path="/previsualizar">
               <VistaPrevisualizacion state={this.state}/>
             </Route>
-            <Route path="/puntosFuncion">
+            <Route path="/esfuerzo">
               <PuntosFuncion
                 puntos={this.state.puntosFuncion}
                 actualizar={this.actualizarPuntosFuncion}

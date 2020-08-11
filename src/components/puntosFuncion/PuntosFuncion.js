@@ -156,7 +156,7 @@ class PuntosFuncion extends React.Component {
         <Typography variant="h2" style={{margin: "3rem"}}>Ajuste Ambiental</Typography>
         <AjusteAmbiental recibirEstados={this.recibirEstados()}/>
         <Typography variant="h2" style={{margin: "3rem"}}>Puntos de Función</Typography>
-        <TableContainer component={Paper} style={{margin: "3rem"}}>
+        <TableContainer component={Paper} style={{margin: "3rem", maxWidth: "90%"}}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -220,7 +220,7 @@ class PuntosFuncion extends React.Component {
             </TableBody>
           </Table>
         </TableContainer>
-    <Typography variant="h6" align="left" style={{margin: "3rem"}}>Puntos de función ajustados: {this.state.ptosAjustados}</Typography>
+        <Typography variant="h6" align="left" style={{margin: "3rem"}}>Puntos de función ajustados: {this.state.ptosAjustados}</Typography>
       </>
     );
   }

@@ -232,23 +232,13 @@ class Estructura extends React.Component {
               button
               className={classes.whiteIcons}
               onClick={this.toggleDrawer}
-            >
-              <ListItemIcon className={classes.whiteIcons}>
-                <TuneIcon />
-              </ListItemIcon>
-              <ListItemText primary="Ajuste Ambiental" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.whiteIcons}
-              onClick={this.toggleDrawer}
               component={Link}
-              to="/puntosFuncion"
+              to="/esfuerzo"
             >
               <ListItemIcon className={classes.whiteIcons}>
                 <AssessmentIcon />
               </ListItemIcon>
-              <ListItemText primary="Puntos de Función" />
+              <ListItemText primary="Esfuerzo" />
             </ListItem>
             <ListItem
               button
