@@ -101,7 +101,6 @@ class Estructura extends React.Component {
               value={this.props.nombreProyecto}
               onChange={this.editarNombre}
               error={this.state.nombreProyecto === ""}
-              helperText={this.state.nombreProyecto === "" ? "Nombre vacío" : ""}
             />
             <Button onClick={this.openArchivo} style={{ padding: "1rem" }}>
               Archivo
