@@ -15,15 +15,25 @@ class BarraPDF extends React.Component {
     };
   };
 
-  handleToggle = (value) => () => {
+  handleToggle = (value) => () => 
+  {
     value = value.replace(/\s/g, '');
-      var check = this.state[value];
-      if (check === false)
+    var check = this.state[value];
+    this.setState({[value]: !check}, function() 
+    { 
+      this.props.recibirEstados(this.state.DERS, this.state.ListadeRequisitos, 
+                                this.state.TarjetasdeVolere, this.state.Casosdeuso, 
+                                this.state.AjustesAmbientales, this.state.PuntosdeFunción, 
+                                this.state.AnálisisdeRepago) 
+    });
+      /*if (check === false)
         this.setState({[value]: true});
       else
         this.setState({[value]: false});
+        */
   }
 
+  //bastante que no se llama nunca esta funcion ... por lo que modifique el código a handleToggle que al parecer lo corrige (?). ---Nacho
   onChangeCheckBox(e) {
     this.props.recibirEstados(this.state.DERS, this.state.ListadeRequisitos, this.state.TarjetasdeVolere, this.state.Casosdeuso, this.state.AjustesAmbientales, this.state.PuntosdeFunción, this.state.AnálisisdeRepago);
   }
