@@ -52,7 +52,7 @@ class App extends React.Component {
 
   guardarProyecto = () => {
     const element = document.createElement("a");
-    const file = new Blob([JSON.stringify(this.state)], {type: 'application/json'});
+    const file = new Blob([JSON.stringify(this.state)], { type: 'application/json' });
     element.href = URL.createObjectURL(file);
     element.download = this.state.nombreProyecto === "" ? "empty_project.data" : `${this.state.nombreProyecto}.data`;
     document.body.appendChild(element); // Required for this to work in FireFox
@@ -60,7 +60,7 @@ class App extends React.Component {
   };
 
   cargarProyecto = async (data) => {
-    await this.setState({...data});
+    await this.setState({ ...data });
     document.title = this.state.nombreProyecto + " - Plantilla de DERS";
   }
 
@@ -82,7 +82,7 @@ class App extends React.Component {
   }
 
   actualizarCasosDeUso = (obj) => {
-    this.setState({casosDeUso: {...obj}});
+    this.setState(prevState => ({ casosDeUso: { ...prevState.casosDeUso, ...obj } }));
   }
 
   actualizarPuntosFuncion = (pf) => {
@@ -102,11 +102,11 @@ class App extends React.Component {
   };
 
   actualizarSuposicion = (text) => {
-    this.setState({suposicion: text});
+    this.setState({ suposicion: text });
   }
 
   actualizarActores = (listaActores) => {
-    this.setState({actores: listaActores});
+    this.setState({ actores: listaActores });
   }
 
   render() {
@@ -162,7 +162,7 @@ class App extends React.Component {
               />
             </Route>
             <Route path="/previsualizar">
-              <VistaPrevisualizacion state={this.state}/>
+              <VistaPrevisualizacion state={this.state} />
             </Route>
             <Route path="/esfuerzo">
               <PuntosFuncion
