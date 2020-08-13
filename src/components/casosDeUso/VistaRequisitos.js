@@ -27,37 +27,31 @@ export default function VistaRequisitos(props) {
   /**
    * Añade un requisito de usuario a la lista de requisitos seleccionados,
    * junto a los requisitos de sistema asociados
-   * @param {Requisito} requisitoUsuario
+   * @param {Requisito} ru
    */
-  const añadir = (requisitoUsuario) => {
-    let aux = [...requisitosSeleccionados, requisitoUsuario];
+  const añadir = (ru) => {
+    let aux = [...requisitosSeleccionados, ru];
 
-    requisitos.map((requisitoSistema) => {
-      if (!requisitoSistema.isRU) {
-        if (requisitoSistema.refRU === requisitoUsuario.id) {
-          aux.push(requisitoSistema);
-        }
-      }
-    });
+    for (const rs of requisitos)
+      if (!rs.isRU && rs.refRU === ru.id)
+        aux.push(rs);
+
     props.setRequisitos(aux);
   };
   /**
    * Quita el requisito de usuario y tambien sus requisitos de sistema asociados de las lista de
    * requisitos seleccionados
-   * @param {Requisito} requisitoUsuario
+   * @param {Requisito} ru
    */
-  const quitar = (requisitoUsuario) => {
+  const quitar = (ru) => {
     let aux = [...requisitosSeleccionados];
     var totalRS = 1;
-    const pos = requisitosSeleccionados.indexOf(requisitoUsuario);
+    const pos = requisitosSeleccionados.indexOf(ru);
 
-    aux.map((requisitoSistema) => {
-      if (!requisitoSistema.isRU) {
-        if (requisitoSistema.refRU === requisitoUsuario.id) {
+    for (const rs of aux)
+      if (!rs.isRU && rs.refRU === ru.id)
           totalRS++;
-        }
-      }
-    });
+
     aux.splice(pos, totalRS);
     props.setRequisitos(aux);
   };
@@ -87,7 +81,8 @@ export default function VistaRequisitos(props) {
           <Divider />
         </React.Fragment>
       );
-    }
+    } else
+      return null;
   });
 
   return (

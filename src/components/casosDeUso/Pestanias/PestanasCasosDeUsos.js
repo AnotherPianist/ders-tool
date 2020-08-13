@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback, useLayoutEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Tabs from "@material-ui/core/Tabs";
@@ -175,11 +175,6 @@ export default function PestanasCasosDeUsos(props) {
     if (cerrarPestania)
       handleClose(() => {}, pestaniaActual);
   }, [cerrarPestania, pestaniaActual, handleClose]);
-
-  /*useLayoutEffect(() => {
-    setPestanias(props.casosDeUso.pestania);
-    setCasosDeUsos(props.casosDeUso.diagramas);
-  });*/
 
   /**
    * Actualiza el estado del diagrama que esta siendo renderizado en la pestaña actual.

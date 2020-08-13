@@ -25,7 +25,6 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 import TableChartIcon from "@material-ui/icons/TableChart";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import AssessmentIcon from "@material-ui/icons/Assessment";
-import TuneIcon from "@material-ui/icons/Tune";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
